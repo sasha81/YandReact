@@ -1,0 +1,25 @@
+.App {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto; */
+  grid-template-areas:  'header header'
+                        'ingredients constructor'
+                        ;
+ 
+}
+
+.headerBurger {
+  /* composes: burgerHeader from './components/AppHeader/AppHeader.module.css'; */
+  grid-area: header;
+
+}
+
+.ingredientsBurger {
+  /* composes: burgerIngredients from './components/BurgerIngredients/BurgerIngredients.module.css'; */
+  grid-area: ingredients;
+}
+
+.constructorBurger {
+  /* composes: burgerConstructor from './components/BurgerConstructor/BurgerConstructor.module.css'; */
+  grid-area: constructor;
+}
