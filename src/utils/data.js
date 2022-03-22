@@ -1,4 +1,4 @@
-const getTestData = async ()=>{
+const getTestData =  ()=>{
     return [
         {
            "_id":"60666c42cc7b410027a1a9b1",
@@ -212,3 +212,4 @@ const getTestData = async ()=>{
         }
      ];
 }
+export default getTestData;
