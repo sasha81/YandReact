@@ -4,7 +4,7 @@ import { useState, useRef, createRef } from "react";
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import getTestData from '../../utils/data';
+import {getTestData, getNames } from '../../utils/data';
 import BurgerIngredient from './BurgerIngredient'
 
 export const comparatorBurger = (a : any,b: any)=>{
@@ -27,6 +27,7 @@ export const getSortedData =  (getData: any ,comparator: any  ) :any =>{
     types.forEach(t=>{ingredientMap.set(t,[])})
 
     sortedData.forEach((el:any)=>{ingredientMap.get(el.type).push(el);})
+    ingredientMap.forEach((val,key)=>val.sort((a,b)=>{return a.price - b.price}))
 
     ingredientMap.forEach((val, key)=>{resultArr.push( {type:key, value: val} )})
 
@@ -49,10 +50,9 @@ export const BurgerConstructor =(props: any)=>{
    const myRefs = useRef([]);
    myRefs.current =ingredients.map((element, i) => myRefs.current[i] ?? createRef());
 
-    const ingedientclicked = (number)=>{
-        return (e)=>{
-            console.log("clecked: ",number)
-        }
+    const ingedientClicked = (number)=>()=>{
+        props.pickIngedientCallback(number);
+        
     }
 
     return (
@@ -62,32 +62,32 @@ export const BurgerConstructor =(props: any)=>{
                 {ingredients.map((i,ind)=>{
                     return (
                         <Tab key={`${i.type}`} value={`${i.type}`} active={current === `${i.type}`} onClick={getTabCallBack(i.type,myRefs.current[ind],setCurrent)}>
-                        <h1 >{`${i.type}`}</h1>
+                        <h1 >{`${getNames(i.type)}`}</h1>
                     </Tab>
                     )
-                })}
-              
+                })}              
             </div>
             <div style={{height:'900px', overflow:'auto'}}>
                 {ingredients.map((ing,ind)=>{
                     return (
                         <div key={`${ing.type}`} id={`${ing.type}Type`} ref={ myRefs.current[ind]} >
-                            <h2>{ing.type}</h2>
+                            <h2>{getNames(ing.type)}</h2>
                             <div style={{display:'flex', flexDirection:'row', flexWrap:'wrap', rowGap: '20px'}}>
                                 {ingredientMap.get(ing.type).map(ingred=>{
-                                    const props = {
+                                    const inputProps = {
                                         ...ingred,
-                                        clickCallback: ingedientclicked(ingred._id)
+                                        relativeWidth:'50%',
+                                        clickCallback: ingedientClicked(ingred),
+                                        quantity: props.pickedIngredients[ingred._id]
                                     }
                                     return (                                        
-                                             <BurgerIngredient key={ingred._id} { ...props } />                                       
+                                             <BurgerIngredient key={ingred._id} { ...inputProps } />                                       
                                     )
                                 })}
                             </div>
                         </div>
                     )
                 })}
-
             </div>
         </section>
     )

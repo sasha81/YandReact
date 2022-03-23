@@ -7,7 +7,43 @@ export const BurgerIngredients = (props: any)=>{
       <>
       <div style={{height:'200px'}}/>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <ConstructorElement
+          {props.ingredients.map((ing, index)=>{
+              if(index==0){
+                return (
+                  <ConstructorElement
+                  key={ing._id}
+                  type="top"
+                  isLocked={true}
+                  text={ing.text}
+                  price={ing.price}
+                  thumbnail={ing.image}
+                />
+                )
+              }
+              if(index==props.ingredients.length-1){
+                return(
+                  <ConstructorElement
+                  key={ing._id}
+                  type="bottom"
+                  isLocked={true}
+                  text={ing.text}
+                  price={ing.price}
+                  thumbnail={ing.image}
+                />
+                )
+              }
+              else{
+                return(
+                  <ConstructorElement
+                  key={ing._id}
+                  text={ing.text}
+                  price={ing.price}
+                  thumbnail={ing.image}
+                />
+                )
+              }
+          })}
+        {/* <ConstructorElement
           type="top"
           isLocked={true}
           text="Краторная булка N-200i (верх)"
@@ -25,7 +61,7 @@ export const BurgerIngredients = (props: any)=>{
           text="Краторная булка N-200i (низ)"
           price={200}
           thumbnail={img}
-        />
+        /> */}
       </div>
       </>
     )

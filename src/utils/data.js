@@ -1,4 +1,4 @@
-const getTestData =  ()=>{
+export const getTestData =  ()=>{
     return [
         {
            "_id":"60666c42cc7b410027a1a9b1",
@@ -212,4 +212,13 @@ const getTestData =  ()=>{
         }
      ];
 }
-export default getTestData;
+
+const nameMap = new Map();
+nameMap.set("bun", "Булки");
+nameMap.set("main", "Начинки");
+nameMap.set("sauce","Соусы");
+
+export const getNames = (name) =>{
+   return nameMap.get(name);
+   
+};
