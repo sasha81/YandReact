@@ -11,34 +11,38 @@ export const BurgerIngredients = (props: any)=>{
               if(index==0){
                 return (
                   <ConstructorElement
-                  key={ing._id}
+                  key={index}
                   type="top"
-                  isLocked={true}
+                  isLocked={false}
                   text={ing.text}
                   price={ing.price}
                   thumbnail={ing.image}
+                  handleClose={props.deleteIngredient(ing)}
                 />
                 )
               }
               if(index==props.ingredients.length-1){
                 return(
                   <ConstructorElement
-                  key={ing._id}
+                  key={index}
                   type="bottom"
-                  isLocked={true}
+                  isLocked={false}
                   text={ing.text}
                   price={ing.price}
                   thumbnail={ing.image}
+                  handleClose={props.deleteIngredient(ing)}
                 />
                 )
               }
               else{
                 return(
                   <ConstructorElement
-                  key={ing._id}
+                  key={index}
                   text={ing.text}
+                  isLocked={false}
                   price={ing.price}
                   thumbnail={ing.image}
+                  handleClose={props.deleteIngredient(ing)}
                 />
                 )
               }

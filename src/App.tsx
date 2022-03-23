@@ -27,14 +27,38 @@ const pickIngredient = (ing) =>{
     }
   });
   setIngredientObjects((prev)=>{
-    if(!choosenIngredients.hasOwnProperty(ing._id)) {
-      return [...prev, ing]
-    }
-    else{
-      return [...prev];
-    }
+    return [...prev, ing]   
   })
 }
+
+const deleteIngredient = (ing)=>()=>{
+  const _id = ing._id;
+  setIngredient(prev=>{
+    if(prev.hasOwnProperty(_id) && prev[_id]>1){
+      return {
+        ...prev,
+        [_id]: prev[_id]-1
+      }
+    }
+    else if(prev.hasOwnProperty(_id) && prev[_id]==1){
+      var obj = {...prev};
+      delete obj[_id];
+      return obj
+    }
+    else{
+      return {...prev}
+    }
+  });
+  setIngredientObjects((prev)=>{
+    const index = prev.findIndex(el=>{return (el._id==_id)})
+    const tempArr = [...prev]
+    tempArr.splice(index,1);
+    return tempArr;
+   
+  })
+}
+
+
 
 // const getIngredientObjects = (idArr: string[], objArr: any[])=>{
 //   const result = idArr.reduce((accum, curr)=>{
@@ -50,7 +74,7 @@ const pickIngredient = (ing) =>{
       <div className={styles.headerBurger}> <AppHeader  /> </div>
      
       <div className={styles.constructorBurger}><BurgerConstructor pickedIngredients={choosenIngredients} pickIngedientCallback={pickIngredient} /></div>
-      <div className={styles.ingredientsBurger}><BurgerIngredients ingredients = {choosenIngredientObjects}/></div>
+      <div className={styles.ingredientsBurger}><BurgerIngredients ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient}/></div>
     </div>
   );
 }
