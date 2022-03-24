@@ -1,11 +1,10 @@
-
-
 import { useState, useRef, createRef } from "react";
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import {getTestData, getNames } from '../../utils/data';
-import BurgerIngredient from './BurgerIngredient'
+import BurgerIngredient from './BurgerIngredient';
+import styles from './BurgerConstructor.module.css';
 
 export const comparatorBurger = (a : any,b: any)=>{
     if(a.type == b.type){
@@ -18,7 +17,7 @@ export const comparatorBurger = (a : any,b: any)=>{
 
 export const getSortedData =  (getData: any ,comparator: any  ) :any =>{
     const data = getData();
-    const sortedData = data;//.sort(comparator);
+    const sortedData = data;
     
     var types = new Set(); var ingredientMap = new Map(); const resultArr : any=[];
 
@@ -57,26 +56,26 @@ export const BurgerConstructor =(props: any)=>{
 
     return (
         <section>
-            <h1>Соберите бургер</h1>
-            <div style={{ display: 'flex' }}>
+            <h1 className={styles.header}>Соберите бургер</h1>
+            <div className={styles.tabContainer} >
                 {ingredients.map((i,ind)=>{
                     return (
                         <Tab key={`${i.type}`} value={`${i.type}`} active={current === `${i.type}`} onClick={getTabCallBack(i.type,myRefs.current[ind],setCurrent)}>
-                        <h1 >{`${getNames(i.type)}`}</h1>
+                                <h1 >{`${getNames(i.type)}`}</h1>
                     </Tab>
                     )
                 })}              
             </div>
-            <div style={{height:'900px', overflow:'auto'}}>
+            <div className={styles.mainTabContainer} >
                 {ingredients.map((ing,ind)=>{
                     return (
                         <div key={`${ing.type}`} id={`${ing.type}Type`} ref={ myRefs.current[ind]} >
                             <h2>{getNames(ing.type)}</h2>
-                            <div style={{display:'flex', flexDirection:'row', flexWrap:'wrap', rowGap: '20px'}}>
+                            <div  className={styles.innerIngredientContainer} >
                                 {ingredientMap.get(ing.type).map(ingred=>{
                                     const inputProps = {
                                         ...ingred,
-                                        relativeWidth:'50%',
+                                        relativeWidth: styles.ingredientWidth,
                                         clickCallback: ingedientClicked(ingred),
                                         quantity: props.pickedIngredients[ingred._id]
                                     }

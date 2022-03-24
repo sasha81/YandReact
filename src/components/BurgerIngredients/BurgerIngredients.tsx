@@ -1,12 +1,14 @@
 import { ConstructorElement, Button, CurrencyIcon,DragIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import styles from './BurgerIngredients.module.css';
+
 const img = "https://code.s3.yandex.net/react/code/bun-02.png";
 
 export const BurgerIngredients = (props: any)=>{
     return (
       <>
-      <div style={{height:'200px'}}/>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', height: '900px', border:'2px solid white' }}>
+      <div className={styles.topPadding} />
+        <div className={styles.ingredientContainer} >
           {props.ingredients.map((ing, index)=>{
               if(index==0){
                 return (
@@ -59,12 +61,12 @@ export const BurgerIngredients = (props: any)=>{
 
            
       </div>
-      <div style={{display:'flex', flexDirection: 'row', justifyContent:'flex-end', alignItems: 'center'}}>
+      <div className={styles.submitElement} >
                   <h2 style={{marginRight:'20px'}}>{props.ingredients.reduce((accum, curr)=>{return accum+curr.price},0)}</h2>
                   <CurrencyIcon type="primary" />
 
                   <div style={{marginLeft:'20px', marginRight:'40px'}}>
-                    <Button type="primary" size="medium">
+                    <Button type="primary" size="medium" onClick={props.orderComplete}>
                         Оформить Заказ
                   </Button>
                 </div>
