@@ -57,18 +57,6 @@ const deleteIngredient = (ing)=>()=>{
    
   })
 }
-
-
-
-// const getIngredientObjects = (idArr: string[], objArr: any[])=>{
-//   const result = idArr.reduce((accum, curr)=>{
-//       const found = objArr.find(el=>{el._id==curr});
-//       if(found){ accum.push(found)}
-//       return accum;
-//   },[] as  any)
-//   return result;
-// }
-
   return (
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>

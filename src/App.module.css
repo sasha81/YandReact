@@ -1,4 +1,6 @@
 .App {
+  width: 1200px;
+  margin: 0 auto;
   display: grid;
    grid-template-columns: 50% 50%;
   /*grid-template-rows: auto; */
