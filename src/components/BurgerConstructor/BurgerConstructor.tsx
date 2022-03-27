@@ -3,8 +3,10 @@ import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import {getTestData, getNames } from '../../utils/data';
-import BurgerIngredient from './BurgerIngredient';
+import {BurgerIngredient } from './BurgerIngredient';
 import styles from './BurgerConstructor.module.css';
+
+import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
 
 export const comparatorBurger = (a : any,b: any)=>{
     if(a.type == b.type){
@@ -33,11 +35,16 @@ export const getSortedData =  (getData: any ,comparator: any  ) :any =>{
     return [resultArr, ingredientMap];
 }
 
+interface IBurgerConstructorProps {
+    pickedIngredients: IChoosenIngredients,
+    pickIngedientCallback: (arg: IBareBurgerIngredient)=> void
+}
 
-export const BurgerConstructor =(props: any)=>{
+
+export const BurgerConstructor =(props: IBurgerConstructorProps): JSX.Element=>{
     const [current, setCurrent] = useState('one')
   
-    const getTabCallBack= (name: string, ref: any, stateCallback)=>{
+    const getTabCallBack= (name: string, ref: any, stateCallback: (arg:string)=>void)=>{
         return (e)=>{
             stateCallback(name);
             ref.current.scrollIntoView({behavior:"smooth"});
@@ -72,15 +79,15 @@ export const BurgerConstructor =(props: any)=>{
                         <div key={`${ing.type}`} id={`${ing.type}Type`} ref={ myRefs.current[ind]} >
                             <h2>{getNames(ing.type)}</h2>
                             <div  className={styles.innerIngredientContainer} >
-                                {ingredientMap.get(ing.type).map(ingred=>{
+                                {ingredientMap.get(ing.type).map(ingredient=>{
                                     const inputProps = {
-                                        ...ingred,
+                                        ...ingredient,
                                         relativeWidth: styles.ingredientWidth,
-                                        clickCallback: ingedientClicked(ingred),
-                                        quantity: props.pickedIngredients[ingred._id]
+                                        clickCallback: ingedientClicked(ingredient),
+                                        quantity: props.pickedIngredients[ingredient._id]
                                     }
                                     return (                                        
-                                             <BurgerIngredient key={ingred._id} { ...inputProps } />                                       
+                                             <BurgerIngredient key={ingredient._id} { ...inputProps } />                                       
                                     )
                                 })}
                             </div>

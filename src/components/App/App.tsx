@@ -1,18 +1,25 @@
 import React, {useState} from 'react';
-import logo from './logo.svg';
-import styles from './App.module.css';
-import AppHeader from './components/AppHeader/AppHeader';
-import { BurgerIngredients} from './components/BurgerIngredients/BurgerIngredients';
-import {BurgerConstructor} from './components/BurgerConstructor/BurgerConstructor';
-import {getTestData, getNames } from './utils/data';
 
-function App() {
-const [choosenIngredients, setIngredient]= useState({});
-const [choosenIngredientObjects, setIngredientObjects]= useState<any[]>([]);
+import styles from './App.module.css';
+import AppHeader from '../AppHeader/AppHeader'
+
+import { BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
+
+import {BurgerConstructor} from '../BurgerConstructor/BurgerConstructor'
+import {getTestData, getNames } from '../../utils/data';
+import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces'
+
+// export interface IChoosenIngredients{
+//   [key: string]: number
+// }
+
+const App=(): JSX.Element=> {
+const [choosenIngredients, setIngredient]= useState<IChoosenIngredients>({});
+const [choosenIngredientObjects, setIngredientObjects]= useState<IBareBurgerIngredient[]>([]);
 const [order, completeOrder] = useState(false);
 
-const pickIngredient = (ing) =>{
-  const _id = ing._id
+const pickIngredient = (ingredient: IBareBurgerIngredient):void =>{
+  const _id = ingredient._id
   setIngredient(prev=>{
     if(prev.hasOwnProperty(_id)){
       return {
@@ -28,12 +35,12 @@ const pickIngredient = (ing) =>{
     }
   });
   setIngredientObjects((prev)=>{
-    return [...prev, ing]   
+    return [...prev, ingredient]   
   })
 }
 
-const deleteIngredient = (ing)=>()=>{
-  const _id = ing._id;
+const deleteIngredient = (ingredient:IBareBurgerIngredient)=>():void=>{
+  const _id = ingredient._id;
   setIngredient(prev=>{
     if(prev.hasOwnProperty(_id) && prev[_id]>1){
       return {
@@ -59,7 +66,7 @@ const deleteIngredient = (ing)=>()=>{
   })
 }
 
-const orderComplete = ()=>{
+const orderComplete = ():void=>{
     console.log("This burger order is sent to the server: ", choosenIngredientObjects);
     completeOrder(true);
     setIngredient({});

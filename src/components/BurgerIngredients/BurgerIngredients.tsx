@@ -1,10 +1,18 @@
 import { ConstructorElement, Button, CurrencyIcon,DragIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './BurgerIngredients.module.css';
+import {IBareBurgerIngredient} from '../Interfaces'
 
 const img = "https://code.s3.yandex.net/react/code/bun-02.png";
 
-export const BurgerIngredients = (props: any)=>{
+interface IBurgerIngredients{
+  ingredients: IBareBurgerIngredient[],
+  deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
+  orderComplete: ()=>void
+}
+
+
+export const BurgerIngredients = (props: IBurgerIngredients)=>{
     return (
       <>
       <div className={styles.topPadding} />

@@ -1,7 +1,21 @@
 import { Counter,CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerIngredient.module.css';
+import {IBareBurgerIngredient,IBurgerIngredient } from '../Interfaces'
 
-const BurgerIngredient = (props: any)=>{
+// export interface IBareBurgerIngredient{
+//     _id: string,
+//     quantity: number,
+//     image: string,
+//     price: number,
+//     name: string
+// }
+
+// export interface IBurgerIngredient extends IBareBurgerIngredient{
+//     width: string,
+//     clickCallback: (arg: number)=>void
+// }
+
+export const BurgerIngredient = (props: IBurgerIngredient)=>{
     return (
         <div style={{width: `${props.relativeWidth}`, position:'relative'}} onClick={props.clickCallback}>
             <h2 className={styles.quantity} >{props.quantity}</h2>
@@ -19,4 +33,4 @@ const BurgerIngredient = (props: any)=>{
     )
 }
 
-export default BurgerIngredient;
+//export default BurgerIngredient;
