@@ -10,7 +10,9 @@ interface IBurgerIngredients{
   deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
   orderComplete: ()=>void
 }
-
+const getCost=(ingredients :IBareBurgerIngredient[] , bun:IBareBurgerIngredient | null):number=>{
+  return ingredients.reduce((accum, curr)=>{return accum+curr.price},0) + (bun? bun.price : 0);
+}
 
 export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
     return (
@@ -18,7 +20,7 @@ export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
       <div className={styles.topPadding} />
         <div className={styles.ingredientContainer} >
           {props.bun && 
-          (<div  style={{height: '80px'}}>
+          (<div  style={{height: '80px'}}>            
            <ConstructorElement
                   
            type="top"
@@ -66,7 +68,7 @@ export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
            
       </div>
       <div className={styles.submitElement} >
-                  <p className="text text_type_digits-medium">{props.ingredients.reduce((accum, curr)=>{return accum+curr.price},0)}</p>
+                  <p className="text text_type_digits-medium">{getCost(props.ingredients, props.bun)}</p>
                   <div className="p-2"><CurrencyIcon type="primary" /></div>
 
                   <div className="p-8">
