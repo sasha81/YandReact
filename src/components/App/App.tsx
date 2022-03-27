@@ -109,7 +109,7 @@ const orderComplete = ():void=>{
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>
      
-      <div className={styles.ingredientsBurger}><BurgerIngredients pickedIngredients={choosenIngredients} pickIngedientCallback={pickIngredient} /></div>
+      <div className={styles.ingredientsBurger}><BurgerIngredients pickedIngredients={choosenIngredients} pickIngedient={pickIngredient} /></div>
       <div className={styles.constructorBurger}><BurgerConstructor bun={bun} ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient} orderComplete={orderComplete}/></div>
     {order && <h1 style={{position:'absolute', top:'300px', left:'440px', backgroundColor:'blue', padding:'30px', borderRadius: '30px'}}>Order Complete!</h1>}
     </div>

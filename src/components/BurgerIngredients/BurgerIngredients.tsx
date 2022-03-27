@@ -35,16 +35,16 @@ export const getSortedData =  (getData: (()=>IBareBurgerIngredient[] ) ) :any =>
 
 interface IBurgerIngredientsProps {
     pickedIngredients: IChoosenIngredients,
-    pickIngedientCallback: (arg: IBareBurgerIngredient)=> void
+    pickIngedient: (arg: IBareBurgerIngredient)=> void
 }
 
 
 export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
     const [current, setCurrent] = useState('one')
   
-    const getTabCallBack= (name: string, ref: any, stateCallback: (arg:string)=>void)=>{
+    const getTab= (name: string, ref: any, setState: (arg:string)=>void)=>{
         return (e)=>{
-            stateCallback(name);
+            setState(name);
             ref.current.scrollIntoView({behavior:"smooth"});
         }
     }
@@ -52,10 +52,10 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
     const [ingredients, ingredientMap ]= getSortedData(getTestData);
 
    const myRefs = useRef([]);
-   myRefs.current =ingredients.map((element, index) => myRefs.current[index] ?? createRef());
+   myRefs.current =ingredients.map((element:IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
     const ingedientClicked = (ingredient: IBareBurgerIngredient)=>():void=>{
-        props.pickIngedientCallback(ingredient);
+        props.pickIngedient(ingredient);
         
     }
 
@@ -65,7 +65,7 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
             <div className={styles.tabContainer} >
                 {ingredients.map((ingredient,ind)=>{
                     return (
-                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === `${ingredient.type}`} onClick={getTabCallBack(ingredient.type,myRefs.current[ind],setCurrent)}>
+                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === `${ingredient.type}`} onClick={getTab(ingredient.type,myRefs.current[ind],setCurrent)}>
                                <p className="text text_type_main-default">{`${getNames(ingredient.type)}`}</p>
                     </Tab>
                     )
