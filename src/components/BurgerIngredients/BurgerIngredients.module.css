@@ -5,7 +5,7 @@
 @value ingredientsTopPaddingHeight from "../../layoutConstants.module.css";
 
 @value buttonHeight: 75px;
-@value correction: 40px;
+@value correction: 30px;
 
 .topPadding {
     height: ingredientsTopPaddingHeight;

@@ -5,6 +5,7 @@ import {IBareBurgerIngredient} from '../Interfaces'
 
 
 interface IBurgerIngredients{
+  bun:IBareBurgerIngredient | null,
   ingredients: IBareBurgerIngredient[],
   deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
   orderComplete: ()=>void
@@ -16,56 +17,52 @@ export const BurgerIngredients = (props: IBurgerIngredients): JSX.Element=>{
       <>
       <div className={styles.topPadding} />
         <div className={styles.ingredientContainer} >
-          {props.ingredients.map((ing, index)=>{
-              if(index===0){
-                return (
-                  <div key={index} style={{height: '80px'}}>
-                     <DragIcon type="primary" />
-                    <ConstructorElement
-                    
-                    type="top"
-                    isLocked={false}
-                    text={ing.name}
-                    price={ing.price}
-                    thumbnail={ing.image}
-                    handleClose={props.deleteIngredient(ing)}
-                  />
-                </div>
-                )
-              }
-              if(index===props.ingredients.length-1){
+          {props.bun && 
+          (<div  style={{height: '80px'}}>
+           <ConstructorElement
+                  
+           type="top"
+           isLocked={true}
+           text={props.bun.name}
+           price={props.bun.price}
+           thumbnail={props.bun.image}
+           handleClose={props.deleteIngredient(props.bun)}
+         />
+          </div>)
+          }
+          {props.ingredients.map((ingredient, index)=>{
+              
                 return(
                   <div key={index} style={{height: '80px'}}>
                      <DragIcon type="primary" />
                   <ConstructorElement
                   
-                  type="bottom"
+                
                   isLocked={false}
-                  text={ing.name}
-                  price={ing.price}
-                  thumbnail={ing.image}
-                  handleClose={props.deleteIngredient(ing)}
+                  text={ingredient.name}
+                  price={ingredient.price}
+                  thumbnail={ingredient.image}
+                  handleClose={props.deleteIngredient(ingredient)}
                 />
                 </div>
                 )
-              }
-              else{
-                return(
-                  <div key={index} style={{height: '80px'}}>
-                     <DragIcon type="primary" />
-                  <ConstructorElement
-                  
-                  text={ing.name}
-                  isLocked={false}
-                  price={ing.price}
-                  thumbnail={ing.image}
-                  handleClose={props.deleteIngredient(ing)}
-                />
-                </div>
-                )
-              }
+            
+              
           })}
-
+       {props.bun && (
+         <div  style={{height: '80px'}}>
+           <ConstructorElement
+                  
+           type="bottom"
+           isLocked={true}
+           text={props.bun.name}
+           price={props.bun.price}
+           thumbnail={props.bun.image}
+           handleClose={props.deleteIngredient(props.bun)}
+         />
+         </div>
+       )
+          }
            
       </div>
       <div className={styles.submitElement} >

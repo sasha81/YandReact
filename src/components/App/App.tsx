@@ -15,28 +15,55 @@ import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces'
 
 const App=(): JSX.Element=> {
 const [choosenIngredients, setIngredient]= useState<IChoosenIngredients>({});
+const [bun, setBun]= useState<IBareBurgerIngredient | null>(null);
 const [choosenIngredientObjects, setIngredientObjects]= useState<IBareBurgerIngredient[]>([]);
 const [order, completeOrder] = useState(false);
 
+
+
 const pickIngredient = (ingredient: IBareBurgerIngredient):void =>{
   const _id = ingredient._id
-  setIngredient(prev=>{
-    if(prev.hasOwnProperty(_id)){
-      return {
-        ...prev,
-        [_id]: prev[_id]+1
-      }
+  if(ingredient.type!=='bun'){
+      setIngredient(prev=>{     
+
+            if(prev.hasOwnProperty(_id)){
+              return {
+                ...prev,
+                [_id]: prev[_id]+1
+              }
+            }
+            else{
+              return {
+                ...prev,
+                [_id]:1
+              }
+            }
+          });
+          setIngredientObjects((prev)=>{
+            return [...prev, ingredient]   
+          });
+  }
+    else if(ingredient.type==='bun' && bun==null){
+      setBun({...ingredient});
+      setIngredient(prev=>{     
+
+        if(prev.hasOwnProperty(_id)){
+          return {
+            ...prev,
+            [_id]: prev[_id]+1
+          }
+        }
+        else{
+          return {
+            ...prev,
+            [_id]:1
+          }
+        }
+      });
     }
     else{
-      return {
-        ...prev,
-        [_id]:1
-      }
+
     }
-  });
-  setIngredientObjects((prev)=>{
-    return [...prev, ingredient]   
-  })
 }
 
 const deleteIngredient = (ingredient:IBareBurgerIngredient)=>():void=>{
@@ -76,12 +103,18 @@ const orderComplete = ():void=>{
     }, 2000);
 }
 
+const getbun = (choosenIngredientObjects: IBareBurgerIngredient[]):IBareBurgerIngredient | null  =>{
+  const bun = choosenIngredientObjects.find(el=>el.type==='bun');
+  if(bun) return bun;
+  else return null;
+}
+
   return (
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>
      
       <div className={styles.constructorBurger}><BurgerConstructor pickedIngredients={choosenIngredients} pickIngedientCallback={pickIngredient} /></div>
-      <div className={styles.ingredientsBurger}><BurgerIngredients ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient} orderComplete={orderComplete}/></div>
+      <div className={styles.ingredientsBurger}><BurgerIngredients bun={bun} ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient} orderComplete={orderComplete}/></div>
     {order && <h1 style={{position:'absolute', top:'300px', left:'440px', backgroundColor:'blue', padding:'30px', borderRadius: '30px'}}>Order Complete!</h1>}
     </div>
   );
