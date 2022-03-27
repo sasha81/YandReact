@@ -3,9 +3,9 @@ import React, {useState} from 'react';
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
 
-import { BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
+import { BurgerConstructor} from '../BurgerConstructor/BurgerConstructor'
 
-import {BurgerConstructor} from '../BurgerConstructor/BurgerConstructor'
+import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
 import {getTestData, getNames } from '../../utils/data';
 import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces'
 
@@ -97,24 +97,20 @@ const orderComplete = ():void=>{
     console.log("This burger order is sent to the server: ", choosenIngredientObjects);
     completeOrder(true);
     setIngredient({});
-    setIngredientObjects([])
+    setIngredientObjects([]);
+    setBun(null);
     setTimeout(()=>{
       completeOrder(false);
     }, 2000);
 }
 
-const getbun = (choosenIngredientObjects: IBareBurgerIngredient[]):IBareBurgerIngredient | null  =>{
-  const bun = choosenIngredientObjects.find(el=>el.type==='bun');
-  if(bun) return bun;
-  else return null;
-}
 
   return (
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>
      
-      <div className={styles.constructorBurger}><BurgerConstructor pickedIngredients={choosenIngredients} pickIngedientCallback={pickIngredient} /></div>
-      <div className={styles.ingredientsBurger}><BurgerIngredients bun={bun} ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient} orderComplete={orderComplete}/></div>
+      <div className={styles.ingredientsBurger}><BurgerIngredients pickedIngredients={choosenIngredients} pickIngedientCallback={pickIngredient} /></div>
+      <div className={styles.constructorBurger}><BurgerConstructor bun={bun} ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient} orderComplete={orderComplete}/></div>
     {order && <h1 style={{position:'absolute', top:'300px', left:'440px', backgroundColor:'blue', padding:'30px', borderRadius: '30px'}}>Order Complete!</h1>}
     </div>
   );

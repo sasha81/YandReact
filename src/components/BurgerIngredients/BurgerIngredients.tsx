@@ -1,81 +1,99 @@
-import { ConstructorElement, Button, CurrencyIcon,DragIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { useState, useRef, createRef } from "react";
+import {
+    Tab
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import {getTestData, getNames } from '../../utils/data';
+import {BurgerIngredient } from './BurgerIngredient';
 import styles from './BurgerIngredients.module.css';
-import {IBareBurgerIngredient} from '../Interfaces'
 
+import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
 
-interface IBurgerIngredients{
-  bun:IBareBurgerIngredient | null,
-  ingredients: IBareBurgerIngredient[],
-  deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
-  orderComplete: ()=>void
+interface IResult {
+    type: string,
+    value: IBareBurgerIngredient[]
 }
 
 
-export const BurgerIngredients = (props: IBurgerIngredients): JSX.Element=>{
-    return (
-      <>
-      <div className={styles.topPadding} />
-        <div className={styles.ingredientContainer} >
-          {props.bun && 
-          (<div  style={{height: '80px'}}>
-           <ConstructorElement
-                  
-           type="top"
-           isLocked={true}
-           text={props.bun.name}
-           price={props.bun.price}
-           thumbnail={props.bun.image}
-           handleClose={props.deleteIngredient(props.bun)}
-         />
-          </div>)
-          }
-          {props.ingredients.map((ingredient, index)=>{
-              
-                return(
-                  <div key={index} style={{height: '80px'}}>
-                     <DragIcon type="primary" />
-                  <ConstructorElement
-                  
-                
-                  isLocked={false}
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
-                  handleClose={props.deleteIngredient(ingredient)}
-                />
-                </div>
-                )
-            
-              
-          })}
-       {props.bun && (
-         <div  style={{height: '80px'}}>
-           <ConstructorElement
-                  
-           type="bottom"
-           isLocked={true}
-           text={props.bun.name}
-           price={props.bun.price}
-           thumbnail={props.bun.image}
-           handleClose={props.deleteIngredient(props.bun)}
-         />
-         </div>
-       )
-          }
-           
-      </div>
-      <div className={styles.submitElement} >
-                  <p className="text text_type_digits-medium">{props.ingredients.reduce((accum, curr)=>{return accum+curr.price},0)}</p>
-                  <div className="p-2"><CurrencyIcon type="primary" /></div>
 
-                  <div className="p-8">
-                    <Button type="primary" size="medium" onClick={props.orderComplete}>
-                        Оформить Заказ
-                  </Button>
-                </div>
-      </div>   
-      </>
+export const getSortedData =  (getData: (()=>IBareBurgerIngredient[] ) ) :any =>{
+    const data = getData();
+    const sortedData = data;
+    
+    var types = new Set(); var ingredientMap = new Map(); const resultArr : IResult[]=[];
+
+    sortedData.forEach((el: IBareBurgerIngredient)=>{ types.add(el.type)})
+
+    types.forEach(t=>{ingredientMap.set(t,[])})
+
+    sortedData.forEach((el:IBareBurgerIngredient)=>{ingredientMap.get(el.type).push(el);})
+    ingredientMap.forEach((val,key)=>val.sort((a,b)=>{return a.price - b.price}))
+
+    ingredientMap.forEach((val, key)=>{resultArr.push( {type:key, value: val} )})
+
+    return [resultArr, ingredientMap];
+}
+
+interface IBurgerIngredientsProps {
+    pickedIngredients: IChoosenIngredients,
+    pickIngedientCallback: (arg: IBareBurgerIngredient)=> void
+}
+
+
+export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
+    const [current, setCurrent] = useState('one')
+  
+    const getTabCallBack= (name: string, ref: any, stateCallback: (arg:string)=>void)=>{
+        return (e)=>{
+            stateCallback(name);
+            ref.current.scrollIntoView({behavior:"smooth"});
+        }
+    }
+
+    const [ingredients, ingredientMap ]= getSortedData(getTestData);
+
+   const myRefs = useRef([]);
+   myRefs.current =ingredients.map((element, index) => myRefs.current[index] ?? createRef());
+
+    const ingedientClicked = (ingredient: IBareBurgerIngredient)=>():void=>{
+        props.pickIngedientCallback(ingredient);
+        
+    }
+
+    return (
+        <section>
+            <p className={"text text_type_main-large "+ styles.header} >Соберите бургер</p>
+            <div className={styles.tabContainer} >
+                {ingredients.map((ingredient,ind)=>{
+                    return (
+                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === `${ingredient.type}`} onClick={getTabCallBack(ingredient.type,myRefs.current[ind],setCurrent)}>
+                               <p className="text text_type_main-default">{`${getNames(ingredient.type)}`}</p>
+                    </Tab>
+                    )
+                })}              
+            </div>
+            <div className={styles.mainTabContainer} >
+                {ingredients.map((ingredientOuter: IBareBurgerIngredient,index: number)=>{
+                    return (
+                        <div key={`${ingredientOuter.type}`} id={`${ingredientOuter.type}Type`} ref={ myRefs.current[index]} >
+                            <p className={"text text_type_main-medium "+ styles.header}>{getNames(ingredientOuter.type)}</p>
+                            <div  className={styles.innerIngredientContainer} >
+                                {ingredientMap.get(ingredientOuter.type).map((ingredient: IBareBurgerIngredient)=>{
+                                    const inputProps = {
+                                        ...ingredient,
+                                        relativeWidth: styles.ingredientWidth,
+                                        clickCallback: ingedientClicked(ingredient),
+                                        quantity: props.pickedIngredients[ingredient._id]
+                                    }
+                                    return (                                        
+                                             <BurgerIngredient key={ingredient._id} { ...inputProps } />                                       
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        </section>
     )
 }
 

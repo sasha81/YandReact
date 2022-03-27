@@ -2,29 +2,30 @@
 @value constructorTabHeight from "../../layoutConstants.module.css";
 @value headerHeight from "../../layoutConstants.module.css";
 @value totalHeight from "../../layoutConstants.module.css";
+@value ingredientsTopPaddingHeight from "../../layoutConstants.module.css";
 
-@value ingredientWidth: 50%;
+@value buttonHeight: 75px;
+@value correction: 30px;
 
-
-.header{
-    margin-top:constructorHeaderHeight;
-}
-
-.tabContainer{
-    height:constructorTabHeight;
-    display: flex;
-}
-
-.mainTabContainer {
-    height: calc(totalHeight - constructorHeaderHeight - constructorTabHeight - headerHeight );
-    overflow: auto;
+.topPadding {
+    height: ingredientsTopPaddingHeight;
     
-
 }
 
-.innerIngredientContainer {
+.ingredientContainer {
+    height: calc(totalHeight - buttonHeight - headerHeight - ingredientsTopPaddingHeight + correction);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    overflow: auto;
+}
+
+.submitElement {
+    height:buttonHeight;
     display:flex;
-    flex-direction:row;
-    flex-wrap:wrap;
-    row-gap: 20px;
+    flex-direction: row;
+    justify-content:flex-end;
+    align-items: center; 
+    
 }
