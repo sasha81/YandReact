@@ -8,26 +8,24 @@ import styles from './BurgerConstructor.module.css';
 
 import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
 
-export const comparatorBurger = (a : any,b: any)=>{
-    if(a.type == b.type){
-        return b.price - a.price;
-    }
-    else if(a.type === 'bun') return -1;
-    else if (a.type === 'main') return +1;
-
+interface IResult {
+    type: string,
+    value: IBareBurgerIngredient[]
 }
 
-export const getSortedData =  (getData: any ,comparator: any  ) :any =>{
+
+
+export const getSortedData =  (getData: (()=>IBareBurgerIngredient[] ) ) :any =>{
     const data = getData();
     const sortedData = data;
     
-    var types = new Set(); var ingredientMap = new Map(); const resultArr : any=[];
+    var types = new Set(); var ingredientMap = new Map(); const resultArr : IResult[]=[];
 
-    sortedData.forEach((el: any)=>{ types.add(el.type)})
+    sortedData.forEach((el: IBareBurgerIngredient)=>{ types.add(el.type)})
 
     types.forEach(t=>{ingredientMap.set(t,[])})
 
-    sortedData.forEach((el:any)=>{ingredientMap.get(el.type).push(el);})
+    sortedData.forEach((el:IBareBurgerIngredient)=>{ingredientMap.get(el.type).push(el);})
     ingredientMap.forEach((val,key)=>val.sort((a,b)=>{return a.price - b.price}))
 
     ingredientMap.forEach((val, key)=>{resultArr.push( {type:key, value: val} )})
@@ -51,35 +49,35 @@ export const BurgerConstructor =(props: IBurgerConstructorProps): JSX.Element=>{
         }
     }
 
-    const [ingredients, ingredientMap ]= getSortedData(getTestData, comparatorBurger);
+    const [ingredients, ingredientMap ]= getSortedData(getTestData);
 
    const myRefs = useRef([]);
-   myRefs.current =ingredients.map((element, i) => myRefs.current[i] ?? createRef());
+   myRefs.current =ingredients.map((element, index) => myRefs.current[index] ?? createRef());
 
-    const ingedientClicked = (number)=>()=>{
-        props.pickIngedientCallback(number);
+    const ingedientClicked = (ingredient: IBareBurgerIngredient)=>():void=>{
+        props.pickIngedientCallback(ingredient);
         
     }
 
     return (
         <section>
-            <h1 className={styles.header}>Соберите бургер</h1>
+            <p className={"text text_type_main-large "+ styles.header} >Соберите бургер</p>
             <div className={styles.tabContainer} >
-                {ingredients.map((i,ind)=>{
+                {ingredients.map((ingredient,ind)=>{
                     return (
-                        <Tab key={`${i.type}`} value={`${i.type}`} active={current === `${i.type}`} onClick={getTabCallBack(i.type,myRefs.current[ind],setCurrent)}>
-                                <h1 >{`${getNames(i.type)}`}</h1>
+                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === `${ingredient.type}`} onClick={getTabCallBack(ingredient.type,myRefs.current[ind],setCurrent)}>
+                               <p className="text text_type_main-default">{`${getNames(ingredient.type)}`}</p>
                     </Tab>
                     )
                 })}              
             </div>
             <div className={styles.mainTabContainer} >
-                {ingredients.map((ing,ind)=>{
+                {ingredients.map((ingredientOuter: IBareBurgerIngredient,index: number)=>{
                     return (
-                        <div key={`${ing.type}`} id={`${ing.type}Type`} ref={ myRefs.current[ind]} >
-                            <h2>{getNames(ing.type)}</h2>
+                        <div key={`${ingredientOuter.type}`} id={`${ingredientOuter.type}Type`} ref={ myRefs.current[index]} >
+                            <p className={"text text_type_main-medium "+ styles.header}>{getNames(ingredientOuter.type)}</p>
                             <div  className={styles.innerIngredientContainer} >
-                                {ingredientMap.get(ing.type).map(ingredient=>{
+                                {ingredientMap.get(ingredientOuter.type).map((ingredient: IBareBurgerIngredient)=>{
                                     const inputProps = {
                                         ...ingredient,
                                         relativeWidth: styles.ingredientWidth,

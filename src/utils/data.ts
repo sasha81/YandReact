@@ -1,4 +1,7 @@
-export const getTestData =  ()=>{
+
+import {IBareBurgerIngredient} from '../components/Interfaces'
+
+export const getTestData =  ():IBareBurgerIngredient[]=>{
     return [
         {
            "_id":"60666c42cc7b410027a1a9b1",

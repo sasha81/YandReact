@@ -48,8 +48,8 @@ const deleteIngredient = (ingredient:IBareBurgerIngredient)=>():void=>{
         [_id]: prev[_id]-1
       }
     }
-    else if(prev.hasOwnProperty(_id) && prev[_id]==1){
-      var obj = {...prev};
+    else if(prev.hasOwnProperty(_id) && prev[_id]===1){
+      const obj = {...prev};
       delete obj[_id];
       return obj
     }
@@ -58,7 +58,7 @@ const deleteIngredient = (ingredient:IBareBurgerIngredient)=>():void=>{
     }
   });
   setIngredientObjects((prev)=>{
-    const index = prev.findIndex(el=>{return (el._id==_id)})
+    const index = prev.findIndex(el=>{return (el._id===_id)})
     const tempArr = [...prev]
     tempArr.splice(index,1);
     return tempArr;

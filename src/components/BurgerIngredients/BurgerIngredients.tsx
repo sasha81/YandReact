@@ -3,7 +3,6 @@ import { ConstructorElement, Button, CurrencyIcon,DragIcon  } from '@ya.praktiku
 import styles from './BurgerIngredients.module.css';
 import {IBareBurgerIngredient} from '../Interfaces'
 
-const img = "https://code.s3.yandex.net/react/code/bun-02.png";
 
 interface IBurgerIngredients{
   ingredients: IBareBurgerIngredient[],
@@ -12,13 +11,13 @@ interface IBurgerIngredients{
 }
 
 
-export const BurgerIngredients = (props: IBurgerIngredients)=>{
+export const BurgerIngredients = (props: IBurgerIngredients): JSX.Element=>{
     return (
       <>
       <div className={styles.topPadding} />
         <div className={styles.ingredientContainer} >
           {props.ingredients.map((ing, index)=>{
-              if(index==0){
+              if(index===0){
                 return (
                   <div key={index} style={{height: '80px'}}>
                      <DragIcon type="primary" />
@@ -34,7 +33,7 @@ export const BurgerIngredients = (props: IBurgerIngredients)=>{
                 </div>
                 )
               }
-              if(index==props.ingredients.length-1){
+              if(index===props.ingredients.length-1){
                 return(
                   <div key={index} style={{height: '80px'}}>
                      <DragIcon type="primary" />
@@ -70,10 +69,10 @@ export const BurgerIngredients = (props: IBurgerIngredients)=>{
            
       </div>
       <div className={styles.submitElement} >
-                  <h2 style={{marginRight:'20px'}}>{props.ingredients.reduce((accum, curr)=>{return accum+curr.price},0)}</h2>
-                  <CurrencyIcon type="primary" />
+                  <p className="text text_type_digits-medium">{props.ingredients.reduce((accum, curr)=>{return accum+curr.price},0)}</p>
+                  <div className="p-2"><CurrencyIcon type="primary" /></div>
 
-                  <div style={{marginLeft:'20px', marginRight:'40px'}}>
+                  <div className="p-8">
                     <Button type="primary" size="medium" onClick={props.orderComplete}>
                         Оформить Заказ
                   </Button>

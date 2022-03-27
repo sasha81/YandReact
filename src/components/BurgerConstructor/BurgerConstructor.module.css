@@ -7,7 +7,7 @@
 
 
 .header{
-    height:constructorHeaderHeight;
+    margin-top:constructorHeaderHeight;
 }
 
 .tabContainer{
