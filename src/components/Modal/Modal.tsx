@@ -1,50 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,ReactChildren, ReactChild} from 'react';
 import ReactDOM from 'react-dom'
-import styles from './Modal.module.css'
+import styles from './Modal.module.css';
+import ModalOverlay from './ModalOverlay';
+import { Tab,CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+
+
 
 const modalRoot = document.getElementById("portal") as HTMLElement;
-const MODAL_STYLES = {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#FFF',
-    padding: '50px',
-    zIndex: 1000
-  }
+interface IModalProps {
+    onClose: ()=>void,
+    children:  ReactChild[] |ReactChild
+}
+
+const Modal =({ onClose, children}:IModalProps) : React.ReactElement=>{
   
-  const OVERLAY_STYLES = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, .7)',
-    zIndex: 1000
-  }
-
-const Modal =({ onClose, children}) =>{
-    //if(!open) return null;
-
-    const escKeyPress =(event)=>{
-        if(event.key === 'Escape'){
-            onClose()
-          }
-    }
-
-    useEffect(() => {
-        window.addEventListener('keydown', escKeyPress);
-    
-        return () => {
-          window.removeEventListener('keydown', escKeyPress);
-        };
-      }, []);
-
     return ReactDOM.createPortal(
             <>
-                 <div className={styles.overlay} onClick={onClose} onKeyPress={escKeyPress}/>
+                    <ModalOverlay onClose={onClose}/>
+                
                     <div className={styles.modal}>
-                        <button onClick={onClose}>Close Modal</button>
+                        <div style={{position:'absolute', top:50, right:40}}><CloseIcon type="primary" onClick={onClose}/></div>
+                        
                         {children}
                     </div>
             </>

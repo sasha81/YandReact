@@ -3,6 +3,7 @@ import { useState, useRef, createRef } from "react";
 import styles from './BurgerConstructor.module.css';
 import {IBareBurgerIngredient} from '../Interfaces';
 import Modal from '../Modal/Modal';
+import OrderDetails from '../OrderDetails/OrderDetails'
 
 
 interface IBurgerIngredients{
@@ -33,9 +34,9 @@ const clickButton =(cost:number)=>()=>{
 }
     return (
       <>
-       {modalData && (<Modal  onClose={modalClose}>
-              {modalData && modalData.cost  &&  (<p style={{color:'black'}}>{modalData.cost}</p>)}
-            </Modal>)}  
+       {modalData && (<OrderDetails total={modalData.cost} onClose={modalClose}/>
+            
+            )}  
 
       <div className={styles.topPadding} />
         <div className={styles.ingredientContainer} >

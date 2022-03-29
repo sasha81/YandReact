@@ -3,9 +3,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #FFF;
+    background-color:#2F4F4F;
     padding: 50px;
     z-index: 1000;
+    border-radius: 30px;
+    width: 700px;
 }
 
 .overlay {
