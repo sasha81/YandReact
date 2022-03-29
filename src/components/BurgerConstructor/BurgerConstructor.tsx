@@ -39,7 +39,7 @@ const clickButton =(cost:number)=>()=>{
             )}  
 
       <div className={styles.topPadding} />
-        <div className={styles.ingredientContainer} >
+        <div  className={styles.ingredientContainer}>
           {props.bun && 
           (<div  style={{height: '80px'}}>            
            <ConstructorElement
@@ -53,6 +53,7 @@ const clickButton =(cost:number)=>()=>{
          />
           </div>)
           }
+          <div className={styles.ingredientInnerContainer}>
           {props.ingredients.map((ingredient, index)=>{
               
                 return(
@@ -72,6 +73,7 @@ const clickButton =(cost:number)=>()=>{
             
               
           })}
+          </div>
        {props.bun && (
          <div  style={{height: '80px'}}>
            <ConstructorElement

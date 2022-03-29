@@ -6,6 +6,7 @@
 
 @value buttonHeight: 75px;
 @value correction: 30px;
+@value ingredientHeight: 80px;
 
 .topPadding {
     height: ingredientsTopPaddingHeight;
@@ -14,6 +15,15 @@
 
 .ingredientContainer {
     height: calc(totalHeight - buttonHeight - headerHeight - ingredientsTopPaddingHeight + correction);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    overflow: auto;
+}
+
+.ingredientInnerContainer {
+    height: calc(totalHeight - buttonHeight - headerHeight - ingredientsTopPaddingHeight + correction - ingredientHeight - ingredientHeight);
     display: flex;
     flex-direction: column;
     gap: 10px;
