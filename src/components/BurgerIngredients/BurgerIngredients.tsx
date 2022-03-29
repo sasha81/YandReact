@@ -7,7 +7,7 @@ import {BurgerIngredient } from './BurgerIngredient';
 import styles from './BurgerIngredients.module.css';
 
 import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
-import Modal from '../Modal/Modal';
+
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
 
@@ -18,8 +18,10 @@ interface IResult {
 
 
 
-export const getSortedData =  (getData: (()=>IBareBurgerIngredient[] ) ) :any =>{
-    const data = getData();
+export const getSortedData =  (rawData: IBareBurgerIngredient[] ) :any =>{
+    
+    const data = rawData;
+
     const sortedData = data;
     
     var types = new Set(); var ingredientMap = new Map(); const resultArr : IResult[]=[];
@@ -38,13 +40,18 @@ export const getSortedData =  (getData: (()=>IBareBurgerIngredient[] ) ) :any =>
 
 interface IBurgerIngredientsProps {
     pickedIngredients: IChoosenIngredients,
-    pickIngedient: (arg: IBareBurgerIngredient)=> void
+    pickIngedient: (arg: IBareBurgerIngredient)=> void,
+    data: IBareBurgerIngredient[] 
 }
 
 
 export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
+
+   
+
+
     const [current, setCurrent] = useState('one'); 
-    const [ingredients, ingredientMap ]= getSortedData(getTestData);
+    const [ingredients, ingredientMap ]= getSortedData(props.data);
    const myRefs = useRef([]);
     const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
 
