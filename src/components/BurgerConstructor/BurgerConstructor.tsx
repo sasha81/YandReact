@@ -1,7 +1,8 @@
 import { ConstructorElement, Button, CurrencyIcon,DragIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { useState, useRef, createRef } from "react";
 import styles from './BurgerConstructor.module.css';
-import {IBareBurgerIngredient} from '../Interfaces'
+import {IBareBurgerIngredient} from '../Interfaces';
+import Modal from '../Modal/Modal';
 
 
 interface IBurgerIngredients{
@@ -11,12 +12,31 @@ interface IBurgerIngredients{
   orderComplete: ()=>void
 }
 const getCost=(ingredients :IBareBurgerIngredient[] , bun:IBareBurgerIngredient | null):number=>{
+  if(ingredients.length===0 && bun==null) return 0;
   return ingredients.reduce((accum, curr)=>{return accum+curr.price},0) + (bun? bun.price : 0);
 }
 
 export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
+
+
+  const [modalData, setModalData] = useState<{'cost':number} | null>(null);
+  const modalClose =()=>{
+    setModalData(null);
+}
+
+
+
+const cost = getCost(props.ingredients, props.bun);
+
+const clickButton =(cost:number)=>()=>{
+  setModalData({'cost':cost})
+}
     return (
       <>
+       {modalData && (<Modal  onClose={modalClose}>
+              {modalData && modalData.cost  &&  (<p style={{color:'black'}}>{modalData.cost}</p>)}
+            </Modal>)}  
+
       <div className={styles.topPadding} />
         <div className={styles.ingredientContainer} >
           {props.bun && 
@@ -68,15 +88,17 @@ export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
            
       </div>
       <div className={styles.submitElement} >
-                  <p className="text text_type_digits-medium">{getCost(props.ingredients, props.bun)}</p>
+                  <p className="text text_type_digits-medium">{cost}</p>
                   <div className="p-2"><CurrencyIcon type="primary" /></div>
 
                   <div className="p-8">
-                    <Button type="primary" size="medium" onClick={props.orderComplete}>
+                    {/* <Button type="primary" size="medium" onClick={props.orderComplete}> */}
+                    <Button type="primary" size="medium" onClick={clickButton(cost)}>
                         Оформить Заказ
                   </Button>
                 </div>
-      </div>   
+      </div> 
+     
       </>
     )
 }

@@ -7,6 +7,8 @@ import {BurgerIngredient } from './BurgerIngredient';
 import styles from './BurgerIngredients.module.css';
 
 import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
+import Modal from '../Modal/Modal';
+
 
 interface IResult {
     type: string,
@@ -40,25 +42,28 @@ interface IBurgerIngredientsProps {
 
 
 export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
-    const [current, setCurrent] = useState('one')
-  
+    const [current, setCurrent] = useState('one'); 
+    const [ingredients, ingredientMap ]= getSortedData(getTestData);
+   const myRefs = useRef([]);
+    const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
+
+   myRefs.current =ingredients.map((element:IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
+
+    const ingedientClicked = (ingredient: IBareBurgerIngredient)=>():void=>{
+        props.pickIngedient(ingredient);
+       setModalData(ingredient);
+    }
+
+    const modalClose =()=>{
+        setModalData(null);
+    }
+
     const getTab= (name: string, ref: any, setState: (arg:string)=>void)=>{
         return (e)=>{
             setState(name);
             ref.current.scrollIntoView({behavior:"smooth"});
         }
     }
-
-    const [ingredients, ingredientMap ]= getSortedData(getTestData);
-
-   const myRefs = useRef([]);
-   myRefs.current =ingredients.map((element:IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
-
-    const ingedientClicked = (ingredient: IBareBurgerIngredient)=>():void=>{
-        props.pickIngedient(ingredient);
-        
-    }
-
     return (
         <section>
             <p className={"text text_type_main-large "+ styles.header} >Соберите бургер</p>
@@ -93,6 +98,9 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
                     )
                 })}
             </div>
+            {modalData && <Modal  onClose={modalClose}>
+              {modalData && modalData.name &&  (<p style={{color:'black'}}>{modalData.name}</p>)}
+            </Modal>}
         </section>
     )
 }
