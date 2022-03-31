@@ -13,12 +13,25 @@ interface IModalProps {
 }
 
 const Modal =({ onClose, children}:IModalProps) : React.ReactElement=>{
-  
+
+    const escKeyPress =(event)=>{
+        if(event.key === 'Escape'){
+            onClose()
+          }
+    }
+
+    useEffect(() => {
+        window.addEventListener('keydown', escKeyPress);
+    
+        return () => {
+          window.removeEventListener('keydown', escKeyPress);
+        };
+      }, []);
     return ReactDOM.createPortal(
             <>
                     <ModalOverlay onClose={onClose}/>
                 
-                    <div className={styles.modal}>
+                    <div className={styles.modal} onKeyPress={escKeyPress}>
                         <div style={{position:'absolute', top:50, right:40}}><CloseIcon type="primary" onClick={onClose}/></div>
                         
                         {children}

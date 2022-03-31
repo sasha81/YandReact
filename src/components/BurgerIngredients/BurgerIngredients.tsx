@@ -8,7 +8,8 @@ import styles from './BurgerIngredients.module.css';
 
 import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
 
-import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import IngredientDetails from '../IngredientDetails/IngredientDetails1';
+import Modal from '../Modal/Modal';
 
 
 interface IResult {
@@ -106,7 +107,12 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
                     )
                 })}
             </div>
-            {modalData && <IngredientDetails data={modalData}  onClose={modalClose}/>
+            {modalData && <Modal onClose={modalClose}>
+                 <IngredientDetails {...modalData} />
+            </Modal>
+            
+            
+         
               }
         </section>
     )
