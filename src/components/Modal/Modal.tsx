@@ -1,7 +1,7 @@
 import React, {useState, useEffect,ReactChildren, ReactChild} from 'react';
 import ReactDOM from 'react-dom'
 import styles from './Modal.module.css';
-import ModalOverlay from './ModalOverlay';
+import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { Tab,CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
 

@@ -2,13 +2,13 @@ import { useState, useRef, createRef } from "react";
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import {getTestData, getNames } from '../../utils/data';
+import {getNames } from '../../utils/data';
 import {BurgerIngredient } from './BurgerIngredient';
 import styles from './BurgerIngredients.module.css';
 
-import {IChoosenIngredients,IBurgerIngredient, IBareBurgerIngredient} from '../Interfaces';
+import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces';
 
-import IngredientDetails from '../IngredientDetails/IngredientDetails1';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
 
 
@@ -109,9 +109,7 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
             </div>
             {modalData && <Modal onClose={modalClose}>
                  <IngredientDetails {...modalData} />
-            </Modal>
-            
-            
+            </Modal>           
          
               }
         </section>

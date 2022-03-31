@@ -1,9 +1,9 @@
 import { ConstructorElement, Button, CurrencyIcon,DragIcon  } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useRef, createRef } from "react";
+import { useState } from "react";
 import styles from './BurgerConstructor.module.css';
 import {IBareBurgerIngredient} from '../Interfaces';
 import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails1'
+import OrderDetails from '../OrderDetails/OrderDetails'
 
 
 interface IBurgerIngredients{
@@ -34,11 +34,9 @@ const clickButton =(cost:number)=>()=>{
 }
     return (
       <>
-       {/* {modalData && (<OrderDetails total={modalData.cost} onClose={modalClose}/>
-            
-            )}   */}
+     
             {modalData && (<Modal  onClose={modalClose} >
-                <OrderDetails total={modalData.cost}/>
+                <OrderDetails total={modalData.cost} orderNumber={'Идентификатор Вашего заказа'}/>
             </Modal>)
 
             }

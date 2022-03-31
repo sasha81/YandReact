@@ -6,7 +6,7 @@ import AppHeader from '../AppHeader/AppHeader'
 import { BurgerConstructor} from '../BurgerConstructor/BurgerConstructor'
 
 import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
-import {getTestData, getNames } from '../../utils/data';
+
 import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces'
 
 interface IAppDataAndStatus{
@@ -27,7 +27,7 @@ const [dataAndStatus, setDataAndStatus] = useState<IAppDataAndStatus>({productDa
 
 useEffect(()=>{
   const getProductData = async () => {
-    setDataAndStatus({...dataAndStatus, loading: true});
+    setDataAndStatus(prev=> { return {...prev, loading: true}});
     try{
       const res = await fetch(URL);
       const data = await res.json();
