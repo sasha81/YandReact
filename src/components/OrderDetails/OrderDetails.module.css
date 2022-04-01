@@ -1,0 +1,9 @@
+.paragraph{
+    display:block;
+    margin: 0 auto;
+}
+.flexContainerColumnCenter{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}

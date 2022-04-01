@@ -1,0 +1,30 @@
+@value constructorHeaderHeight from "../../layoutConstants.module.css";
+@value constructorTabHeight from "../../layoutConstants.module.css";
+@value headerHeight from "../../layoutConstants.module.css";
+@value totalHeight from "../../layoutConstants.module.css";
+
+@value ingredientWidth: 50%;
+
+
+.header{
+    margin-top:constructorHeaderHeight;
+}
+
+.tabContainer{
+    height:constructorTabHeight;
+    display: flex;
+}
+
+.mainTabContainer {
+    height: calc(totalHeight - constructorHeaderHeight - constructorTabHeight - headerHeight );
+    overflow: auto;
+    
+
+}
+
+.innerIngredientContainer {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    row-gap: 20px;
+}

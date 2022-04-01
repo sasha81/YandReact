@@ -1,0 +1,19 @@
+@value headerHeight from "../../layoutConstants.module.css";
+
+.burgerHeader{
+    height: headerHeight;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    
+}
+
+.smallFlexContainer{
+    display: flex;
+    align-items: center;
+}
+.movedTenLeft{
+    margin-left: 10px;
+}
