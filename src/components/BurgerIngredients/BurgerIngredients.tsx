@@ -10,6 +10,7 @@ import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
+import {pickIngredient, deleteIngredient,useIngredientContext} from '../../utils/contexts'
 
 
 interface IResult {
@@ -35,13 +36,14 @@ export const getSortedData =  (rawData: IBareBurgerIngredient[] ) :any =>{
     ingredientMap.forEach((val,key)=>val.sort((a,b)=>{return a.price - b.price}))
 
     ingredientMap.forEach((val, key)=>{resultArr.push( {type:key, value: val} )})
-
+//resultArr and ingredientMap contain essentially the same information. The former is more convenient to create a ref array.
+// As we render the BurgerIngredints component, we use these datastructures interchangable whenever it is convenient. 
     return [resultArr, ingredientMap];
 }
 
 interface IBurgerIngredientsProps {
-    pickedIngredients: IChoosenIngredients,
-    pickIngedient: (arg: IBareBurgerIngredient)=> void,
+    // pickedIngredients: IChoosenIngredients,
+    // pickIngedient: (arg: IBareBurgerIngredient)=> void,
     data: IBareBurgerIngredient[] 
 }
 
@@ -53,13 +55,18 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
 
     const [current, setCurrent] = useState('one'); 
     const [ingredients, ingredientMap ]= getSortedData(props.data);
+
+const {ingredientContext, setIngredientContext} = useIngredientContext();
+
    const myRefs = useRef([]);
     const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
 
    myRefs.current =ingredients.map((element:IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
-    const ingedientClicked = (ingredient: IBareBurgerIngredient)=>():void=>{
-        props.pickIngedient(ingredient);
+    const ingedientClicked = (ingredient: IBareBurgerIngredient, setIngredientContext)=>():void=>{
+        pickIngredient(ingredient, setIngredientContext)
+        
+       // props.pickIngedient(ingredient);
        setModalData(ingredient);
     }
 
@@ -95,8 +102,8 @@ export const BurgerIngredients =(props: IBurgerIngredientsProps): JSX.Element=>{
                                     const inputProps = {
                                         ...ingredient,
                                         relativeWidth: styles.ingredientWidth,
-                                        clickCallback: ingedientClicked(ingredient),
-                                        quantity: props.pickedIngredients[ingredient._id]
+                                        clickCallback: ingedientClicked(ingredient, setIngredientContext),
+                                        quantity: ingredientContext.ingredientMap[ingredient._id]
                                     }
                                     return (                                        
                                              <BurgerIngredient key={ingredient._id} { ...inputProps } />                                       

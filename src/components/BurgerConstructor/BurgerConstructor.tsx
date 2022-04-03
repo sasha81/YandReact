@@ -3,21 +3,24 @@ import { useState } from "react";
 import styles from './BurgerConstructor.module.css';
 import {IBareBurgerIngredient} from '../Interfaces';
 import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails'
+import OrderDetails from '../OrderDetails/OrderDetails';
+import {pickIngredient, deleteIngredient,useIngredientContext,orderComplete} from '../../utils/contexts'
 
 
 interface IBurgerIngredients{
-  bun:IBareBurgerIngredient | null,
-  ingredients: IBareBurgerIngredient[],
-  deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
-  orderComplete: ()=>void
+  // bun:IBareBurgerIngredient | null,
+  // ingredients: IBareBurgerIngredient[],
+  // deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
+  // orderComplete: ()=>void
 }
 const getCost=(ingredients :IBareBurgerIngredient[] , bun:IBareBurgerIngredient | null):number=>{
   if(ingredients.length===0 && bun==null) return 0;
   return ingredients.reduce((accum, curr)=>{return accum+curr.price},0) + (bun? bun.price : 0);
 }
 
-export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
+export const BurgerConstructor = (): JSX.Element=>{
+
+  const {ingredientContext, setIngredientContext} = useIngredientContext();
 
 
   const [modalData, setModalData] = useState<{'cost':number} | null>(null);
@@ -27,7 +30,7 @@ export const BurgerConstructor = (props: IBurgerIngredients): JSX.Element=>{
 
 
 
-const cost = getCost(props.ingredients, props.bun);
+const cost = getCost(ingredientContext.ingredients, ingredientContext.bun);
 
 const clickButton =(cost:number)=>()=>{
   setModalData({'cost':cost})
@@ -44,21 +47,21 @@ const clickButton =(cost:number)=>()=>{
 
       <div className={styles.topPadding} />
         <div  className={styles.ingredientContainer}>
-          {props.bun && 
+          {ingredientContext.bun && 
           (<div  style={{height: '80px'}}>            
            <ConstructorElement
                   
            type="top"
            isLocked={true}
-           text={props.bun.name}
-           price={props.bun.price}
-           thumbnail={props.bun.image}
-           handleClose={props.deleteIngredient(props.bun)}
+           text={ingredientContext.bun.name}
+           price={ingredientContext.bun.price}
+           thumbnail={ingredientContext.bun.image}
+           handleClose={deleteIngredient(ingredientContext.bun,setIngredientContext)}
          />
           </div>)
           }
           <div className={styles.ingredientInnerContainer}>
-          {props.ingredients.map((ingredient, index)=>{
+          {ingredientContext.ingredients.map((ingredient, index)=>{
               
                 return(
                   <div key={index} style={{height: '80px'}}>
@@ -70,7 +73,7 @@ const clickButton =(cost:number)=>()=>{
                   text={ingredient.name}
                   price={ingredient.price}
                   thumbnail={ingredient.image}
-                  handleClose={props.deleteIngredient(ingredient)}
+                  handleClose={deleteIngredient(ingredient,setIngredientContext)}
                 />
                 </div>
                 )
@@ -78,16 +81,16 @@ const clickButton =(cost:number)=>()=>{
               
           })}
           </div>
-       {props.bun && (
+       {ingredientContext.bun && (
          <div  style={{height: '80px'}}>
            <ConstructorElement
                   
            type="bottom"
            isLocked={true}
-           text={props.bun.name}
-           price={props.bun.price}
-           thumbnail={props.bun.image}
-           handleClose={props.deleteIngredient(props.bun)}
+           text={ingredientContext.bun.name}
+           price={ingredientContext.bun.price}
+           thumbnail={ingredientContext.bun.image}
+           handleClose={deleteIngredient(ingredientContext.bun,setIngredientContext)}
          />
          </div>
        )
