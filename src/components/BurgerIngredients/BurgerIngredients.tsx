@@ -6,11 +6,11 @@ import {getNames } from '../../utils/data';
 import {BurgerIngredient } from './BurgerIngredient';
 import styles from './BurgerIngredients.module.css';
 
-import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces';
+import {IBareBurgerIngredient} from '../Interfaces';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
-import {pickIngredient, deleteIngredient,useIngredientContext} from '../../utils/contexts'
+import {pickIngredient, useIngredientContext} from '../../utils/contexts'
 
 
 interface IResult {
@@ -41,9 +41,7 @@ export const getSortedData =  (rawData: IBareBurgerIngredient[] ) :any =>{
     return [resultArr, ingredientMap];
 }
 
-interface IBurgerIngredientsProps {
-    // pickedIngredients: IChoosenIngredients,
-    // pickIngedient: (arg: IBareBurgerIngredient)=> void,
+interface IBurgerIngredientsProps {  
     data: IBareBurgerIngredient[] 
 }
 

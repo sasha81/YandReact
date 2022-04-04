@@ -38,7 +38,7 @@ export const deleteIngredient = (ingredient:IBareBurgerIngredient, setIngredient
         tempContext.ingredientMap[_id]=prev.ingredientMap[_id]-1
       }
       else if(prev && prev.ingredientMap.hasOwnProperty(_id) && prev.ingredientMap[_id]===1){
-        const obj = prev.ingredientMap;
+        const obj = tempContext.ingredientMap;
         delete obj[_id];
         //return obj
       }
@@ -130,18 +130,13 @@ export const pickIngredient = (ingredient: IBareBurgerIngredient,setIngredientCo
   }
 
  export const orderComplete = (choosenIngredientObjects:IBareBurgerIngredient[],
-    completeOrder: (arg: boolean)=>void,
+   
     
     setIngredientContext
     
     ):void=>{
     console.log("This burger order is sent to the server: ", choosenIngredientObjects);
-    completeOrder(true);
+  
     setIngredientContext({bun:null, ingredients:[], ingredientMap:{}})
-    // setIngredient({});
-    // setIngredientObjects([]);
-    // setBun(null);
-    setTimeout(()=>{
-      completeOrder(false);
-    }, 2000);
+  
 }

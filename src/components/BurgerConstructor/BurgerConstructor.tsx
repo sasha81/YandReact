@@ -4,15 +4,9 @@ import styles from './BurgerConstructor.module.css';
 import {IBareBurgerIngredient} from '../Interfaces';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import {pickIngredient, deleteIngredient,useIngredientContext,orderComplete} from '../../utils/contexts'
+import { deleteIngredient,useIngredientContext,orderComplete} from '../../utils/contexts'
 
 
-interface IBurgerIngredients{
-  // bun:IBareBurgerIngredient | null,
-  // ingredients: IBareBurgerIngredient[],
-  // deleteIngredient:(ingredient:IBareBurgerIngredient)=>(()=>void),
-  // orderComplete: ()=>void
-}
 const getCost=(ingredients :IBareBurgerIngredient[] , bun:IBareBurgerIngredient | null):number=>{
   if(ingredients.length===0 && bun==null) return 0;
   return ingredients.reduce((accum, curr)=>{return accum+curr.price},0) + (bun? bun.price : 0);
@@ -23,7 +17,7 @@ export const BurgerConstructor = (): JSX.Element=>{
   const {ingredientContext, setIngredientContext} = useIngredientContext();
 
 
-  const [modalData, setModalData] = useState<{'cost':number} | null>(null);
+  const [modalData, setModalData] = useState<{'cost':number,'orderId': number | null, 'success': boolean} | null>(null);
   const modalClose =()=>{
     setModalData(null);
 }
@@ -33,13 +27,29 @@ export const BurgerConstructor = (): JSX.Element=>{
 const cost = getCost(ingredientContext.ingredients, ingredientContext.bun);
 
 const clickButton =(cost:number)=>()=>{
-  setModalData({'cost':cost})
+  const allIngredients=ingredientContext.ingredients.concat(ingredientContext.bun);
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ingredients: allIngredients })
+};
+fetch('https://norma.nomoreparties.space/api/orders', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      
+      setModalData({'cost':cost, 'orderId':data.order.number, 'success': data.success})
+      orderComplete(allIngredients, setIngredientContext)
+    })
+    .catch(error=>{
+      setModalData({'cost':cost, 'orderId':null, 'success': false})
+    })
 }
     return (
       <>
      
             {modalData && (<Modal  onClose={modalClose} >
-                <OrderDetails total={modalData.cost} orderNumber={'Идентификатор Вашего заказа'}/>
+                <OrderDetails total={modalData.cost} orderNumber={modalData.orderId} orderStatus={modalData.success}/>
             </Modal>)
 
             }
