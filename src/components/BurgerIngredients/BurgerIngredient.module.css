@@ -22,3 +22,11 @@
     text-align:center;
     margin:0 auto;
 }
+.center{
+    text-align: center;
+}
+
+.two{
+    width: 50%;
+    position: relative;
+}

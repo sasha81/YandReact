@@ -1,7 +1,7 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './IngredientDetails.module.css'
 import {IBareBurgerIngredient} from '../Interfaces';
-
+//style={{textAlign: 'center', marginBottom:'20px'}}
 const IngredientDetails = (props:IBareBurgerIngredient)=>{
     return (
         <>
@@ -15,7 +15,7 @@ const IngredientDetails = (props:IBareBurgerIngredient)=>{
       </div>
   </div>
  
-  <p className="text text_type_main-default" style={{textAlign: 'center', marginBottom:'20px'}}>{props.name}</p>
+  <p className={`text text_type_main-default ${styles.nameP}`} >{props.name}</p>
   <div className = {styles.smallSpreadContainer}>
 
       <div>

@@ -26,3 +26,11 @@
   /* composes: burgerConstructor from './components/BurgerConstructor/BurgerConstructor.module.css'; */
   grid-area: constructor;
 }
+.appHeader{
+  position:absolute;
+  top:300px;
+  left:440px;
+  background-color:blue;
+  padding:30px;
+  border-radius: 30px;
+}

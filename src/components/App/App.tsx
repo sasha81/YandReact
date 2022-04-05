@@ -9,6 +9,7 @@ import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
 
 import { IBareBurgerIngredient} from '../Interfaces';
 import {IngredientContextProvider} from '../../utils/contexts';
+import {burgerUrl} from '../../configs/urls';
 
 interface IAppDataAndStatus{
   productData:IBareBurgerIngredient[] | null | string,
@@ -17,7 +18,7 @@ interface IAppDataAndStatus{
 }
 
 
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
+const URL = burgerUrl+'/ingredients';
 
 const App=(): JSX.Element=> {
 
@@ -59,7 +60,7 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
           </div>
         <div className={styles.constructorBurger}><BurgerConstructor /></div>
       </IngredientContextProvider>
-    {order && <h1 style={{position:'absolute', top:'300px', left:'440px', backgroundColor:'blue', padding:'30px', borderRadius: '30px'}}>Order Complete!</h1>}
+    {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
     </div>
   );
 }
