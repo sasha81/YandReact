@@ -13,7 +13,7 @@ export const initialIngredientValue = {bun:null, ingredients:[], ingredientMap:{
 export const IngredientContext = React.createContext<any>({}  );
 
 export const IngredientContextProvider = ({children})=>{
-    const [ingredientContext, setIngredientContext] = React.useState(initialIngredientValue);
+    const [ingredientContext, setIngredientContext] = React.useState<IContextInteface>(initialIngredientValue);
     return (
         <IngredientContext.Provider value={{ingredientContext, setIngredientContext}} >
             {children}
