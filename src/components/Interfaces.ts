@@ -1,4 +1,7 @@
-
+export const getBareIngredient=(input: IBurgerIngredient):IBareBurgerIngredient=>{
+    const {relativeWidth, clickCallback,infoCallback,quantity,...rest} = input;
+    return rest;
+}
 
 export interface IChoosenIngredients{
     [key: string]: number

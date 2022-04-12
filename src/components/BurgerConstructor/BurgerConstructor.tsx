@@ -1,10 +1,11 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from "react";
+import { useDrop } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient } from '../Interfaces';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { deleteIngredient, useIngredientContext, orderComplete } from '../../utils/contexts';
+import { deleteIngredient, useIngredientContext, orderComplete,pickIngredient } from '../../utils/contexts';
 import { burgerUrl } from '../../configs/urls';
 
 
@@ -17,6 +18,15 @@ export const BurgerConstructor = (): JSX.Element => {
 
   const { ingredientContext, setIngredientContext } = useIngredientContext();
   const [fetchError, setFetchError] = useState(false);
+
+
+  const [{isHover}, drop] = useDrop({
+    accept:'ingredient',
+    collect: monitor=>({isHover: monitor.isOver()}),
+    drop(ingredient:any){
+      pickIngredient(ingredient,setIngredientContext)
+    }
+  })
 
 
   const [modalData, setModalData] = useState<{ 'cost': number, 'orderId': number | null, 'success': boolean } | null>(null);
@@ -71,7 +81,7 @@ export const BurgerConstructor = (): JSX.Element => {
 
 
       <div className={styles.topPadding} />
-      <div className={styles.ingredientContainer}>
+      <div className={styles.ingredientContainer} ref={drop}>
         {ingredientContext.bun &&
           (<div className={styles.elementHeight} >
             <ConstructorElement

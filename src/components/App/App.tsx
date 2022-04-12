@@ -1,4 +1,6 @@
 import React, {useState,useEffect} from 'react';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
@@ -53,14 +55,16 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
   return (
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>
-     <IngredientContextProvider>
-        <div className={styles.ingredientsBurger}>
-        {getIngredients(dataAndStatus.productData)}
-        
-          </div>
-        <div className={styles.constructorBurger}><BurgerConstructor /></div>
-      </IngredientContextProvider>
-    {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
+      <DndProvider backend={HTML5Backend}>
+          <IngredientContextProvider>
+              <div className={styles.ingredientsBurger}>
+              {getIngredients(dataAndStatus.productData)}
+              
+                </div>
+              <div className={styles.constructorBurger}><BurgerConstructor /></div>
+            </IngredientContextProvider>
+          {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
+        </DndProvider>
     </div>
   );
 }
