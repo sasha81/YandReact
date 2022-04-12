@@ -61,9 +61,13 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
 
     myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
+    const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{
+        setModalData(ingredient);
+    }
+
     const ingedientClicked = (ingredient: IBareBurgerIngredient, setIngredientContext) => (): void => {
         pickIngredient(ingredient, setIngredientContext)        
-        setModalData(ingredient);
+       // setModalData(ingredient);
     }
 
     const modalClose = (): void => {
@@ -99,6 +103,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
                                         ...ingredient,
                                         relativeWidth: styles.ingredientWidth,
                                         clickCallback: ingedientClicked(ingredient, setIngredientContext),
+                                        infoCallback: infoClicked(ingredient),
                                         quantity: ingredientContext.ingredientMap[ingredient._id]
                                     }
                                     return (

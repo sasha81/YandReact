@@ -71,16 +71,15 @@ export const pickIngredient = (ingredient: IBareBurgerIngredient,setIngredientCo
       else if(ingredient.type==='bun' ){
         setIngredientContext(prev=>{
           const tempContext = JSON.parse(JSON.stringify(prev))
+          
+          if(tempContext.bun) {
+            const prevBunId = tempContext.bun._id;
+            tempContext.ingredientMap[prevBunId]=0;
+          }
 
           tempContext.bun={...ingredient};
-          if(prev&& prev.ingredientMap.hasOwnProperty(_id)){
-            tempContext.ingredientMap[_id]=prev.ingredientMap[_id]+1;
-           
-          }
-          else{
-            tempContext.ingredientMap[_id]=1;
-           
-          }
+          tempContext.ingredientMap[_id]=1;
+        
           return tempContext;
 
         })

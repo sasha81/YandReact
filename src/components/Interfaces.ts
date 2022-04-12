@@ -25,5 +25,6 @@ export interface IBareBurgerIngredient{
 export interface IBurgerIngredient extends IBareBurgerIngredient{
     relativeWidth: string,
     clickCallback: (arg: any)=>void,
+    infoCallback: (arg:any)=>void,
     quantity: number
 }
