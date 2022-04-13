@@ -31,3 +31,7 @@ export interface IBurgerIngredient extends IBareBurgerIngredient{
     infoCallback: (arg:any)=>void,
     quantity: number
 }
+
+export interface IBurgerIngredientDrop extends IBareBurgerIngredient {
+    index: number
+}

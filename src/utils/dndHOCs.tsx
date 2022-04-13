@@ -17,19 +17,22 @@ export const WithDrag = (props)=>{
     )
 }
 
-// export const DragTarget = (type: string, callback)=>(props)=>{
-//     const [{isHover},dropRef] = useDrop({
-//         accept: type,
-//         collect: monitor => ({
-//             isHover: monitor.isOver(),
-//         }),
-//         drop(item){
-//             callback(item)
-//         }
-//     })
-//     return(
-//         <div ref={dropRef} style={isHover ? props.onHoverStyle : props.iddleStyle}>
-//                 {props.children}
-//         </div>
-//     )
-// }
+export const WithDrop = (props)=>{
+const {type, onDropCallback, onHoverStyle,iddleStyle, children} = props;
+    const [{isHover},dropRef] = useDrop({
+        accept: type,
+        collect: monitor => ({
+            isHover: monitor.isOver(),
+        }),
+        drop(item){
+            onDropCallback(item)
+        }
+    })
+    return(
+        <div ref={dropRef}
+         style={isHover ? onHoverStyle : iddleStyle}
+         >
+                {children}
+        </div>
+    )
+}

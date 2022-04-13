@@ -109,8 +109,8 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
                                     }
                                     
                                     return (
-                                      <WithDrag type="ingredient" item={{...ingredient}} onDragStyle={{width:'50%'}} iddleStyle={{width:'50%'}}> 
-                                        <BurgerIngredient key={ingredient._id} {...inputProps} />
+                                      <WithDrag key={ingredient._id} type="ingredient" item={{...ingredient}} onDragStyle={{width:'48%', border:'2px solid green'}} iddleStyle={{width:'48%'}}> 
+                                        <BurgerIngredient  {...inputProps} />
                                     </WithDrag> 
                                     )
                                 })}

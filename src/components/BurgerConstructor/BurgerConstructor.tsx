@@ -1,12 +1,13 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from "react";
-import { useDrop,useDrag } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
-import { IBareBurgerIngredient } from '../Interfaces';
+import { IBareBurgerIngredient,IBurgerIngredientDrop } from '../Interfaces';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { deleteIngredient, useIngredientContext, orderComplete,pickIngredient } from '../../utils/contexts';
 import { burgerUrl } from '../../configs/urls';
+import { WithDrop,WithDrag} from '../../utils/dndHOCs';
 
 
 const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredient | null): number => {
@@ -20,9 +21,9 @@ export const BurgerConstructor = (): JSX.Element => {
   const [fetchError, setFetchError] = useState(false);
 
 
-  const [{isHover}, drop] = useDrop({
+  const [, drop] = useDrop({
     accept:'ingredient',
-    collect: monitor=>({isHover: monitor.isOver()}),
+   
     drop(ingredient:any){
       pickIngredient(ingredient,setIngredientContext)
     }
@@ -70,6 +71,22 @@ export const BurgerConstructor = (): JSX.Element => {
         }
       })
   }
+
+
+  const getDropCallback = (dropIndex : number,setIngredientContext )=>(item:IBurgerIngredientDrop)=>{
+    const dragIndex = item.index;
+    const {index,...ingredient} = item;
+    setIngredientContext(prev=>{
+      const tempContext = JSON.parse(JSON.stringify(prev));
+      
+      tempContext.ingredients[dropIndex] = ingredient;
+      tempContext.ingredients[dragIndex] = prev.ingredients[dropIndex];
+      return tempContext;
+    })
+
+  }
+
+
   return (
     <>
 
@@ -100,16 +117,26 @@ export const BurgerConstructor = (): JSX.Element => {
 
             return (
               <div key={index} className={styles.elementHeight}>
-                <DragIcon type="primary" />
-                <ConstructorElement
+                <WithDrop type="ingredientConstructor" 
+                  onDropCallback={getDropCallback(index,setIngredientContext)} 
+                  onHoverStyle={{width:'100%', border:'2px solid green'}} 
+                  iddleStyle={{width:'100%'}} >
+                    <WithDrag  type="ingredientConstructor" 
+                      item={{...ingredient, index}}
+                      onDragStyle={{width:'100%', border:'2px solid green'}} 
+                      iddleStyle={{width:'100%'}}>
+                        <DragIcon type="primary" />
+                        <ConstructorElement
 
 
-                  isLocked={false}
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
-                  handleClose={deleteIngredient(ingredient, setIngredientContext)}
-                />
+                          isLocked={false}
+                          text={ingredient.name}
+                          price={ingredient.price}
+                          thumbnail={ingredient.image}
+                          handleClose={deleteIngredient(ingredient, setIngredientContext)}
+                        />
+                    </WithDrag>
+                </WithDrop>
               </div>
             )
 
