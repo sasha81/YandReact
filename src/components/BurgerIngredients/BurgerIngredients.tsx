@@ -4,6 +4,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getNames } from '../../utils/data';
 import { BurgerIngredient } from './BurgerIngredient';
+import {WithDrag} from '../../utils/dndHOCs';
 import styles from './BurgerIngredients.module.css';
 
 import { IBareBurgerIngredient } from '../Interfaces';
@@ -106,8 +107,11 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
                                         infoCallback: infoClicked(ingredient),
                                         quantity: ingredientContext.ingredientMap[ingredient._id]
                                     }
+                                    
                                     return (
+                                      <WithDrag type="ingredient" item={{...ingredient}} onDragStyle={{width:'50%'}} iddleStyle={{width:'50%'}}> 
                                         <BurgerIngredient key={ingredient._id} {...inputProps} />
+                                    </WithDrag> 
                                     )
                                 })}
                             </div>

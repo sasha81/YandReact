@@ -1,6 +1,6 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from "react";
-import { useDrop } from 'react-dnd';
+import { useDrop,useDrag } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient } from '../Interfaces';
 import Modal from '../Modal/Modal';
