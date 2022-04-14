@@ -30,7 +30,7 @@ const store=createStore(rootReducer, composeEnhancers(
   applyMiddleware(thunk),
   // other store enhancers if any
   ));
-
+  export type RootState = ReturnType<typeof rootReducer>
 
 ReactDOM.render(
   <React.StrictMode>

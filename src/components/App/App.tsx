@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
+import {useSelector, useDispatch} from 'react-redux';
 
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
@@ -12,9 +13,11 @@ import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
 import { IBareBurgerIngredient} from '../Interfaces';
 import {IngredientContextProvider} from '../../utils/contexts';
 import {burgerUrl} from '../../configs/urls';
+import {RootState} from '../../index';
+import {loadData} from '../../services/reducers/constructorThunks'
 
 interface IAppDataAndStatus{
-  productData:IBareBurgerIngredient[] | null | string,
+ // productData:IBareBurgerIngredient[] | null | string,
   error: boolean,
   loading: boolean
 }
@@ -25,22 +28,25 @@ const URL = burgerUrl+'/ingredients';
 const App=(): JSX.Element=> {
 
 const [order, completeOrder] = useState(false);
-const [dataAndStatus, setDataAndStatus] = useState<IAppDataAndStatus>({productData:null, error: false, loading: false})
+const [status, setStatus] = useState<IAppDataAndStatus>({ error: false, loading: false})
+const data = useSelector((state: RootState)=>state.allIngredients)
+const dispatch = useDispatch();
 
 useEffect(()=>{
-  const getProductData = async () => {
-    setDataAndStatus(prev=> { return {...prev, loading: true}});
-    try{
-      const res = await fetch(URL);
-      const data = await res.json();
-      setDataAndStatus({ productData: data.data, loading: false, error:false });
-    }
-    catch(e){
-      setDataAndStatus({ productData: 'error', loading: false, error:true });
-    }
-  }
+  // const getProductData = async () => {
+  //   setDataAndStatus(prev=> { return {...prev, loading: true}});
+  //   try{
+  //     const res = await fetch(URL);
+  //     const data = await res.json();
+  //     setDataAndStatus({ productData: data.data, loading: false, error:false });
+  //   }
+  //   catch(e){
+  //     setDataAndStatus({ productData: 'error', loading: false, error:true });
+  //   }
+  // }
 
-  getProductData();
+  //getProductData();
+  dispatch(loadData(URL,setStatus));
 },[])
 
 const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
@@ -58,7 +64,7 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
       <DndProvider backend={HTML5Backend}>
           <IngredientContextProvider>
               <div className={styles.ingredientsBurger}>
-              {getIngredients(dataAndStatus.productData)}
+              {getIngredients(data)}
               
                 </div>
               <div className={styles.constructorBurger}><BurgerConstructor /></div>
