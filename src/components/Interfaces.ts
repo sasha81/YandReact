@@ -3,10 +3,24 @@ export const getBareIngredient=(input: IBurgerIngredient):IBareBurgerIngredient=
     return rest;
 }
 
+export interface IOrder {
+    cost: number,
+    orderId: number | null,
+    success: boolean
+
+}
+
 export interface IChoosenIngredients{
     [key: string]: number
   }
-
+export interface IReduxState {
+    bun: IBareBurgerIngredient|null,
+    ingredients:IBareBurgerIngredient[],
+    ingredientMap:Object,
+    allIngredients:IBareBurgerIngredient[] | string,
+    ingredientDetails:IBareBurgerIngredient|null,
+    orderDetails:IOrder|null
+}
 
 
 export interface IBareBurgerIngredient{
@@ -35,3 +49,4 @@ export interface IBurgerIngredient extends IBareBurgerIngredient{
 export interface IBurgerIngredientDrop extends IBareBurgerIngredient {
     index: number
 }
+

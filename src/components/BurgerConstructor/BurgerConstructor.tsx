@@ -80,7 +80,7 @@ export const BurgerConstructor = (): JSX.Element => {
       const tempContext = JSON.parse(JSON.stringify(prev));
       
       tempContext.ingredients[dropIndex] = ingredient;
-      tempContext.ingredients[dragIndex] = prev.ingredients[dropIndex];
+      tempContext.ingredients[dragIndex] = {...prev.ingredients[dropIndex]};
       return tempContext;
     })
 
