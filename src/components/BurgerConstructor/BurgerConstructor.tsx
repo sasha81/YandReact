@@ -1,14 +1,21 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState } from "react";
+import {useSelector, useDispatch} from 'react-redux';
 import { useDrop } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient,IBurgerIngredientDrop } from '../Interfaces';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import { deleteIngredient, useIngredientContext, orderComplete,pickIngredient } from '../../utils/contexts';
+import {  useIngredientContext, orderComplete
+  //,pickIngredient
+ // ,deleteIngredient 
+} from '../../utils/contexts';
+
+import {pickIngredient, switchIngredients,deleteIngredient} from '../../services/reducers/constructorThunks' 
+
 import { burgerUrl } from '../../configs/urls';
 import { WithDrop,WithDrag} from '../../utils/dndHOCs';
-
+import {RootState} from '../../index'
 
 const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredient | null): number => {
   if (ingredients.length === 0 && bun == null) return 0;
@@ -20,12 +27,19 @@ export const BurgerConstructor = (): JSX.Element => {
   const { ingredientContext, setIngredientContext } = useIngredientContext();
   const [fetchError, setFetchError] = useState(false);
 
+  const dispatch = useDispatch();
+
+      const {storeIngredients, storeBun} = useSelector((store:RootState)=>({
+        storeIngredients:store.ingredients,
+        storeBun:store.bun
+      }))    
 
   const [, drop] = useDrop({
     accept:'ingredient',
    
     drop(ingredient:any){
-      pickIngredient(ingredient,setIngredientContext)
+
+      dispatch(pickIngredient(ingredient,storeBun))
     }
   })
 
@@ -37,10 +51,10 @@ export const BurgerConstructor = (): JSX.Element => {
 
 
 
-  const cost = getCost(ingredientContext.ingredients, ingredientContext.bun);
+  const cost = getCost(storeIngredients, storeBun);
 
   const clickButton = (cost: number) => () => {
-    const allIngredients = ingredientContext.ingredients.concat(ingredientContext.bun);
+    const allIngredients = storeIngredients.concat(storeBun);
 
     const requestOptions = {
       method: 'POST',
@@ -76,13 +90,16 @@ export const BurgerConstructor = (): JSX.Element => {
   const getDropCallback = (dropIndex : number,setIngredientContext )=>(item:IBurgerIngredientDrop)=>{
     const dragIndex = item.index;
     const {index,...ingredient} = item;
-    setIngredientContext(prev=>{
-      const tempContext = JSON.parse(JSON.stringify(prev));
+
+    dispatch(switchIngredients(dropIndex,dragIndex))
+
+    // setIngredientContext(prev=>{
+    //   const tempContext = JSON.parse(JSON.stringify(prev));
       
-      tempContext.ingredients[dropIndex] = ingredient;
-      tempContext.ingredients[dragIndex] = {...prev.ingredients[dropIndex]};
-      return tempContext;
-    })
+    //   tempContext.ingredients[dropIndex] = ingredient;
+    //   tempContext.ingredients[dragIndex] = {...prev.ingredients[dropIndex]};
+    //   return tempContext;
+    // })
 
   }
 
@@ -99,21 +116,21 @@ export const BurgerConstructor = (): JSX.Element => {
 
       <div className={styles.topPadding} />
       <div className={styles.ingredientContainer} ref={drop}>
-        {ingredientContext.bun &&
+        {storeBun &&
           (<div className={styles.elementHeight} >
             <ConstructorElement
 
               type="top"
               isLocked={true}
-              text={ingredientContext.bun.name + ' (верх)'}
-              price={ingredientContext.bun.price}
-              thumbnail={ingredientContext.bun.image}
-              handleClose={deleteIngredient(ingredientContext.bun, setIngredientContext)}
+              text={storeBun['name'] + ' (верх)'}
+              price={storeBun['price']}
+              thumbnail={storeBun['image']}
+              handleClose={()=>dispatch(deleteIngredient(storeBun))}
             />
           </div>)
         }
         <div className={styles.ingredientInnerContainer}>
-          {ingredientContext.ingredients.map((ingredient, index) => {
+          {storeIngredients.map((ingredient, index) => {
 
             return (
               <div key={index} className={styles.elementHeight}>
@@ -133,7 +150,7 @@ export const BurgerConstructor = (): JSX.Element => {
                           text={ingredient.name}
                           price={ingredient.price}
                           thumbnail={ingredient.image}
-                          handleClose={deleteIngredient(ingredient, setIngredientContext)}
+                          handleClose={()=>dispatch(deleteIngredient(ingredient))}
                         />
                     </WithDrag>
                 </WithDrop>
@@ -143,16 +160,16 @@ export const BurgerConstructor = (): JSX.Element => {
 
           })}
         </div>
-        {ingredientContext.bun && (
+        {storeBun && (
           <div className={styles.elementHeight}>
             <ConstructorElement
 
               type="bottom"
               isLocked={true}
-              text={ingredientContext.bun.name + ' (низ)'}
-              price={ingredientContext.bun.price}
-              thumbnail={ingredientContext.bun.image}
-              handleClose={deleteIngredient(ingredientContext.bun, setIngredientContext)}
+              text={storeBun['name'] + ' (низ)'}
+              price={storeBun['price']}
+              thumbnail={storeBun['image']}
+              handleClose={()=>dispatch(deleteIngredient(storeBun))}
             />
           </div>
         )

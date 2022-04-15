@@ -19,6 +19,14 @@ export const initialState: IReduxState= {
     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
 }
 
+interface IAction {
+    type:string,
+    payload: IBareBurgerIngredient,
+    from?:number,
+    to?:number
+}
+
+
 const initialIngredients: IBareBurgerIngredient[] =[];
 const initialBun: IBareBurgerIngredient | null = null;
 const initialIngredientMap: Object={};
@@ -82,8 +90,8 @@ export const mapReducer =  (state=initialIngredientMap, action:{type:string, pay
                 tempContext[_id]=state[_id]-1
             }
             else if(state && state.hasOwnProperty(_id) && state[_id]===1){
-                const obj = tempContext.ingredientMap;
-                delete obj[_id];
+              
+                delete tempContext[_id];
             
             }
             else{
@@ -134,16 +142,28 @@ export const mapReducer =  (state=initialIngredientMap, action:{type:string, pay
 }
 
 
-export const ingredientReducer = (state=initialIngredients, action:{type:string, payload:IBareBurgerIngredient })=>{
+export const ingredientReducer = (state=initialIngredients, action:any)=>{
     switch(action.type){
         case PICK_INGREDIENT :
-            return {...state,ingredients:state.concat(action.payload)}
+            return [...state.concat(action.payload)]
 
         
-        case DELETE_INGREDIENT :
-            return {...state, ingredients: state.filter(ingredient=>{return ingredient._id!==action.payload._id})}; 
+        case DELETE_INGREDIENT :{
+            const tempContext = JSON.parse(JSON.stringify(state));
+            const index = state.findIndex(el=>{return (el._id===action.payload._id)})
+   
+            tempContext.splice(index,1);
+            return tempContext;
+        }          
 
         
+        case SWITCH_INGREDIENT:{
+                const tempContext = JSON.parse(JSON.stringify(state));
+          
+          tempContext[action.to] = state[action.from];
+          tempContext[action.from] = state[action.to];
+          return tempContext;
+            }    
         
         default:
             return state;

@@ -1,4 +1,5 @@
 import { useState, useRef, createRef } from "react";
+import {useSelector, useDispatch} from 'react-redux';
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -11,7 +12,10 @@ import { IBareBurgerIngredient } from '../Interfaces';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
-import { pickIngredient, useIngredientContext } from '../../utils/contexts'
+import { //pickIngredient,
+     useIngredientContext } from '../../utils/contexts';
+import {pickIngredient} from '../../services/reducers/constructorThunks';
+import {RootState} from '../../index';
 
 
 interface IResult {
@@ -57,6 +61,11 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
 
     const { ingredientContext, setIngredientContext } = useIngredientContext();
 
+    const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
+    const bun = useSelector((state:RootState)=>state.bun)
+    const dispatch = useDispatch();
+    
+
     const myRefs = useRef([]);
     const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
 
@@ -67,7 +76,8 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
     }
 
     const ingedientClicked = (ingredient: IBareBurgerIngredient, setIngredientContext) => (): void => {
-        pickIngredient(ingredient, setIngredientContext)        
+        dispatch(pickIngredient(ingredient,bun))
+      //  pickIngredient(ingredient, setIngredientContext)        
        // setModalData(ingredient);
     }
 
@@ -105,7 +115,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
                                         relativeWidth: styles.ingredientWidth,
                                         clickCallback: ingedientClicked(ingredient, setIngredientContext),
                                         infoCallback: infoClicked(ingredient),
-                                        quantity: ingredientContext.ingredientMap[ingredient._id]
+                                        quantity: storeIngredientMap[ingredient._id]
                                     }
                                     
                                     return (
