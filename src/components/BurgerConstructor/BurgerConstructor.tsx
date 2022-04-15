@@ -6,10 +6,10 @@ import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient,IBurgerIngredientDrop } from '../Interfaces';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import {  useIngredientContext, orderComplete
-  //,pickIngredient
- // ,deleteIngredient 
-} from '../../utils/contexts';
+// import {  useIngredientContext, orderComplete
+//   //,pickIngredient
+//  // ,deleteIngredient 
+// } from '../../utils/contexts';
 
 import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sendOrderDetails} from '../../services/reducers/constructorThunks' 
 
@@ -24,7 +24,7 @@ const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredien
 
 export const BurgerConstructor = (): JSX.Element => {
 
-  const { ingredientContext, setIngredientContext } = useIngredientContext();
+  //const { ingredientContext, setIngredientContext } = useIngredientContext();
   const [fetchError, setFetchError] = useState(false);
 
   const dispatch = useDispatch();
@@ -92,7 +92,7 @@ export const BurgerConstructor = (): JSX.Element => {
   }
 
 
-  const getDropCallback = (dropIndex : number,setIngredientContext )=>(item:IBurgerIngredientDrop)=>{
+  const getDropCallback = (dropIndex : number )=>(item:IBurgerIngredientDrop)=>{
     const dragIndex = item.index;
     const {index,...ingredient} = item;
 
@@ -140,7 +140,7 @@ export const BurgerConstructor = (): JSX.Element => {
             return (
               <div key={index} className={styles.elementHeight}>
                 <WithDrop type="ingredientConstructor" 
-                  onDropCallback={getDropCallback(index,setIngredientContext)} 
+                  onDropCallback={getDropCallback(index)} 
                   onHoverStyle={{width:'100%', border:'2px solid green'}} 
                   iddleStyle={{width:'100%'}} >
                     <WithDrag  type="ingredientConstructor" 

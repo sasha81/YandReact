@@ -12,8 +12,8 @@ import { IBareBurgerIngredient } from '../Interfaces';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
-import { //pickIngredient,
-     useIngredientContext } from '../../utils/contexts';
+// import { //pickIngredient,
+//      useIngredientContext } from '../../utils/contexts';
 import {pickIngredient,setInfo} from '../../services/reducers/constructorThunks';
 import {RootState} from '../../index';
 
@@ -56,10 +56,14 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
 
 
 
-    const [current, setCurrent] = useState('one');
+    //const [current, setCurrent] = useState('one');
+
+    //const allIngredients = useSelector((state:RootState)=>state.allIngredients)
+
     const [ingredients, ingredientMap] = getSortedData(props.data);
 
-    const { ingredientContext, setIngredientContext } = useIngredientContext();
+    const [current, setCurrent] = useState(0);
+   // const { ingredientContext, setIngredientContext } = useIngredientContext();
 
     const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
     const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
@@ -68,7 +72,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
     
 
     const myRefs = useRef([]);
-    const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
+    //const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
 
     myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
@@ -78,7 +82,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
         //setModalData(ingredient);
     }
 
-    const ingedientClicked = (ingredient: IBareBurgerIngredient, setIngredientContext) => (): void => {
+    const ingedientClicked = (ingredient: IBareBurgerIngredient) => (): void => {
         dispatch(pickIngredient(ingredient,bun))
       //  pickIngredient(ingredient, setIngredientContext)        
        // setModalData(ingredient);
@@ -89,7 +93,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
         //setModalData(null);
     }
 
-    const getTab = (name: string, ref: any, setState: (arg: string) => void) => {
+    const getTab = (name: number, ref: any, setState: (arg: number) => void) => {
         return (e) => {
             setState(name);
             ref.current.scrollIntoView({ behavior: "smooth" });
@@ -101,7 +105,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
             <div className={styles.tabContainer} >
                 {ingredients.map((ingredient, ind) => {
                     return (
-                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === `${ingredient.type}`} onClick={getTab(ingredient.type, myRefs.current[ind], setCurrent)}>
+                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === ind} onClick={getTab(ind, myRefs.current[ind], setCurrent)}>
                             <p className="text text_type_main-default">{`${getNames(ingredient.type)}`}</p>
                         </Tab>
                     )
@@ -117,7 +121,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
                                     const inputProps = {
                                         ...ingredient,
                                         relativeWidth: styles.ingredientWidth,
-                                        clickCallback: ingedientClicked(ingredient, setIngredientContext),
+                                        clickCallback: ingedientClicked(ingredient),
                                         infoCallback: infoClicked(ingredient),
                                         quantity: storeIngredientMap[ingredient._id]
                                     }

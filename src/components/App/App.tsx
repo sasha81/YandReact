@@ -62,13 +62,13 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>
       <DndProvider backend={HTML5Backend}>
-          <IngredientContextProvider>
+          {/* <IngredientContextProvider> */}
               <div className={styles.ingredientsBurger}>
               {getIngredients(data)}
               
                 </div>
               <div className={styles.constructorBurger}><BurgerConstructor /></div>
-            </IngredientContextProvider>
+            {/* </IngredientContextProvider> */}
           {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
         </DndProvider>
     </div>
