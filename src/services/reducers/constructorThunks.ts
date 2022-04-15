@@ -9,12 +9,14 @@ import {
   SET_BUN,
   INCREASE_BUN_MAP,
   DECREASE_BUN_MAP,
-  UPDATE_BUN_MAP,
+  
   SWITCH_INGREDIENT,
   RESET_INGREDIENT,
-  RESET_MAP
+  RESET_MAP,
+  ERROR_MAKE_ORDER,
+  ERROR_SET_INGREDIENTS
 } from '../actions/constructor';
-import { IBareBurgerIngredient, IReduxState } from '../../components/Interfaces';
+import { IBareBurgerIngredient } from '../../components/Interfaces';
 import { burgerUrl } from '../../configs/urls';
 
 export const deleteIngredient = (ingredient:IBareBurgerIngredient)=>(dispatch)=>{
@@ -58,7 +60,7 @@ export const loadData =  (URL:string, setStatus)=>(dispatch)=>{
         setStatus({  loading: false, error:false });
     })
     .catch(error=>{
-        dispatch({type:SET_INGREDIENTS, payload:'error'});
+        dispatch({type:ERROR_SET_INGREDIENTS});
         setStatus({  loading: false, error:true });
     })
 }
@@ -99,11 +101,11 @@ export const sendOrderDetails = (cost: number, setFetchError,allIngredients: IBa
       })
       .catch(error => {
         if (error.message === "server error") {
-            dispatch({type: MAKE_ORDER, payload:{ 'cost': cost, 'orderId': null, 'success': false }});
+            dispatch({type: ERROR_MAKE_ORDER});
         }
         else {
           setFetchError(true);
-          dispatch({type: MAKE_ORDER, payload:{ 'cost': cost, 'orderId': null, 'success': false }});
+          dispatch({type: ERROR_MAKE_ORDER});
         }
       })
 }

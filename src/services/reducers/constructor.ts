@@ -10,9 +10,11 @@ import {
     SET_BUN,
     INCREASE_BUN_MAP,
     DECREASE_BUN_MAP,
-    UPDATE_BUN_MAP,
+   
     SWITCH_INGREDIENT,
-    RESET_MAP
+    RESET_MAP,
+    ERROR_SET_INGREDIENTS,
+    ERROR_MAKE_ORDER
 
 } from '../actions/constructor';
 import { IBareBurgerIngredient, IReduxState,IOrder } from '../../components/Interfaces';
@@ -21,16 +23,12 @@ export const initialState: IReduxState= {
     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
 }
 
-interface IAction {
-    type:string,
-    payload: IBareBurgerIngredient,
-    from?:number,
-    to?:number
-}
 
 
+//Here I treat a bun ingredient separately.
 const initialIngredients: IBareBurgerIngredient[] =[];
 const initialBun: IBareBurgerIngredient | null = null;
+//this is an aux object to make it easier to account for the number of ingredients of the same _id.
 const initialIngredientMap: Object={};
 const initialAllIngredients: IBareBurgerIngredient[] | string =[];
 const initalIngredientDetails:  IBareBurgerIngredient | null = null;
@@ -40,7 +38,8 @@ export const orderDetailsReducer = (state = initalOrderDetails, action:{type:str
     switch(action.type){
         case MAKE_ORDER:
             return action.payload ? {...action.payload}: null;
-
+        case ERROR_MAKE_ORDER:
+            return initalOrderDetails
         default:
             return state;
     }
@@ -63,6 +62,9 @@ export const allIngredientsReducer =  (state=initialAllIngredients, action:{type
     switch(action.type){
         case SET_INGREDIENTS:
             return  Array.isArray(action.payload)? [...action.payload]:action.payload;
+
+        case ERROR_SET_INGREDIENTS:
+            return  'error';    
         default:
             return state;
     }
@@ -179,74 +181,6 @@ export const ingredientReducer = (state=initialIngredients, action:any)=>{
 }
 
 
-export const constructorIngredientReducer = (state=initialState, action :{type:string, payload:IBareBurgerIngredient })=>{
-    switch(action.type){
-        case PICK_INGREDIENT :
-            return {...state,ingredients:state.ingredients.concat(action.payload)}
-
-        case DECREMENT_MAP: {
-            const _id = action.payload._id;
-
-            const tempContext = JSON.parse(JSON.stringify(state));
-            if(state&& state.ingredientMap.hasOwnProperty(_id) && state.ingredientMap[_id]>1){
-                tempContext.ingredientMap[_id]=state.ingredientMap[_id]-1
-            }
-            else if(state && state.ingredientMap.hasOwnProperty(_id) && state.ingredientMap[_id]===1){
-                const obj = tempContext.ingredientMap;
-                delete obj[_id];
-            
-            }
-            else{
-            
-            }
-            return tempContext
-        }
-        case INCREMENT_MAP:{
-            const _id = action.payload._id;
-            const tempContext = JSON.parse(JSON.stringify(state));
-
-            if(state&& state.ingredientMap.hasOwnProperty(_id)){
-              tempContext.ingredientMap[_id]=state.ingredientMap[_id]+1;
-            
-            }
-            else{
-              tempContext.ingredientMap[_id]=1;
-              
-            }
-            return tempContext
-        }
-        case DELETE_INGREDIENT :
-            return {...state, ingredients: state.ingredients.filter(ingredient=>{return ingredient._id!==action.payload._id})};
-       
-
-        case SET_BUN :
-            return {...state, bun:action.payload};
-        
-        case SET_INFO_INGREDIENT:
-            return {...state, ingredientDetails:action.payload}; 
-        case MAKE_ORDER:{
-            return {...state, orderDetails:action.payload};
-        }
-        case UPDATE_BUN_MAP:{
-            const tempContext = JSON.parse(JSON.stringify(state));
-            const _id = action.payload._id
-            if(tempContext.bun) {
-                const prevBunId = tempContext.bun._id;
-                tempContext.ingredientMap[prevBunId]=0;
-              }
-    
-              tempContext.bun={...action.payload};
-              tempContext.ingredientMap[_id]=1;
-              return tempContext;
-        }
-        
-        default:
-            return state;
-
-
-
-    }
-}
 export const updateIngredientReducer = (state=initialState, action:{type:string,to:number, from:number})=>{
     switch(action.type){
         case SWITCH_INGREDIENT:{

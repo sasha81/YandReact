@@ -1,4 +1,4 @@
-import { useState, useRef, createRef ,useEffect} from "react";
+import { useState, useRef, createRef} from "react";
 import {useSelector, useDispatch} from 'react-redux';
 import {
     Tab
@@ -13,11 +13,10 @@ import { IBareBurgerIngredient } from '../Interfaces';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
-// import { //pickIngredient,
-//      useIngredientContext } from '../../utils/contexts';
+
 import {pickIngredient,setInfo} from '../../services/reducers/constructorThunks';
 import {RootState} from '../../index';
-import {useIntersection} from '../../utils/useInersection'
+
 
 
 interface IResult {
@@ -55,62 +54,61 @@ interface IBurgerIngredientsProps {
 interface IScroll{
     current:number,
     visibility:boolean,
-    counter:number
+    counter:number,
+    pressed:boolean
 }
 
 export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element => {
 
-
-
-
-    //const [current, setCurrent] = useState('one');
-
-    //const allIngredients = useSelector((state:RootState)=>state.allIngredients)
-
     const [ingredients, ingredientMap] = getSortedData(props.data);
-
-    const [tabState, setCurrentTab] = useState<IScroll>({current:0, visibility: false, counter:0});
-   // const { ingredientContext, setIngredientContext } = useIngredientContext();
-
+//this involved tab state is needed to make it scroll-to-tab and tab-to-scroll without us to use window.onScrollListener/boundingRectagle/scrollY anywhere.
+//Notice that this approach allows us to add other ingredient typs with minimal effort. 
+//Here, current-the current tab #, visibility - if the ingredient div is visible;
+//the counter is needed to initialize the watcher (after it reaches the number of tabs, it stays the same).
+//Finally, the pressed field is needed to temporerely block the visibility callback. It works! 
+    const [tabState, setCurrentTab] = useState<IScroll>({current:0, visibility: false, counter:0, pressed:false});
+  
     const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
     const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
     const bun = useSelector((state:RootState)=>state.bun)
-    const dispatch = useDispatch();
-    
+    const dispatch = useDispatch();    
 
-    const myRefs = useRef([]);
-    //const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
+    const myRefs = useRef([]);   
 
     myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
     const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{
-
-        dispatch(setInfo(ingredient))
-        //setModalData(ingredient);
+        dispatch(setInfo(ingredient))       
     }
 
     const ingedientClicked = (ingredient: IBareBurgerIngredient) => (): void => {
-        dispatch(pickIngredient(ingredient,bun))
-      //  pickIngredient(ingredient, setIngredientContext)        
-       // setModalData(ingredient);
+        dispatch(pickIngredient(ingredient,bun))     
     }
 
     const modalClose = (): void => {
-        dispatch(setInfo(null))
-        //setModalData(null);
+        dispatch(setInfo(null))       
     }
 
     const getTab = (name: number, ref: any, setState: (arg: any) => void) => {
         return (e) => {
-            setState(prev=>{return {...prev,current:name}});
+        
             ref.current.scrollIntoView({ behavior: "smooth" });
+            setState(prev=>{return {...prev,current:name, pressed:true}});
+            setTimeout(()=>{
+                setState(prev=>{return {...prev,current:name, pressed:false}});
+            },500)
+           
         }
     }
+   
+
 
     const visibilityCallback = (number:number,setCurrent, numberOfTypes:number) => (isVisible:boolean)=>{
-        console.log(number, isVisible, numberOfTypes)    
+       
         setCurrent(prev=>{
-            console.log('income '+number +' income visib '+ isVisible + ' prev number '+prev.current)  
+           
+           if(prev.pressed) return prev;
+
             if(prev.counter<=numberOfTypes-1) return {current:0,visibility:true,counter: prev.counter+1};
             else if(prev.current===number && number<numberOfTypes-1) return {current:number+1,visiblity:true,counter: prev.counter}
             else if(prev.current===number && number===numberOfTypes-1) return {current:number-1,visiblity:true,counter: prev.counter}
@@ -139,9 +137,9 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
             <div className={styles.mainTabContainer} >
                 {ingredients.map((ingredientOuter: IBareBurgerIngredient, index: number) => {
                     return (
-                     <InView key={index}
-                      onChange={visibilityCallback(index,setCurrentTab, Array.isArray(ingredients) ? ingredients.length: 0)}
-                    //    trackVisibility={true} 
+                     <InView 
+                        key={index}
+                        onChange={visibilityCallback(index,setCurrentTab, Array.isArray(ingredients) ? ingredients.length: 0)}                                   
                         >
                        
                         <div  id={`${ingredientOuter.type}Type`} ref={myRefs.current[index]} >
