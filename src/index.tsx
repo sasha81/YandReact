@@ -7,7 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
-import {initalOrderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer} from './services/reducers/constructor';
+import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer} from './services/reducers/constructor';
 
 declare global {
   interface Window {
@@ -16,7 +16,7 @@ declare global {
 }
 
 const rootReducer = combineReducers({
-  'initalOrderDetails':initalOrderDetailsReducer,
+  'orderDetails':orderDetailsReducer,
   'ingredientDetails':ingredientDetailsReducer,
   'allIngredients':allIngredientsReducer,
   'bun':bunReducer,

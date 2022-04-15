@@ -11,7 +11,7 @@ import {  useIngredientContext, orderComplete
  // ,deleteIngredient 
 } from '../../utils/contexts';
 
-import {pickIngredient, switchIngredients,deleteIngredient} from '../../services/reducers/constructorThunks' 
+import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sendOrderDetails} from '../../services/reducers/constructorThunks' 
 
 import { burgerUrl } from '../../configs/urls';
 import { WithDrop,WithDrag} from '../../utils/dndHOCs';
@@ -29,9 +29,10 @@ export const BurgerConstructor = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-      const {storeIngredients, storeBun} = useSelector((store:RootState)=>({
+      const {storeIngredients, storeBun,storeOrderDetails} = useSelector((store:RootState)=>({
         storeIngredients:store.ingredients,
-        storeBun:store.bun
+        storeBun:store.bun,
+        storeOrderDetails:store.orderDetails
       }))    
 
   const [, drop] = useDrop({
@@ -44,9 +45,10 @@ export const BurgerConstructor = (): JSX.Element => {
   })
 
 
-  const [modalData, setModalData] = useState<{ 'cost': number, 'orderId': number | null, 'success': boolean } | null>(null);
+ // const [modalData, setModalData] = useState<{ 'cost': number, 'orderId': number | null, 'success': boolean } | null>(null);
   const modalClose = () => {
-    setModalData(null);
+    dispatch(resetOrderDetails())
+    
   }
 
 
@@ -56,34 +58,37 @@ export const BurgerConstructor = (): JSX.Element => {
   const clickButton = (cost: number) => () => {
     const allIngredients = storeIngredients.concat(storeBun);
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ingredients: allIngredients })
-    };
-    fetch(burgerUrl + '/orders', requestOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw Error("server error")
-        }
+    dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
 
-        return response.json()
-      })
-      .then(data => {
 
-        setModalData({ 'cost': cost, 'orderId': data.order.number, 'success': data.success })
-        setFetchError(false);
-        orderComplete(allIngredients, setIngredientContext)
-      })
-      .catch(error => {
-        if (error.message === "server error") {
-          setModalData({ 'cost': cost, 'orderId': null, 'success': false });
-        }
-        else {
-          setFetchError(true);
-          setModalData({ 'cost': cost, 'orderId': null, 'success': false });
-        }
-      })
+    // const requestOptions = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ ingredients: allIngredients })
+    // };
+    // fetch(burgerUrl + '/orders', requestOptions)
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       throw Error("server error")
+    //     }
+
+    //     return response.json()
+    //   })
+    //   .then(data => {
+
+    //     setModalData({ 'cost': cost, 'orderId': data.order.number, 'success': data.success })
+    //     setFetchError(false);
+    //     orderComplete(allIngredients, setIngredientContext)
+    //   })
+    //   .catch(error => {
+    //     if (error.message === "server error") {
+    //       setModalData({ 'cost': cost, 'orderId': null, 'success': false });
+    //     }
+    //     else {
+    //       setFetchError(true);
+    //       setModalData({ 'cost': cost, 'orderId': null, 'success': false });
+    //     }
+    //   })
   }
 
 
@@ -107,8 +112,8 @@ export const BurgerConstructor = (): JSX.Element => {
   return (
     <>
 
-      {modalData && (<Modal onClose={modalClose} >
-        <OrderDetails total={modalData.cost} orderNumber={modalData.orderId} orderStatus={modalData.success} networkError={fetchError} />
+      {storeOrderDetails && (<Modal onClose={modalClose} >
+        <OrderDetails total={storeOrderDetails['cost']} orderNumber={storeOrderDetails['orderId']} orderStatus={storeOrderDetails['success']} networkError={fetchError} />
       </Modal>)
 
       }

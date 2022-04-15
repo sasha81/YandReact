@@ -1,5 +1,6 @@
 import {
     PICK_INGREDIENT,
+    RESET_INGREDIENT,
     SET_INGREDIENTS,
     DELETE_INGREDIENT,
     SET_INFO_INGREDIENT,
@@ -10,7 +11,8 @@ import {
     INCREASE_BUN_MAP,
     DECREASE_BUN_MAP,
     UPDATE_BUN_MAP,
-    SWITCH_INGREDIENT
+    SWITCH_INGREDIENT,
+    RESET_MAP
 
 } from '../actions/constructor';
 import { IBareBurgerIngredient, IReduxState,IOrder } from '../../components/Interfaces';
@@ -34,7 +36,7 @@ const initialAllIngredients: IBareBurgerIngredient[] | string =[];
 const initalIngredientDetails:  IBareBurgerIngredient | null = null;
 const initalOrderDetails:  IOrder | null = null;
 
-export const initalOrderDetailsReducer = (state = initalOrderDetails, action:{type:string, payload: IOrder | null })=>{
+export const orderDetailsReducer = (state = initalOrderDetails, action:{type:string, payload: IOrder | null })=>{
     switch(action.type){
         case MAKE_ORDER:
             return action.payload ? {...action.payload}: null;
@@ -69,9 +71,9 @@ export const allIngredientsReducer =  (state=initialAllIngredients, action:{type
 export const bunReducer = (state=initialBun, action:{type:string, payload:IBareBurgerIngredient })=>{
     switch(action.type){       
 
-        case SET_BUN :
-            return {...action.payload};     
-        
+        case SET_BUN :{
+            return action.payload? {...action.payload} : null;     
+        }
         
         default:
             return state;
@@ -80,7 +82,9 @@ export const bunReducer = (state=initialBun, action:{type:string, payload:IBareB
 
 export const mapReducer =  (state=initialIngredientMap, action:{type:string, payload:IBareBurgerIngredient  })=>{
     switch(action.type){
-       
+       case RESET_MAP :
+           return initialIngredientMap
+
 
         case DECREMENT_MAP: {
             const _id = action.payload._id;
@@ -146,7 +150,8 @@ export const ingredientReducer = (state=initialIngredients, action:any)=>{
     switch(action.type){
         case PICK_INGREDIENT :
             return [...state.concat(action.payload)]
-
+        case RESET_INGREDIENT:
+            return initialIngredients
         
         case DELETE_INGREDIENT :{
             const tempContext = JSON.parse(JSON.stringify(state));

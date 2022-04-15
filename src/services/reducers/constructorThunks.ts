@@ -10,7 +10,9 @@ import {
   INCREASE_BUN_MAP,
   DECREASE_BUN_MAP,
   UPDATE_BUN_MAP,
-  SWITCH_INGREDIENT
+  SWITCH_INGREDIENT,
+  RESET_INGREDIENT,
+  RESET_MAP
 } from '../actions/constructor';
 import { IBareBurgerIngredient, IReduxState } from '../../components/Interfaces';
 import { burgerUrl } from '../../configs/urls';
@@ -60,6 +62,9 @@ export const loadData =  (URL:string, setStatus)=>(dispatch)=>{
         setStatus({  loading: false, error:true });
     })
 }
+export const resetOrderDetails = ()=>(dispatch)=>{
+  dispatch({type: MAKE_ORDER, payload:null})
+}
 
 export const sendOrderDetails = (cost: number, setFetchError,allIngredients: IBareBurgerIngredient[]) =>(dispatch)=>{
     
@@ -81,6 +86,10 @@ export const sendOrderDetails = (cost: number, setFetchError,allIngredients: IBa
 
         dispatch({type: MAKE_ORDER, payload:{ 'cost': cost, 'orderId': data.order.number, 'success': data.success }})
         setFetchError(false);
+        dispatch({type:RESET_INGREDIENT});
+        dispatch({type:SET_BUN, payload:null});
+        dispatch({type:RESET_MAP});
+
        // orderComplete(allIngredients, setIngredientContext)
       })
       .catch(error => {
