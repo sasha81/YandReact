@@ -52,7 +52,7 @@ export const ingredientDetailsReducer = (state = initalIngredientDetails, action
     switch(action.type){
         case SET_INFO_INGREDIENT:{
          if(action.payload) return {...action.payload};
-         else return null;
+         else return initalIngredientDetails;
         }
         default:
             return state;

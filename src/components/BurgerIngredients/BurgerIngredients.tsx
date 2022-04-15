@@ -14,7 +14,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
 import { //pickIngredient,
      useIngredientContext } from '../../utils/contexts';
-import {pickIngredient} from '../../services/reducers/constructorThunks';
+import {pickIngredient,setInfo} from '../../services/reducers/constructorThunks';
 import {RootState} from '../../index';
 
 
@@ -62,6 +62,7 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
     const { ingredientContext, setIngredientContext } = useIngredientContext();
 
     const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
+    const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
     const bun = useSelector((state:RootState)=>state.bun)
     const dispatch = useDispatch();
     
@@ -72,7 +73,9 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
     myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
     const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{
-        setModalData(ingredient);
+
+        dispatch(setInfo(ingredient))
+        //setModalData(ingredient);
     }
 
     const ingedientClicked = (ingredient: IBareBurgerIngredient, setIngredientContext) => (): void => {
@@ -82,7 +85,8 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
     }
 
     const modalClose = (): void => {
-        setModalData(null);
+        dispatch(setInfo(null))
+        //setModalData(null);
     }
 
     const getTab = (name: string, ref: any, setState: (arg: string) => void) => {
@@ -129,8 +133,8 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
                     )
                 })}
             </div>
-            {modalData && <Modal onClose={modalClose}>
-                <IngredientDetails {...modalData} />
+            {ingredientDetails && <Modal onClose={modalClose}>
+                <IngredientDetails {...ingredientDetails} />
             </Modal>
 
             }

@@ -66,6 +66,11 @@ export const resetOrderDetails = ()=>(dispatch)=>{
   dispatch({type: MAKE_ORDER, payload:null})
 }
 
+
+export const setInfo=(ingredient: IBareBurgerIngredient| null)=>(dispatch)=>{
+  dispatch({type:SET_INFO_INGREDIENT, payload: ingredient})
+}
+
 export const sendOrderDetails = (cost: number, setFetchError,allIngredients: IBareBurgerIngredient[]) =>(dispatch)=>{
     
 

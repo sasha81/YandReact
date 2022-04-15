@@ -37,7 +37,11 @@
     position: relative;
 
 }
-.two:hover p{
+.two:hover > p:first-child{
     visibility:visible;
+    display: inline-block;
+    background-color: steelblue;
+    border-radius: 5px;
+    
 
 }
