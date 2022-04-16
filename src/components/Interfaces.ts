@@ -5,7 +5,7 @@ export const getBareIngredient=(input: IBurgerIngredient):IBareBurgerIngredient=
 
 export interface IOrder {
     cost: number,
-    orderId: number | null,
+    orderId: number | null | string,
     success: boolean
 
 }
@@ -25,6 +25,7 @@ export interface IReduxState {
 
 export interface IBareBurgerIngredient{
     _id: string,
+    uuid?: string,
     quantity?: number,
     image: string,
     price: number,

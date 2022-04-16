@@ -13,8 +13,8 @@ import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
 import { IBareBurgerIngredient} from '../Interfaces';
 
 import {burgerUrl} from '../../configs/urls';
-import {RootState} from '../../index';
-import {loadData} from '../../services/reducers/constructorThunks'
+import {RootState} from '../../services/store';
+import {loadData} from '../../services/actions/constructorThunks'
 
 interface IAppDataAndStatus{
   error: boolean,
@@ -41,7 +41,7 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
   if(typeof data === 'string' || data instanceof String) return (<h1>Can't load data... Please come later.</h1>)
   
   return (
-    <BurgerIngredients data={data}  />
+    <BurgerIngredients   />
   );
 }
 

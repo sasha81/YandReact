@@ -6,16 +6,11 @@ import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient,IBurgerIngredientDrop } from '../Interfaces';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-// import {  useIngredientContext, orderComplete
-//   //,pickIngredient
-//  // ,deleteIngredient 
-// } from '../../utils/contexts';
 
-import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sendOrderDetails} from '../../services/reducers/constructorThunks' 
+import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sendOrderDetails} from '../../services/actions/constructorThunks' 
 
-import { burgerUrl } from '../../configs/urls';
 import { WithDrop,WithDrag} from '../../utils/dndHOCs';
-import {RootState} from '../../index'
+import {RootState} from '../../services/store'
 
 const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredient | null): number => {
   if (ingredients.length === 0 && bun == null) return 0;
@@ -24,7 +19,7 @@ const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredien
 
 export const BurgerConstructor = (): JSX.Element => {
 
-  //const { ingredientContext, setIngredientContext } = useIngredientContext();
+  
   const [fetchError, setFetchError] = useState(false);
 
   const dispatch = useDispatch();
@@ -45,7 +40,7 @@ export const BurgerConstructor = (): JSX.Element => {
   })
 
 
- // const [modalData, setModalData] = useState<{ 'cost': number, 'orderId': number | null, 'success': boolean } | null>(null);
+
   const modalClose = () => {
     dispatch(resetOrderDetails())
     
@@ -55,40 +50,13 @@ export const BurgerConstructor = (): JSX.Element => {
 
   const cost = getCost(storeIngredients, storeBun);
 
-  const clickButton = (cost: number) => () => {
+  const clickButton = (cost: number, storeBun: IBareBurgerIngredient | null) => () => {
+    if(storeBun===null) return;
+
     const allIngredients = storeIngredients.concat(storeBun);
 
     dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
 
-
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ ingredients: allIngredients })
-    // };
-    // fetch(burgerUrl + '/orders', requestOptions)
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       throw Error("server error")
-    //     }
-
-    //     return response.json()
-    //   })
-    //   .then(data => {
-
-    //     setModalData({ 'cost': cost, 'orderId': data.order.number, 'success': data.success })
-    //     setFetchError(false);
-    //     orderComplete(allIngredients, setIngredientContext)
-    //   })
-    //   .catch(error => {
-    //     if (error.message === "server error") {
-    //       setModalData({ 'cost': cost, 'orderId': null, 'success': false });
-    //     }
-    //     else {
-    //       setFetchError(true);
-    //       setModalData({ 'cost': cost, 'orderId': null, 'success': false });
-    //     }
-    //   })
   }
 
 
@@ -96,15 +64,7 @@ export const BurgerConstructor = (): JSX.Element => {
     const dragIndex = item.index;
     const {index,...ingredient} = item;
 
-    dispatch(switchIngredients(dropIndex,dragIndex))
-
-    // setIngredientContext(prev=>{
-    //   const tempContext = JSON.parse(JSON.stringify(prev));
-      
-    //   tempContext.ingredients[dropIndex] = ingredient;
-    //   tempContext.ingredients[dragIndex] = {...prev.ingredients[dropIndex]};
-    //   return tempContext;
-    // })
+    dispatch(switchIngredients(dropIndex,dragIndex))   
 
   }
 
@@ -113,7 +73,10 @@ export const BurgerConstructor = (): JSX.Element => {
     <>
 
       {storeOrderDetails && (<Modal onClose={modalClose} >
-        <OrderDetails total={storeOrderDetails['cost']} orderNumber={storeOrderDetails['orderId']} orderStatus={storeOrderDetails['success']} networkError={fetchError} />
+        <OrderDetails total={storeOrderDetails['cost']} 
+                        orderNumber={storeOrderDetails['orderId']}
+                        orderStatus={storeOrderDetails['success']}
+                        networkError={fetchError} /> 
       </Modal>)
 
       }
@@ -138,7 +101,7 @@ export const BurgerConstructor = (): JSX.Element => {
           {storeIngredients.map((ingredient, index) => {
 
             return (
-              <div key={index} className={styles.elementHeight}>
+              <div key={ingredient.uuid} className={styles.elementHeight}>
                 <WithDrop type="ingredientConstructor" 
                   onDropCallback={getDropCallback(index)} 
                   onHoverStyle={{width:'100%', border:'2px solid green'}} 
@@ -185,9 +148,9 @@ export const BurgerConstructor = (): JSX.Element => {
         <p className="text text_type_digits-medium">{cost}</p>
         <div className="p-2"><CurrencyIcon type="primary" /></div>
 
-        <div className="p-8">
-          {/* <Button type="primary" size="medium" onClick={props.orderComplete}> */}
-          <Button type="primary" size="medium" onClick={clickButton(cost)}>
+        <div className={`p-8 ${storeBun ? styles.buttonDivActive : styles.buttonDivBlocked}`} onClick={clickButton(cost, storeBun)}>
+         <p className={`text text_type_main-medium ${styles.submitTooltip}`}>Выбирите булку</p>
+          <Button type="primary" size="medium" >
             Оформить Заказ
           </Button>
         </div>

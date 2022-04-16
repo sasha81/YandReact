@@ -1,14 +1,12 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDrag } from 'react-dnd';
 
 import styles from './BurgerIngredient.module.css';
-import { IBurgerIngredient,getBareIngredient } from '../Interfaces';
+import { IBurgerIngredient } from '../Interfaces';
 
-//style={{width: `${props.relativeWidth}`, position:'relative'}}
 
 export const BurgerIngredient= (props: IBurgerIngredient) =>{
     return (
-        // <div className={styles[props.relativeWidth]} onClick={props.clickCallback} ref={drag}>
+      
         <div className={styles[props.relativeWidth]}>
             <p className={`text text_type_main-default ${styles.info}`} onClick={props.infoCallback}>Info</p>
             <Counter count={props.quantity} size="default" />

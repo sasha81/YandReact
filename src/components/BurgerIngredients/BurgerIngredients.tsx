@@ -14,8 +14,8 @@ import { IBareBurgerIngredient } from '../Interfaces';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
 
-import {pickIngredient,setInfo} from '../../services/reducers/constructorThunks';
-import {RootState} from '../../index';
+import {pickIngredient,setInfo} from '../../services/actions/constructorThunks';
+import {RootState} from '../../services/store';
 
 
 
@@ -47,10 +47,6 @@ export const getSortedData = (rawData: IBareBurgerIngredient[]): any => {
     return [resultArr, ingredientMap];
 }
 
-interface IBurgerIngredientsProps {
-    data: IBareBurgerIngredient[]
-}
-
 interface IScroll{
     current:number,
     visibility:boolean,
@@ -58,9 +54,9 @@ interface IScroll{
     pressed:boolean
 }
 
-export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element => {
-
-    const [ingredients, ingredientMap] = getSortedData(props.data);
+export const BurgerIngredients = ( ): JSX.Element => {
+    const data = useSelector((state: RootState)=>state.allIngredients)
+    const [ingredients, ingredientMap] = getSortedData(data);
 //this involved tab state is needed to make it scroll-to-tab and tab-to-scroll without us to use window.onScrollListener/boundingRectagle/scrollY anywhere.
 //Notice that this approach allows us to add other ingredient typs with minimal effort. 
 //Here, current-the current tab #, visibility - if the ingredient div is visible;
