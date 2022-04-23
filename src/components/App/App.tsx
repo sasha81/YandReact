@@ -17,6 +17,7 @@ import {burgerUrl} from '../../configs/urls';
 import {RootState} from '../../services/store';
 import {loadData} from '../../services/actions/constructorThunks'
 import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
+import Login from '../Login/Login'
 
 interface IAppDataAndStatus{
   error: boolean,
@@ -48,26 +49,35 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
 }
 
   return (
-    <div className={styles.App}>
-      <div className={styles.headerBurger}> <AppHeader  /> </div>
-      <Router>
+    
+       <Router>
+         <div className={styles.App}>
+      <AppHeader  />
+     
          <Switch>
            <Route path="/" exact={true}>
-              <DndProvider backend={HTML5Backend}>                
+              <DndProvider backend={HTML5Backend}> 
+                  <div className={styles.contentWrapper}>               
                       <div className={styles.ingredientsBurger}>
                           {getIngredients(data)}
                       </div>
                       <div className={styles.constructorBurger}><BurgerConstructor /></div>
                       {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
+                      </div>
                 </DndProvider>
             </Route>
+            <Route path='/login' exact={true}>
+              <Login/>
+            </Route>
+
             <Route path="/ingredients/:id" exact={true}>
               <IngredientDetails />
             </Route>
 
               </Switch>
+              </div>
         </Router>
-    </div>
+   
   );
 }
 

@@ -83,7 +83,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
         //dispatch(setInfo(ingredient)) 
         history.replace({
             pathname:`/ingredients/${ingredient._id}`,
-            state:{...location.state,showModalIngredientDetails:true}
+            state:{...location.state,showModalIngredientDetails:true, prevPath : location.pathname}
         })      
     }
 

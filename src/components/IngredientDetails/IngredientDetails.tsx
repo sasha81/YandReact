@@ -16,7 +16,7 @@ const IngredientDetails = ()=>{
     const ingredient = (allIngredients as IBareBurgerIngredient[]).find(ingredient=>{return ingredient._id===id}) as IBareBurgerIngredient;
 
     const modalClose =()=>{
-        history.replace({pathname: '/',
+        history.replace({pathname: location.state.prevPath,
             state: {...location.state, showModalIngredientDetails:false}
         
     })
