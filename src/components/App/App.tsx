@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import {useSelector, useDispatch} from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
@@ -15,6 +16,7 @@ import { IBareBurgerIngredient} from '../Interfaces';
 import {burgerUrl} from '../../configs/urls';
 import {RootState} from '../../services/store';
 import {loadData} from '../../services/actions/constructorThunks'
+import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
 
 interface IAppDataAndStatus{
   error: boolean,
@@ -48,16 +50,23 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
   return (
     <div className={styles.App}>
       <div className={styles.headerBurger}> <AppHeader  /> </div>
-      <DndProvider backend={HTML5Backend}>
-         
-              <div className={styles.ingredientsBurger}>
-              {getIngredients(data)}
-              
-                </div>
-              <div className={styles.constructorBurger}><BurgerConstructor /></div>
-            
-          {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
-        </DndProvider>
+      <Router>
+         <Switch>
+           <Route path="/" exact={true}>
+              <DndProvider backend={HTML5Backend}>                
+                      <div className={styles.ingredientsBurger}>
+                          {getIngredients(data)}
+                      </div>
+                      <div className={styles.constructorBurger}><BurgerConstructor /></div>
+                      {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
+                </DndProvider>
+            </Route>
+            <Route path="/ingredients/:id" exact={true}>
+              <IngredientDetails />
+            </Route>
+
+              </Switch>
+        </Router>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useRef, createRef} from "react";
 import {useSelector, useDispatch} from 'react-redux';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -63,18 +64,27 @@ export const BurgerIngredients = ( ): JSX.Element => {
 //the counter is needed to initialize the watcher (after it reaches the number of tabs, it stays the same).
 //Finally, the pressed field is needed to temporerely block the visibility callback. It works! 
     const [tabState, setCurrentTab] = useState<IScroll>({current:0, visibility: false, counter:0, pressed:false});
+
+    
   
     const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
     const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
     const bun = useSelector((state:RootState)=>state.bun)
     const dispatch = useDispatch();    
+    
+    const history = useHistory();
+    const location = useLocation();
 
     const myRefs = useRef([]);   
 
     myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
     const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{
-        dispatch(setInfo(ingredient))       
+        //dispatch(setInfo(ingredient)) 
+        history.replace({
+            pathname:`/ingredients/${ingredient._id}`,
+            state:{...location.state,showModalIngredientDetails:true}
+        })      
     }
 
     const ingedientClicked = (ingredient: IBareBurgerIngredient) => (): void => {
@@ -165,11 +175,9 @@ export const BurgerIngredients = ( ): JSX.Element => {
                     )
                 })}
             </div>
-            {ingredientDetails && <Modal onClose={modalClose}>
+            {/* {ingredientDetails && <Modal onClose={modalClose}>
                 <IngredientDetails {...ingredientDetails} />
-            </Modal>
-
-            }
+            </Modal>} */}
         </section>
     )
 }
