@@ -148,9 +148,9 @@ export const BurgerConstructor = (): JSX.Element => {
         <p className="text text_type_digits-medium">{cost}</p>
         <div className="p-2"><CurrencyIcon type="primary" /></div>
 
-        <div className={`p-8 ${storeBun ? styles.buttonDivActive : styles.buttonDivBlocked}`} onClick={clickButton(cost, storeBun)}>
-         <p className={`text text_type_main-medium ${styles.submitTooltip}`}>Выбирите булку</p>
-          <Button type="primary" size="medium" >
+        <div className={`p-8 ${storeBun ? styles.buttonDivActive : styles.buttonDivBlocked}`} >
+         {/* <p className={`text text_type_main-medium ${styles.submitTooltip}`}>Выбирите булку</p> */}
+          <Button type="primary" size="medium" disabled={!storeBun} onClick={clickButton(cost, storeBun)}>
             Оформить Заказ
           </Button>
         </div>
