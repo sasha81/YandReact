@@ -1,25 +1,32 @@
-import React from 'react'
+import React from 'react';
+import { useState } from "react";
 import styles from '../CommonStyles.module.css';
-import { Input, Logo, Button,HideIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../../utils/customForms'
 
 function Login() {
-    const [value, setValue] = React.useState('value')
-    const inputRef = React.useRef(null)
+   
+ 
 
     const name = useFormField();
     const password = useFormField();
 
+    const [isPwdHidden, hidePwd] = useState<boolean>(false);
+
     const onIconClick = () => {
-        // setTimeout(() => inputRef.current.focus() , 0)
-        // alert('Icon Click Callback')
+        hidePwd(prev=>!prev)
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
    console.log(name.value, password.value);
   };
 
+  const getPwd = (pwd: string, isPwdHidden: boolean):string =>{
+    if(isPwdHidden) return Array.from(pwd).map(ch=>'*').join('');
+    else return pwd;
+  }
 
+  
     return (
         <div className={styles.outerWrapper}>
         <div className={styles.wrapper}>
@@ -34,9 +41,7 @@ function Login() {
                    
                     value={name.value}
                     name={'name'}
-                    error={false}
-                    ref={inputRef}
-                    onIconClick={onIconClick}
+                    error={false}                 
                     errorText={'Ошибка'}
                     size={'default'}
                 />
@@ -44,11 +49,10 @@ function Login() {
                     type={'text'}
                     placeholder={'password'}
                     {...password}
-                    icon={'HideIcon'}
-                    value={password.value}
-                    name={'name'}
-                    error={false}
-                    ref={inputRef}
+                    icon={isPwdHidden ? 'ShowIcon': 'HideIcon'}
+                    value={getPwd(password.value,isPwdHidden)}
+                    name={'password'}
+                    error={false}                   
                     onIconClick={onIconClick}
                     errorText={'Ошибка'}
                     size={'default'}

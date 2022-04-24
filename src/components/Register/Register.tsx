@@ -1,13 +1,14 @@
 import React from 'react';
 import { useState } from "react";
-import useFormField from '../../utils/customForms';
-import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from '../CommonStyles.module.css';
+import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import useFormField from '../../utils/customForms'
 
-function ForgotPassword() {
+function Register() {
 
 
-   
+    const name = useFormField();
+    const login = useFormField();
     const password = useFormField();
 
     const [isPwdHidden, hidePwd] = useState<boolean>(false);
@@ -17,14 +18,13 @@ function ForgotPassword() {
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  // console.log(name.value, password.value);
+   console.log(name.value, password.value);
   };
 
   const getPwd = (pwd: string, isPwdHidden: boolean):string =>{
     if(isPwdHidden) return Array.from(pwd).map(ch=>'*').join('');
     else return pwd;
   }
-
     return (
         <div className={styles.outerWrapper}>
         <div className={styles.wrapper}>
@@ -32,7 +32,28 @@ function ForgotPassword() {
              <div className="mb-6 mt-10"><p className="text_type_main-large">Вход</p></div>
 
              <form onSubmit={handleSubmit}>
-             
+                <Input
+                    type={'text'}
+                    placeholder={'username'}
+                    {...name}
+                   
+                    value={name.value}
+                    name={'name'}
+                    error={false}                 
+                    errorText={'Ошибка'}
+                    size={'default'}
+                />
+                  <Input
+                    type={'text'}
+                    placeholder={'login'}
+                    {...login}
+                   
+                    value={name.value}
+                    name={'login'}
+                    error={false}                 
+                    errorText={'Ошибка'}
+                    size={'default'}
+                />
                 <Input
                     type={'text'}
                     placeholder={'password'}
@@ -58,4 +79,4 @@ function ForgotPassword() {
     )
 }
 
-export default ForgotPassword
+export default Register

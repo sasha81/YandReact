@@ -17,7 +17,11 @@ import {burgerUrl} from '../../configs/urls';
 import {RootState} from '../../services/store';
 import {loadData} from '../../services/actions/constructorThunks'
 import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
-import Login from '../Login/Login'
+import Login from '../Login/Login';
+import Profile from '../Profile/Profile';
+import ResetPassword from '../ResetPassword/ResetPassword';
+import ForgotPassword from '../ForgotPassword/ForgotPassword';
+import Register from '../Register/Register';
 
 interface IAppDataAndStatus{
   error: boolean,
@@ -73,7 +77,18 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
             <Route path="/ingredients/:id" exact={true}>
               <IngredientDetails />
             </Route>
-
+            <Route path="/profile" exact={true}>
+              <Profile />
+            </Route>
+            <Route path="/reset-password" exact={true}>
+              <ResetPassword />
+            </Route>
+            <Route path="/forgot-password" exact={true}>
+              <ForgotPassword />
+            </Route>
+            <Route path="/register" exact={true}>
+              <Register />
+            </Route>
               </Switch>
               </div>
         </Router>

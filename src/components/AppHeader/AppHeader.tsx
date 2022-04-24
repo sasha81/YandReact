@@ -33,7 +33,7 @@ const AppHeader = ()=>{
                         <Logo/>
                         </div>
               
-                    <div className={`${styles.smallFlexContainer} ml-30`}>
+                    <div className={`${styles.smallFlexContainer} ml-30`} onClick={()=>go('/profile')}>
                         <ProfileIcon type="primary" />
                     
                         <div  className="p-2">
