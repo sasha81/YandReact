@@ -6,7 +6,7 @@ import {IBareBurgerIngredient} from '../Interfaces';
 import {RootState} from '../../services/store';
 import Modal from '../Modal/Modal';
 import modalStyles from '../Modal/Modal.module.css'
-//style={{textAlign: 'center', marginBottom:'20px'}}
+
 const IngredientDetails = ()=>{
     const {id} = useParams();
     const location = useLocation();

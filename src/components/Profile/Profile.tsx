@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import { Input, Logo, Button,EditIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../../utils/customForms'
 import styles from './Profile.module.css';
+import commonStyles from '../CommonStyles.module.css'
 
 function Profile() {
         const name = useFormField();
@@ -23,12 +24,16 @@ function Profile() {
     return (
         <div className = {styles.wrapper}>
             <div className = {styles.actions}>
-                <p className="text text_type_main-medium">Профиль</p>
-                <p className="text text_type_main-medium">История Заказов</p>
-                <p className="text text_type_main-medium">Выход</p>
+                <div className={commonStyles.commonUpperPadding}></div>
+                <p className="text text_type_main-medium mt-8">Профиль</p>
+                <p className="text text_type_main-medium mt-8">История Заказов</p>
+                <p className="text text_type_main-medium mt-8">Выход</p>
+                <p className="text text_type_main-small mt-20">В этом разделе вы можете изменить свои персональные данные</p>
 
             </div>
             <div className = {styles.form}>
+            <div className={commonStyles.commonUpperPadding}></div>
+            <div className="mt-8">
                 <Input
                     type={'text'}
                     placeholder={'name'}
@@ -39,8 +44,8 @@ function Profile() {
                     error={false}                 
                     errorText={'Ошибка'}
                     size={'default'}
-                />
-            
+                /></div>
+            <div className="mt-8">
                 <Input
                     type={'text'}
                     placeholder={'login'}
@@ -51,7 +56,8 @@ function Profile() {
                     error={false}                 
                     errorText={'Ошибка'}
                     size={'default'}
-                />
+                /></div>
+                <div className="mt-8">
                 <Input
                     type={'text'}
                     placeholder={'password'}
@@ -64,7 +70,7 @@ function Profile() {
                     errorText={'Ошибка'}
                     size={'default'}
                 />
-                
+                </div>
             </div>
         </div>
     )

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from "react";
+import {Link} from 'react-router-dom'
 import styles from '../CommonStyles.module.css';
 import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../../utils/customForms'
@@ -28,10 +29,10 @@ function Register() {
     return (
         <div className={styles.outerWrapper}>
         <div className={styles.wrapper}>
-                 <Logo/>
-             <div className="mb-6 mt-10"><p className="text_type_main-large">Вход</p></div>
+        <div className="mb-6 mt-10"><Logo/></div>
+             <div className="mb-6 mt-10"><p className="text_type_main-large">Регистрация</p></div>
 
-             <form onSubmit={handleSubmit}>
+             <div className="mt-8">
                 <Input
                     type={'text'}
                     placeholder={'username'}
@@ -43,6 +44,8 @@ function Register() {
                     errorText={'Ошибка'}
                     size={'default'}
                 />
+                </div>
+                <div className="mt-8">
                   <Input
                     type={'text'}
                     placeholder={'login'}
@@ -54,6 +57,8 @@ function Register() {
                     errorText={'Ошибка'}
                     size={'default'}
                 />
+                 </div>
+                <div className="mt-8">
                 <Input
                     type={'text'}
                     placeholder={'password'}
@@ -66,13 +71,19 @@ function Register() {
                     errorText={'Ошибка'}
                     size={'default'}
                 />
-                <div className="ml-20">
+                </div>
+                <div className="mt-8">
                     <Button type="primary" size="small" onClick={handleSubmit} >
-                        Нажми на меня
+                        Зарегистрироваться
                     </Button>
                 </div>    
-
-            </form>
+                <div className={`${styles.smallHorizontalContainerNoWrap} mt-4`}>
+                <p className="text text_type_main-small">
+                    Уже зарегестрированы?
+                </p>
+                    <Link to={'/login'}>Войти</Link>
+                </div>      
+           
             
         </div>
         </div>

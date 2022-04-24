@@ -10,3 +10,15 @@
     display: block;
     margin: 0 auto;
 }
+
+.smallHorizontalContainerNoWrap{
+    width:50%;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+.commonUpperPadding{
+    /* display:block; */
+    height:100px;
+}
