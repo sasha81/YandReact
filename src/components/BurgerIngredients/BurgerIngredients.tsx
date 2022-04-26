@@ -1,16 +1,22 @@
-import { useState, useRef, createRef } from "react";
+import { useState, useRef, createRef} from "react";
+import {useSelector, useDispatch} from 'react-redux';
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { InView } from 'react-intersection-observer';
 import { getNames } from '../../utils/data';
 import { BurgerIngredient } from './BurgerIngredient';
+import {WithDrag} from '../../utils/dndHOCs';
 import styles from './BurgerIngredients.module.css';
 
 import { IBareBurgerIngredient } from '../Interfaces';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
-import { pickIngredient, useIngredientContext } from '../../utils/contexts'
+
+import {pickIngredient,setInfo} from '../../services/actions/constructorThunks';
+import {RootState} from '../../services/store';
+
 
 
 interface IResult {
@@ -41,48 +47,84 @@ export const getSortedData = (rawData: IBareBurgerIngredient[]): any => {
     return [resultArr, ingredientMap];
 }
 
-interface IBurgerIngredientsProps {
-    data: IBareBurgerIngredient[]
+interface IScroll{
+    current:number,
+    visibility:boolean,
+    counter:number,
+    pressed:boolean
 }
 
+export const BurgerIngredients = ( ): JSX.Element => {
+    const data = useSelector((state: RootState)=>state.allIngredients)
+    const [ingredients, ingredientMap] = getSortedData(data);
+//this involved tab state is needed to make it scroll-to-tab and tab-to-scroll without us to use window.onScrollListener/boundingRectagle/scrollY anywhere.
+//Notice that this approach allows us to add other ingredient typs with minimal effort. 
+//Here, current-the current tab #, visibility - if the ingredient div is visible;
+//the counter is needed to initialize the watcher (after it reaches the number of tabs, it stays the same).
+//Finally, the pressed field is needed to temporerely block the visibility callback. It works! 
+    const [tabState, setCurrentTab] = useState<IScroll>({current:0, visibility: false, counter:0, pressed:false});
+  
+    const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
+    const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
+    const bun = useSelector((state:RootState)=>state.bun)
+    const dispatch = useDispatch();    
 
-export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element => {
-
-
-
-
-    const [current, setCurrent] = useState('one');
-    const [ingredients, ingredientMap] = getSortedData(props.data);
-
-    const { ingredientContext, setIngredientContext } = useIngredientContext();
-
-    const myRefs = useRef([]);
-    const [modalData, setModalData] = useState<IBareBurgerIngredient | null>(null);
+    const myRefs = useRef([]);   
 
     myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
 
-    const ingedientClicked = (ingredient: IBareBurgerIngredient, setIngredientContext) => (): void => {
-        pickIngredient(ingredient, setIngredientContext)        
-        setModalData(ingredient);
+    const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{
+        dispatch(setInfo(ingredient))       
+    }
+
+    const ingedientClicked = (ingredient: IBareBurgerIngredient) => (): void => {
+        dispatch(pickIngredient(ingredient,bun))     
     }
 
     const modalClose = (): void => {
-        setModalData(null);
+        dispatch(setInfo(null))       
     }
 
-    const getTab = (name: string, ref: any, setState: (arg: string) => void) => {
+    const getTab = (name: number, ref: any, setState: (arg: any) => void) => {
         return (e) => {
-            setState(name);
+        
             ref.current.scrollIntoView({ behavior: "smooth" });
+            setState(prev=>{return {...prev,current:name, pressed:true}});
+            setTimeout(()=>{
+                setState(prev=>{return {...prev,current:name, pressed:false}});
+            },500)
+           
         }
     }
+   
+
+
+    const visibilityCallback = (number:number,setCurrent, numberOfTypes:number) => (isVisible:boolean)=>{
+       
+        setCurrent(prev=>{
+           
+           if(prev.pressed) return prev;
+
+            if(prev.counter<=numberOfTypes-1) return {current:0,visibility:true,counter: prev.counter+1};
+            else if(prev.current===number && number<numberOfTypes-1) return {current:number+1,visiblity:true,counter: prev.counter}
+            else if(prev.current===number && number===numberOfTypes-1) return {current:number-1,visiblity:true,counter: prev.counter}
+            else if((prev.current+1===number && number===numberOfTypes-1)) return {current:number,visiblity:true,counter: prev.counter}
+            else if((prev.current-1===number && number<numberOfTypes-1)) return {current:number,visiblity:true,counter: prev.counter}
+            else return prev;
+        })
+    }
+
+   
     return (
         <section>
             <p className={"text text_type_main-large " + styles.header} >Соберите бургер</p>
             <div className={styles.tabContainer} >
                 {ingredients.map((ingredient, ind) => {
                     return (
-                        <Tab key={`${ingredient.type}`} value={`${ingredient.type}`} active={current === `${ingredient.type}`} onClick={getTab(ingredient.type, myRefs.current[ind], setCurrent)}>
+                        <Tab key={`${ingredient.type}`}
+                         value={`${ingredient.type}`}
+                         active={tabState.current === ind}
+                         onClick={getTab(ind, myRefs.current[ind], setCurrentTab)}>
                             <p className="text text_type_main-default">{`${getNames(ingredient.type)}`}</p>
                         </Tab>
                     )
@@ -91,27 +133,40 @@ export const BurgerIngredients = (props: IBurgerIngredientsProps): JSX.Element =
             <div className={styles.mainTabContainer} >
                 {ingredients.map((ingredientOuter: IBareBurgerIngredient, index: number) => {
                     return (
-                        <div key={`${ingredientOuter.type}`} id={`${ingredientOuter.type}Type`} ref={myRefs.current[index]} >
+                     <InView 
+                        key={index}
+                        onChange={visibilityCallback(index,setCurrentTab, Array.isArray(ingredients) ? ingredients.length: 0)}                                   
+                        >
+                       
+                        <div  id={`${ingredientOuter.type}Type`} ref={myRefs.current[index]} >
                             <p className={`text text_type_main-medium ${styles.header}`}>{getNames(ingredientOuter.type)}</p>
                             <div className={styles.innerIngredientContainer} >
                                 {ingredientMap.get(ingredientOuter.type).map((ingredient: IBareBurgerIngredient) => {
                                     const inputProps = {
                                         ...ingredient,
                                         relativeWidth: styles.ingredientWidth,
-                                        clickCallback: ingedientClicked(ingredient, setIngredientContext),
-                                        quantity: ingredientContext.ingredientMap[ingredient._id]
+                                        clickCallback: ingedientClicked(ingredient),
+                                        infoCallback: infoClicked(ingredient),
+                                        quantity: storeIngredientMap[ingredient._id]
                                     }
+                                    
                                     return (
-                                        <BurgerIngredient key={ingredient._id} {...inputProps} />
+                                      <WithDrag key={ingredient._id} type="ingredient"
+                                       item={{...ingredient}}
+                                       onDragStyle={{width:'48%', border:'2px solid green'}}
+                                       iddleStyle={{width:'48%'}}> 
+                                        <BurgerIngredient  {...inputProps} />
+                                    </WithDrag> 
                                     )
                                 })}
                             </div>
                         </div>
+                        </InView>     
                     )
                 })}
             </div>
-            {modalData && <Modal onClose={modalClose}>
-                <IngredientDetails {...modalData} />
+            {ingredientDetails && <Modal onClose={modalClose}>
+                <IngredientDetails {...ingredientDetails} />
             </Modal>
 
             }
