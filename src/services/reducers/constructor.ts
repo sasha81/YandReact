@@ -14,10 +14,13 @@ import {
     SWITCH_INGREDIENT,
     RESET_MAP,
     ERROR_SET_INGREDIENTS,
-    ERROR_MAKE_ORDER
+    ERROR_MAKE_ORDER,
+    UPDATE_USER,
+    UPDATE_VISIT,
+    RESET_VISITS
 
 } from '../actions/constructor';
-import { IBareBurgerIngredient, IReduxState,IOrder } from '../../components/Interfaces';
+import { IBareBurgerIngredient, IReduxState,IOrder, IUser } from '../../components/Interfaces';
 
 export const initialState: IReduxState= {
     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
@@ -33,6 +36,31 @@ const initialIngredientMap: Object={};
 const initialAllIngredients: IBareBurgerIngredient[] | string =[];
 const initalIngredientDetails:  IBareBurgerIngredient | null = null;
 const initalOrderDetails:  IOrder | null = null;
+const initialUser: IUser | null = null;
+const initialVisited : Object = {}; 
+
+export const visitsReducer = (state = initialVisited, action:{type:string, payload: string })=>{
+    switch(action.type){
+        case UPDATE_VISIT:{
+            return {...state, [action.payload]:true}
+        }
+
+
+        case RESET_VISITS:
+            return initialVisited;
+        default: 
+          return state;
+    }
+}
+
+export const securityUserReducer = (state = initalOrderDetails, action:{type:string, payload: IUser | null })=>{
+    switch(action.type){
+        case UPDATE_USER:
+            return action.payload ? {...action.payload}: initialUser;
+        default:
+            return state;     
+    }
+}
 
 export const orderDetailsReducer = (state = initalOrderDetails, action:{type:string, payload: IOrder | null })=>{
     switch(action.type){

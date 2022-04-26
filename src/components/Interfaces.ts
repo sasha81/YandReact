@@ -10,6 +10,12 @@ export interface IOrder {
 
 }
 
+export interface IUser {
+    name?: string,
+    email:string,
+    password:string
+}
+
 export interface IChoosenIngredients{
     [key: string]: number
   }

@@ -14,3 +14,6 @@ export const UPDATE_BUN_MAP = 'UPDATE_BUN_MAP';
 export const RESET_MAP = 'RESET_MAP';
 export const SET_BUN = 'SET_BUN';
 export const SWITCH_INGREDIENT = 'SWITCH_INGREDIENT';
+export const UPDATE_USER = 'UPDATE_USER';
+export const UPDATE_VISIT = 'UPDATE_VISIT';
+export const RESET_VISITS = 'RESET_VISITS';

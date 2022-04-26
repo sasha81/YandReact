@@ -1,18 +1,21 @@
 import { Logo,BurgerIcon,ListIcon,ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import styles from './AppHeader.module.css'
 import  {goTo} from '../../utils/history';
 
 const AppHeader = ()=>{
 
     const history = useHistory();
+    const location = useLocation();
+    //guaranteed clone of the pathname
+    const currentPath = location.pathname.slice();
     const go = goTo(history);
 
     return (
         <header >
             <nav className={styles.burgerHeader}>
               
-                    <div className={styles.smallFlexContainer} onClick={()=>go('/')}>
+                    <div className={styles.smallFlexContainer} onClick={()=>go('/',currentPath)}>
 
                         <BurgerIcon type="primary" />
                     
@@ -33,7 +36,7 @@ const AppHeader = ()=>{
                         <Logo/>
                         </div>
               
-                    <div className={`${styles.smallFlexContainer} ml-30`} onClick={()=>go('/profile')}>
+                    <div className={`${styles.smallFlexContainer} ml-30`} onClick={()=>go('/profile',currentPath)}>
                         <ProfileIcon type="primary" />
                     
                         <div  className="p-2">

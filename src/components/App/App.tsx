@@ -23,6 +23,9 @@ import ResetPassword from '../ResetPassword/ResetPassword';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import Register from '../Register/Register';
 
+import {ProtectedRoute} from '../../components/ProtectedRoute/ProtectedRoute'
+import {AuthorizedBlockedRoute} from '../../components/ProtectedRoute/AuthorizedBlockedRoute'
+
 interface IAppDataAndStatus{
   error: boolean,
   loading: boolean
@@ -53,8 +56,8 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
 }
 
   return (
-    
-       <Router>
+   
+    <Router>
          <div className={styles.App}>
       <AppHeader  />
      
@@ -70,29 +73,32 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
                       </div>
                 </DndProvider>
             </Route>
-            <Route path='/login' exact={true}>
+            <AuthorizedBlockedRoute path='/login' exact={true}>
               <Login/>
-            </Route>
+            </AuthorizedBlockedRoute>
 
             <Route path="/ingredients/:id" exact={true}>
               <IngredientDetails />
             </Route>
-            <Route path="/profile" exact={true}>
+            <ProtectedRoute path="/profile" exact={true}>
               <Profile />
-            </Route>
-            <Route path="/reset-password" exact={true}>
+            </ProtectedRoute>
+            <AuthorizedBlockedRoute path="/reset-password" exact={true}>
               <ResetPassword />
-            </Route>
-            <Route path="/forgot-password" exact={true}>
+            </AuthorizedBlockedRoute>
+            <AuthorizedBlockedRoute path="/forgot-password" exact={true}>
               <ForgotPassword />
-            </Route>
+            </AuthorizedBlockedRoute>
             <Route path="/register" exact={true}>
               <Register />
             </Route>
+
+
               </Switch>
+             
               </div>
-        </Router>
-   
+              </Router>
+       
   );
 }
 

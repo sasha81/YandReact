@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer} from './constructor';
+import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer,visitsReducer,securityUserReducer} from './constructor';
 
 
 const rootReducer = combineReducers({
@@ -8,6 +8,8 @@ const rootReducer = combineReducers({
     'allIngredients':allIngredientsReducer,
     'bun':bunReducer,
     'ingredientMap': mapReducer,
-    'ingredients':ingredientReducer
+    'ingredients':ingredientReducer,
+    'user':securityUserReducer,
+    'visited':visitsReducer
   })
 export default rootReducer;  

@@ -1,25 +1,35 @@
 import React from 'react';
+import {useDispatch} from 'react-redux'
 import { useState } from "react";
 import {Link} from 'react-router-dom'
 import styles from '../CommonStyles.module.css';
 import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import useFormField from '../../utils/customForms'
+import useFormField from '../../utils/customForms';
+import { useHistory, useLocation } from 'react-router-dom';
+import {register} from '../../services/actions/securityThunk';
+
 
 function Register() {
 
-
-    const name = useFormField();
+    const location = useLocation();
+    const currentPath = location.pathname.slice();
+    const history = useHistory();
+    const email = useFormField();
     const login = useFormField();
     const password = useFormField();
-
+  
     const [isPwdHidden, hidePwd] = useState<boolean>(false);
+const dispatch = useDispatch();
 
     const onIconClick = () => {
         hidePwd(prev=>!prev)
   }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-   console.log(name.value, password.value);
+    dispatch(register({email:email.value, name:login.value,password:password.value},
+         ()=>history.replace({pathname:'/profile', state:{from:currentPath}})))
+ 
   };
 
   const getPwd = (pwd: string, isPwdHidden: boolean):string =>{
@@ -35,10 +45,10 @@ function Register() {
              <div className="mt-8">
                 <Input
                     type={'text'}
-                    placeholder={'username'}
-                    {...name}
+                    placeholder={'email'}
+                    {...email}
                    
-                    value={name.value}
+                    value={email.value}
                     name={'name'}
                     error={false}                 
                     errorText={'Ошибка'}
@@ -51,7 +61,7 @@ function Register() {
                     placeholder={'login'}
                     {...login}
                    
-                    value={name.value}
+                    value={login.value}
                     name={'login'}
                     error={false}                 
                     errorText={'Ошибка'}
@@ -81,7 +91,7 @@ function Register() {
                 <p className="text text_type_main-small">
                     Уже зарегестрированы?
                 </p>
-                    <Link to={'/login'}>Войти</Link>
+                    <Link to={{pathname:'/login',state:{from:currentPath}}}>Войти</Link>
                 </div>      
            
             

@@ -4,20 +4,43 @@ import { useState } from "react";
 import useFormField from '../../utils/customForms';
 import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from '../CommonStyles.module.css';
+import {resetPassword} from '../../services/apis';
+import {checkResponse} from '../../services/actions/constructorThunks';
+import {register} from '../../services/actions/securityThunk';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../services/store';
+import { useHistory, useLocation } from 'react-router-dom';
 
 function ResetPassword() {
 
-    const name = useFormField();
+    const location = useLocation();
+    const currentPath = location.pathname.slice();
+    const history = useHistory();
+
+    const token = useFormField();
     const password = useFormField();
+ 
 
     const [isPwdHidden, hidePwd] = useState<boolean>(false);
-
+    const user =   useSelector((state: RootState)=>state.user) as any;
+    const dispatch = useDispatch()
     const onIconClick = () => {
         hidePwd(prev=>!prev)
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-   console.log(name.value, password.value);
+    resetPassword({password:password.value, token:token.value})
+    .then(checkResponse)
+    .then(data=>{
+        if(data.success) {
+            dispatch(register({...user, password:password.value},
+                ()=>history.replace({pathname:'/profile', state:{from:currentPath}})))
+        }
+        else{
+            //TODO: handle error
+        }
+    })
+  
   };
 
   const getPwd = (pwd: string, isPwdHidden: boolean):string =>{
@@ -36,9 +59,9 @@ function ResetPassword() {
                 <Input
                     type={'text'}
                     placeholder={'username'}
-                    {...name}
+                    {...token}
                    
-                    value={name.value}
+                    value={token.value}
                     name={'name'}
                     error={false}                 
                     errorText={'Ошибка'}
@@ -67,7 +90,7 @@ function ResetPassword() {
                 <p className="text text_type_main-small">
                     Вспомнили пароль?
                 </p>
-                    <Link to={'/login'}>Войти</Link>
+                    <Link to={{pathname:'/login',state:{from:currentPath}}}>Войти</Link>
                 </div>    
 
           

@@ -7,11 +7,15 @@ import reportWebVitals from './reportWebVitals';
 import store from './services/store'
 
 
+window.localStorage.clear();
+
 ReactDOM.render(
   <React.StrictMode>
+  
     <Provider store={store}>
       <App />
     </Provider>
+ 
   </React.StrictMode>,
   document.getElementById('root')
 );
