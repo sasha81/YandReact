@@ -83,7 +83,7 @@ export const sendOrderDetails = (cost: number, setFetchError,allIngredients: IBa
   dispatch(actUponWithPayload( MAKE_ORDER, sendingOrder))
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + window.localStorage.getItem('accessToken') },
       body: JSON.stringify({ ingredients: allIngredients })
     };
     fetch(burgerUrl + '/orders', requestOptions)

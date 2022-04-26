@@ -11,23 +11,26 @@ import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sen
 
 import { WithDrop,WithDrag} from '../../utils/dndHOCs';
 import {RootState} from '../../services/store'
-
+import { useHistory, useLocation } from 'react-router-dom';
 const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredient | null): number => {
   if (ingredients.length === 0 && bun == null) return 0;
   return ingredients.reduce((accum, curr) => { return accum + curr.price }, 0) + (bun ? bun.price : 0);
 }
 
 export const BurgerConstructor = (): JSX.Element => {
-
+  const history = useHistory();
+  const location = useLocation();
+  const currentPath = location.pathname.slice();
   
   const [fetchError, setFetchError] = useState(false);
 
   const dispatch = useDispatch();
 
-      const {storeIngredients, storeBun,storeOrderDetails} = useSelector((store:RootState)=>({
+      const {storeIngredients, storeBun,storeOrderDetails, user} = useSelector((store:RootState)=>({
         storeIngredients:store.ingredients,
         storeBun:store.bun,
-        storeOrderDetails:store.orderDetails
+        storeOrderDetails:store.orderDetails,
+        user: store.user
       }))    
 
   const [, drop] = useDrop({
@@ -54,9 +57,8 @@ export const BurgerConstructor = (): JSX.Element => {
     if(storeBun===null) return;
 
     const allIngredients = storeIngredients.concat(storeBun);
-
-    dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
-
+    if(user) dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
+    else history.replace({pathname:'/login', state:{from:currentPath}})
   }
 
 

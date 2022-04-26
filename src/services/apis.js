@@ -1,4 +1,5 @@
-import {getCookie} from './cookies'
+
+
 
 
 export const resetPassword = async (form) =>{
@@ -56,7 +57,7 @@ export const logOut = async () =>{
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + window.localStorage.getItem('accessToken')
+      'Authorization': 'Bearer ' + window.localStorage.getItem('accessToken')
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
@@ -71,7 +72,7 @@ export const updateUser = async (form)=>{
     credentials: 'same-origin',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + window.localStorage.getItem('accessToken')
+      'Authorization': 'Bearer ' + window.localStorage.getItem('accessToken')
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',

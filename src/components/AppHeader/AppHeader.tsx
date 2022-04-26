@@ -1,5 +1,6 @@
 import { Logo,BurgerIcon,ListIcon,ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory, useLocation } from 'react-router-dom';
+import {NavLink} from 'react-router-dom'
 import styles from './AppHeader.module.css'
 import  {goTo} from '../../utils/history';
 
@@ -10,7 +11,8 @@ const AppHeader = ()=>{
     //guaranteed clone of the pathname
     const currentPath = location.pathname.slice();
     const go = goTo(history);
-
+    
+  
     return (
         <header >
             <nav className={styles.burgerHeader}>
@@ -20,7 +22,9 @@ const AppHeader = ()=>{
                         <BurgerIcon type="primary" />
                     
                         <div  className="p-2">
-                            <p className="text text_type_main-default"> Конструктор</p>
+                           
+                            <p className={`text text_type_main-default ${!(currentPath==='/')? 'text_color_inactive': ''}`}> Конструктор</p>
+                           
                         </div>
                     </div>
               
@@ -40,7 +44,11 @@ const AppHeader = ()=>{
                         <ProfileIcon type="primary" />
                     
                         <div  className="p-2">
-                        <p className="text text_type_main-default"> Личный кабинет</p>
+                        <p className={`text text_type_main-default ${!(currentPath==='/profile' 
+                                || currentPath==='/login' 
+                                || currentPath==='/forgot-password' 
+                                || currentPath==='/register' 
+                                || currentPath==='/reset-password' )? 'text_color_inactive': ''}`}> Личный кабинет</p>
                         </div>
                     </div>
               
