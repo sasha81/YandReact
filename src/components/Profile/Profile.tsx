@@ -47,9 +47,9 @@ function Profile() {
         <div className = {styles.wrapper}>
             <div className = {styles.actions}>
                 <div className={commonStyles.commonUpperPadding}></div>
-                <p className="text text_type_main-medium mt-8">Профиль</p>
-                <p className="text text_type_main-medium mt-8">История Заказов</p>
-                <p className="text text_type_main-medium mt-8" onClick={handleLogout}>Выход</p>
+                <p className={`text text_type_main-medium mt-8 ${!(currentPath==='/profile')? 'text_color_inactive': ''}`}>Профиль</p>
+                <p className="text text_type_main-medium mt-8 text_color_inactive">История Заказов</p>
+                <p className="text text_type_main-medium mt-8 text_color_inactive" onClick={handleLogout}>Выход</p>
                 <p className="text text_type_main-small mt-20">В этом разделе вы можете изменить свои персональные данные</p>
 
             </div>
