@@ -52,13 +52,13 @@ function ResetPassword() {
         <div className={styles.outerWrapper}>
         <div className={styles.wrapper}>
                  <Logo/>
-             <div className="mb-6 mt-10"><p className="text_type_main-large">Вход</p></div>
+             <div className="mb-6 mt-10"><p className="text_type_main-large">Восстановление пароля</p></div>
 
             
              <div className="mt-8">
                 <Input
                     type={'text'}
-                    placeholder={'username'}
+                    placeholder={'token from email'}
                     {...token}
                    
                     value={token.value}
@@ -70,7 +70,7 @@ function ResetPassword() {
                    <div className="mt-8">
                 <Input
                     type={'text'}
-                    placeholder={'password'}
+                    placeholder={'new password'}
                     {...password}
                     icon={isPwdHidden ? 'ShowIcon': 'HideIcon'}
                     value={getPwd(password.value,isPwdHidden)}
@@ -81,12 +81,12 @@ function ResetPassword() {
                     size={'default'}
                 />
                 </div>
-                <div className="ml-20">
+                <div className="mt-6">
                     <Button type="primary" size="small" onClick={handleSubmit} >
                         Сохранить
                     </Button>
                 </div>
-                <div className={styles.smallHorizontalContainerNoWrap}>
+                <div className={`mt-6 ${styles.smallHorizontalContainerNoWrap}`}>
                 <p className="text text_type_main-small">
                     Вспомнили пароль?
                 </p>

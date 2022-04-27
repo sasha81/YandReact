@@ -71,7 +71,7 @@ const dispatch = useDispatch();
                 </div>    
 
            
-            <div className={styles.smallHorizontalContainerNoWrap}>
+                <div className={`mt-6 ${styles.smallHorizontalContainerNoWrap}`}>
                 <p className="text text_type_main-small">
                     Вспомнили пароль?
                 </p>

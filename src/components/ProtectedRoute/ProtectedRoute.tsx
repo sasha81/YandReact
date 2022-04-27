@@ -41,7 +41,7 @@ export function ProtectedRoute({ children, ...rest }) {
                             // Маршрут, на который произойдёт переадресация
                             pathname: '/login',
                             // В from сохраним текущий маршрут
-              state: { from: location.state.from }
+              state: { from: location }
                         }}
           />
                 )

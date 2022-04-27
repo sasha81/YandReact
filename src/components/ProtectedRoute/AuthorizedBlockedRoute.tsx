@@ -3,6 +3,7 @@ import { Route, Redirect, useLocation,useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector} from 'react-redux';
 import {RootState} from '../../services/store';
+import ResetPassword from '../ResetPassword/ResetPassword';
 
 export function AuthorizedBlockedRoute({ children, ...rest }) {
   
@@ -27,23 +28,38 @@ export function AuthorizedBlockedRoute({ children, ...rest }) {
     return null;
   }
 
-  if( user && visited.hasOwnProperty('forgot_password')  && currentPath==='/reset-password') {
+  if(  visited.hasOwnProperty('forgot_password')  && currentPath==='/reset-password') {
     
-    return (
-      <Route
-      {...rest}
-            // Получим текущий маршрут, с которого произойдёт переадресация 
-            // для неавторизованного пользователя
-      render={
-        
-          children }
-        
-        />
-    )
+    return  (
+      <Route  {...rest}>
+
+          <ResetPassword />
+      </Route>
+
+      // <Route
+      //   {...rest}
+             
+      //   render={({ location }) =>
+      //     (   children          
+      //             )
+      //   }
+      // />
+    );
   }
-  else if (currentPath==='/reset-password' && !(user && visited.hasOwnProperty('forgot_password') ) ){
-    return  history.goBack();
-  }
+//   else if (currentPath==='/reset-password' && !(user && visited.hasOwnProperty('forgot_password') ) ){
+//     return  (   <Redirect
+//       // Передадим в пропс to не строку, а объект.
+//       to={{
+//           // Маршрут, на который произойдёт переадресация
+//           pathname: location.state.from,
+//           // В from сохраним текущий маршрут
+//           state: { from: currentPath }
+//       }}
+// />
+
+   
+//     )
+//   }
   else return (
     <Route
       {...rest}
@@ -53,9 +69,9 @@ export function AuthorizedBlockedRoute({ children, ...rest }) {
           // Передадим в пропс to не строку, а объект.
           to={{
               // Маршрут, на который произойдёт переадресация
-              pathname: location.state.from,
+              pathname: location,
               // В from сохраним текущий маршрут
-state: { from: currentPath }
+              state: { from: currentPath }
           }}
 />
 

@@ -58,7 +58,7 @@ export const BurgerConstructor = (): JSX.Element => {
 
     const allIngredients = storeIngredients.concat(storeBun);
     if(user) dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
-    else history.replace({pathname:'/login', state:{from:currentPath}})
+    else history.replace({pathname:'/login', state:{from:currentPath, returnHere:true}})
   }
 
 
