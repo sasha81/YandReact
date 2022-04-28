@@ -3,9 +3,14 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color:#2F4F4F;
+    background-color:#1C1C21;
     padding: 50px;
     z-index: 1000;
     border-radius: 30px;
     width: 700px;
+}
+.closeIconWrapper{
+    position:absolute;
+    top:50px; 
+    right:40px;
 }

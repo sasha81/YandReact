@@ -1,149 +1,129 @@
-import React, {useState,useEffect} from 'react';
+import  { useState, useEffect } from 'react';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
+import { useSelector, useDispatch } from 'react-redux';
+import {  Switch, Route } from 'react-router-dom';
 
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
 
-import { BurgerConstructor} from '../BurgerConstructor/BurgerConstructor'
+import { BurgerConstructor } from '../BurgerConstructor/BurgerConstructor'
 
-import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
+import { BurgerIngredients } from '../BurgerIngredients/BurgerIngredients'
 
-import {IChoosenIngredients, IBareBurgerIngredient} from '../Interfaces'
+import { IBareBurgerIngredient } from '../Interfaces';
+import {
+  useLocation,
 
-interface IAppDataAndStatus{
-  productData:IBareBurgerIngredient[] | null | string,
+} from "react-router-dom";
+import { burgerUrl } from '../../configs/urls';
+import { RootState } from '../../services/store';
+import { loadData } from '../../services/actions/constructorThunks'
+import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
+import Login from '../pages/Login';
+import Profile from '../pages/Profile';
+import ResetPassword from '../pages/ResetPassword';
+import ForgotPassword from '../pages/ForgotPassword';
+import Register from '../pages/Register';
+
+import { ProtectedRoute } from '../../components/ProtectedRoute/ProtectedRoute'
+import { AuthorizedBlockedRoute } from '../../components/ProtectedRoute/AuthorizedBlockedRoute'
+import OrderDetailWrapper from '../OrderDetails/OrderDetailWrapper';
+import { loginUserFromToken } from '../../services/actions/securityThunk';
+import OrderHistory from '../pages/OrderHistory';
+
+interface IAppDataAndStatus {
   error: boolean,
   loading: boolean
 }
 
 
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
+const URL = burgerUrl + '/ingredients';
 
-const App=(): JSX.Element=> {
-const [choosenIngredients, setIngredient]= useState<IChoosenIngredients>({});
-const [bun, setBun]= useState<IBareBurgerIngredient | null>(null);
-const [choosenIngredientObjects, setIngredientObjects]= useState<IBareBurgerIngredient[]>([]);
-const [order, completeOrder] = useState(false);
-const [dataAndStatus, setDataAndStatus] = useState<IAppDataAndStatus>({productData:null, error: false, loading: false})
+const App = (): JSX.Element => {
 
-useEffect(()=>{
-  const getProductData = async () => {
-    setDataAndStatus(prev=> { return {...prev, loading: true}});
-    try{
-      const res = await fetch(URL);
-      const data = await res.json();
-      setDataAndStatus({ productData: data.data, loading: false, error:false });
-    }
-    catch(e){
-      setDataAndStatus({ productData: 'error', loading: false, error:true });
-    }
-  }
+  const [order] = useState(false);
+  const [, setStatus] = useState<IAppDataAndStatus>({ error: false, loading: false })
+  const data = useSelector((state: RootState) => state.allIngredients)
 
-  getProductData();
-},[])
+  const dispatch = useDispatch();
 
-const pickIngredient = (ingredient: IBareBurgerIngredient):void =>{
-  const _id = ingredient._id
-  if(ingredient.type!=='bun'){
-      setIngredient(prev=>{     
+  let location = useLocation();
 
-            if(prev.hasOwnProperty(_id)){
-              return {
-                ...prev,
-                [_id]: prev[_id]+1
-              }
-            }
-            else{
-              return {
-                ...prev,
-                [_id]:1
-              }
-            }
-          });
-          setIngredientObjects((prev)=>{
-            return [...prev, ingredient]   
-          });
-  }
-    else if(ingredient.type==='bun' && bun==null){
-      setBun({...ingredient});
-      setIngredient(prev=>{     
+  useEffect(() => {
 
-        if(prev.hasOwnProperty(_id)){
-          return {
-            ...prev,
-            [_id]: prev[_id]+1
-          }
-        }
-        else{
-          return {
-            ...prev,
-            [_id]:1
-          }
-        }
-      });
-    }
-    else{
+    dispatch(loadData(URL, setStatus));
+    dispatch(loginUserFromToken(window.localStorage.getItem('accessToken')))
+  }, [dispatch])
 
-    }
-}
 
-const deleteIngredient = (ingredient:IBareBurgerIngredient)=>():void=>{
-  const _id = ingredient._id;
-  setIngredient(prev=>{
-    if(prev.hasOwnProperty(_id) && prev[_id]>1){
-      return {
-        ...prev,
-        [_id]: prev[_id]-1
-      }
-    }
-    else if(prev.hasOwnProperty(_id) && prev[_id]===1){
-      const obj = {...prev};
-      delete obj[_id];
-      return obj
-    }
-    else{
-      return {...prev}
-    }
-  });
-  setIngredientObjects((prev)=>{
-    const index = prev.findIndex(el=>{return (el._id===_id)})
-    const tempArr = [...prev]
-    tempArr.splice(index,1);
-    return tempArr;
-   
-  })
-}
 
-const orderComplete = ():void=>{
-    console.log("This burger order is sent to the server: ", choosenIngredientObjects);
-    completeOrder(true);
-    setIngredient({});
-    setIngredientObjects([]);
-    setBun(null);
-    setTimeout(()=>{
-      completeOrder(false);
-    }, 2000);
-}
+  const getIngredients = (data: IBareBurgerIngredient[] | null | string) => {
+    if (data == null) return (<h1>Loading...</h1>);
+    if (typeof data === 'string' || data instanceof String) return (<h1>Can't load data... Please come later.</h1>)
 
-const getIngredients=(data:IBareBurgerIngredient[] | null | string, choosenIngredients, pickIngredient)=>{
-    if(data==null) return (<h1>Loading...</h1>);
-    if(typeof data === 'string' || data instanceof String) return (<h1>Can't load data... Please come later.</h1>)
-    
     return (
-      <BurgerIngredients data={data} pickedIngredients={choosenIngredients} pickIngedient={pickIngredient} />
+      <BurgerIngredients />
     );
-}
+  }
+
+
+
+
+  let background = location.state && location.state.background;
+
+
 
   return (
+
+
     <div className={styles.App}>
-      <div className={styles.headerBurger}> <AppHeader  /> </div>
-     
-      <div className={styles.ingredientsBurger}>
-       {getIngredients(dataAndStatus.productData,choosenIngredients,pickIngredient)}
-       
-        </div>
-      <div className={styles.constructorBurger}><BurgerConstructor bun={bun} ingredients = {choosenIngredientObjects} deleteIngredient={deleteIngredient} orderComplete={orderComplete}/></div>
-    {order && <h1 style={{position:'absolute', top:'300px', left:'440px', backgroundColor:'blue', padding:'30px', borderRadius: '30px'}}>Order Complete!</h1>}
+      <AppHeader />
+
+      <Switch location={background || location}>
+
+        <Route path="/" exact={true}>
+          <DndProvider backend={HTML5Backend}>
+            <div className={styles.contentWrapper}>
+              <div className={styles.ingredientsBurger}>
+                {getIngredients(data)}
+              </div>
+              <div className={styles.constructorBurger}><BurgerConstructor /></div>
+              {order && <h1 className={styles.appHeader}>Order Complete!</h1>}
+            </div>
+          </DndProvider>
+        </Route>
+        <AuthorizedBlockedRoute path='/login' exact={true}>
+          <Login />
+        </AuthorizedBlockedRoute>
+
+        <Route path="/ingredients/:id" exact={true}>
+          <IngredientDetails />
+        </Route>
+        <ProtectedRoute path="/profile" exact={true}>
+          <Profile />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders" exact={true}>
+          <OrderHistory />
+        </ProtectedRoute>
+        <AuthorizedBlockedRoute path="/reset-password" exact={true}>
+          <ResetPassword />
+        </AuthorizedBlockedRoute>
+        <AuthorizedBlockedRoute path="/forgot-password" exact={true}>
+          <ForgotPassword />
+        </AuthorizedBlockedRoute>
+        <Route path="/register" exact={true}>
+          <Register />
+        </Route>
+        <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />
+
+      </Switch>
+
+      {background && <Route path="/ingredients/:id" children={<IngredientDetails />} />}
+
     </div>
+
+
   );
 }
 

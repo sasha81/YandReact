@@ -1,6 +1,7 @@
 @value headerHeight from "../../layoutConstants.module.css";
 
 .burgerHeader{
+    width:100%;
     height: headerHeight;
     display: flex;
     flex-direction: row;
@@ -11,9 +12,16 @@
 }
 
 .smallFlexContainer{
+    cursor:pointer;
     display: flex;
     align-items: center;
 }
 .movedTenLeft{
     margin-left: 10px;
 }
+
+.activeLink{
+    font-weight: bold;
+}
+
+

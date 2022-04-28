@@ -1,14 +1,22 @@
 .App {
-  position: relative;
+  
   width: 1200px;
+  
   margin: 0 auto;
-  display: grid;
-   grid-template-columns: 50% 50%;
-  /*grid-template-rows: auto; */
-  grid-template-areas:  'header header'
-                        'ingredients constructor'
-                        ;
+  display: block;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
  
+}
+
+.contentWrapper{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+ /*grid-template-rows: auto; */
+ grid-template-areas:  'ingredients constructor'
+                       ;
 }
 
 .headerBurger {
@@ -25,4 +33,12 @@
 .constructorBurger {
   /* composes: burgerConstructor from './components/BurgerConstructor/BurgerConstructor.module.css'; */
   grid-area: constructor;
+}
+.appHeader{
+  position:absolute;
+  top:300px;
+  left:440px;
+  background-color:blue;
+  padding:30px;
+  border-radius: 30px;
 }

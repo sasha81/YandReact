@@ -39,3 +39,30 @@
     align-items: center; 
     
 }
+.elementHeight{
+    height: 80px;
+}
+
+.buttonDivActive{
+    position: relative;
+}
+.buttonDivBlocked:hover > .submitTooltip{
+    visibility:visible;
+}
+
+.buttonDivBlocked{
+    position:relative;
+}
+.submitTooltip{
+  position: absolute;
+  left: 30px;
+  z-index: 1;
+  visibility: hidden;
+  background-color: blue;
+  height:40px;
+  width: 250px;
+  text-align: center;
+  padding-top: 15px;
+  border-radius: 30px;
+  
+}

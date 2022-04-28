@@ -22,3 +22,26 @@
     text-align:center;
     margin:0 auto;
 }
+.center{
+    text-align: center;
+}
+.info{
+   
+    visibility:hidden;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.two{
+    width: 100%;
+    position: relative;
+
+}
+.two:hover > p:first-child{
+    visibility:visible;
+    display: inline-block;
+    background-color: steelblue;
+    border-radius: 5px;
+    
+
+}

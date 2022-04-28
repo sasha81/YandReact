@@ -3,7 +3,7 @@
 @value headerHeight from "../../layoutConstants.module.css";
 @value totalHeight from "../../layoutConstants.module.css";
 
-@value ingredientWidth: 50%;
+@value ingredientWidth: two;
 
 
 .header{
@@ -23,6 +23,7 @@
 }
 
 .innerIngredientContainer {
+    margin-top: 20px;
     display:flex;
     flex-direction:row;
     flex-wrap:wrap;

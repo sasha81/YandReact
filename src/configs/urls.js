@@ -1,0 +1,1 @@
+export const burgerUrl = 'https://norma.nomoreparties.space/api';
