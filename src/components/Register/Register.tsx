@@ -28,7 +28,7 @@ const dispatch = useDispatch();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(register({email:email.value, name:login.value,password:password.value},
-         ()=>history.replace({pathname:'/profile', state:{from:currentPath}})))
+         ()=>history.replace({pathname:'/profile', state:{from:location}})))
  
   };
 
@@ -91,7 +91,7 @@ const dispatch = useDispatch();
                 <p className="text text_type_main-small">
                     Уже зарегестрированы?
                 </p>
-                    <Link to={{pathname:'/login',state:{from:currentPath}}}>Войти</Link>
+                    <Link to={{pathname:'/login',state:{from:location}}}>Войти</Link>
                 </div>      
            
             

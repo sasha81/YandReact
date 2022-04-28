@@ -31,9 +31,9 @@ const dispatch = useDispatch();
     e.preventDefault();
     const form ={email:name.value,password:password.value};
     const cb = ()=> {
-        history.replace({pathname:location.state.from.pathname, state:{from:location}})
-    //     if(location?.state?.from) return history.replace({pathname:location.state.from.pathname, state:{from:currentPath}})
-    //    else return history.replace({pathname:'/profile', state:{from:currentPath}})
+        if(location?.state?.from?.pathname) return history.replace({pathname:location.state.from.pathname, state:{from:location}})
+        else return history.replace({pathname:'/profile', state:{from:location}})
+    
         }
     dispatch(signIn(form,cb))
    
