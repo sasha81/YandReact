@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import {Link} from 'react-router-dom';
 import { useHistory, useLocation } from 'react-router-dom';
-import styles from '../CommonStyles.module.css';
+import styles from './CommonStyles.module.css';
 import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../../utils/customForms'
 
@@ -45,11 +45,13 @@ const dispatch = useDispatch();
   }
 
     return (
-        <div className={styles.outerWrapper}>
+        <form className={styles.outerWrapper} onSubmit={handleSubmit}>
+       
         <div className={styles.wrapper}>
+       
               <div className="mb-6 mt-10"><Logo/></div>
              <div className="mb-6 mt-10"><p className="text_type_main-large">Вход</p></div>
-
+            
              <div className="mt-8">
                 <Input
                     type={'text'}
@@ -77,7 +79,7 @@ const dispatch = useDispatch();
                 />
                 </div>
                 <div className="mt-8">
-                    <Button type="primary" size="small" onClick={handleSubmit} >
+                    <Button htmlType="submit" type="primary" size="small"  >
                         Войти
                     </Button>
                 </div>    
@@ -97,9 +99,10 @@ const dispatch = useDispatch();
                     <Link to={{pathname:'/forgot-password', state:{from:currentPath} }} >Восстановить пароль</Link>
                 </div>      
 
-            
+               
         </div>
-        </div>
+     
+         </form>
     )
 }
 

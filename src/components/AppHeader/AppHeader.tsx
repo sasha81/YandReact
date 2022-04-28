@@ -48,7 +48,9 @@ const AppHeader = ()=>{
                                 || currentPath==='/login' 
                                 || currentPath==='/forgot-password' 
                                 || currentPath==='/register' 
-                                || currentPath==='/reset-password' )? 'text_color_inactive': ''}`}> Личный кабинет</p>
+                                || currentPath==='/reset-password'
+                                || currentPath==='/profile/orders'
+                                )? 'text_color_inactive': ''}`}> Личный кабинет</p>
                         </div>
                     </div>
               

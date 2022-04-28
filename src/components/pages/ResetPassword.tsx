@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import { useState } from "react";
 import useFormField from '../../utils/customForms';
 import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from '../CommonStyles.module.css';
+import styles from './CommonStyles.module.css';
 import {resetPassword} from '../../services/apis';
 import {checkResponse} from '../../services/actions/constructorThunks';
 import {register} from '../../services/actions/securityThunk';
@@ -40,6 +40,9 @@ function ResetPassword() {
             //TODO: handle error
         }
     })
+    .catch(e=>{
+        //TODO: handle error
+    })
   
   };
 
@@ -49,12 +52,13 @@ function ResetPassword() {
   }
 
     return (
-        <div className={styles.outerWrapper}>
+        <form className={styles.outerWrapper} onSubmit={handleSubmit}>
+      
         <div className={styles.wrapper}>
                  <Logo/>
              <div className="mb-6 mt-10"><p className="text_type_main-large">Восстановление пароля</p></div>
 
-            
+             
              <div className="mt-8">
                 <Input
                     type={'text'}
@@ -82,10 +86,11 @@ function ResetPassword() {
                 />
                 </div>
                 <div className="mt-6">
-                    <Button type="primary" size="small" onClick={handleSubmit} >
+                    <Button type="primary" size="small" htmlType="submit"  >
                         Сохранить
                     </Button>
                 </div>
+              
                 <div className={`mt-6 ${styles.smallHorizontalContainerNoWrap}`}>
                 <p className="text text_type_main-small">
                     Вспомнили пароль?
@@ -93,10 +98,11 @@ function ResetPassword() {
                     <Link to={{pathname:'/login',state:{from:currentPath}}}>Войти</Link>
                 </div>    
 
-          
+               
             
         </div>
-        </div>
+        
+        </form>
     )
 }
 

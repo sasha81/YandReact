@@ -19,16 +19,17 @@ import {burgerUrl} from '../../configs/urls';
 import {RootState} from '../../services/store';
 import {loadData} from '../../services/actions/constructorThunks'
 import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
-import Login from '../Login/Login';
-import Profile from '../Profile/Profile';
-import ResetPassword from '../ResetPassword/ResetPassword';
-import ForgotPassword from '../ForgotPassword/ForgotPassword';
-import Register from '../Register/Register';
+import Login from '../pages/Login';
+import Profile from '../pages/Profile';
+import ResetPassword from '../pages/ResetPassword';
+import ForgotPassword from '../pages/ForgotPassword';
+import Register from '../pages/Register';
 
 import {ProtectedRoute} from '../../components/ProtectedRoute/ProtectedRoute'
 import {AuthorizedBlockedRoute} from '../../components/ProtectedRoute/AuthorizedBlockedRoute'
 import OrderDetailWrapper from '../OrderDetails/OrderDetailWrapper';
 import {loginUserFromToken} from '../../services/actions/securityThunk';
+import OrderHistory from '../pages/OrderHistory';
 
 interface IAppDataAndStatus{
   error: boolean,
@@ -85,7 +86,7 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
 
   return (
    
-    // <Router>
+   
          <div className={styles.App}>
       <AppHeader  />
      
@@ -111,6 +112,9 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
             </Route>
             <ProtectedRoute path="/profile" exact={true}>
               <Profile />
+            </ProtectedRoute>
+            <ProtectedRoute path="/profile/orders" exact={true}>
+              <OrderHistory />
             </ProtectedRoute>
             <AuthorizedBlockedRoute path="/reset-password" exact={true}>
               <ResetPassword />

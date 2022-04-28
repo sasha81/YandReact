@@ -3,7 +3,7 @@ import { Route, Redirect, useLocation,useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector} from 'react-redux';
 import {RootState} from '../../services/store';
-import ResetPassword from '../ResetPassword/ResetPassword';
+import ResetPassword from '../pages/ResetPassword';
 
 export function AuthorizedBlockedRoute({ children, ...rest }) {
   

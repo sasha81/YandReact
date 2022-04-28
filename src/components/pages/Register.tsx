@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch} from 'react-redux'
 import { useState } from "react";
 import {Link} from 'react-router-dom'
-import styles from '../CommonStyles.module.css';
+import styles from './CommonStyles.module.css';
 import { Input, Logo, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../../utils/customForms';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -37,11 +37,12 @@ const dispatch = useDispatch();
     else return pwd;
   }
     return (
-        <div className={styles.outerWrapper}>
+        <form className={styles.outerWrapper} onSubmit={handleSubmit}>
+       
         <div className={styles.wrapper}>
         <div className="mb-6 mt-10"><Logo/></div>
              <div className="mb-6 mt-10"><p className="text_type_main-large">Регистрация</p></div>
-
+           
              <div className="mt-8">
                 <Input
                     type={'text'}
@@ -83,10 +84,11 @@ const dispatch = useDispatch();
                 />
                 </div>
                 <div className="mt-8">
-                    <Button type="primary" size="small" onClick={handleSubmit} >
+                    <Button type="primary" size="small" htmlType="submit"  >
                         Зарегистрироваться
                     </Button>
-                </div>    
+                </div> 
+                
                 <div className={`${styles.smallHorizontalContainerNoWrap} mt-4`}>
                 <p className="text text_type_main-small">
                     Уже зарегестрированы?
@@ -96,7 +98,7 @@ const dispatch = useDispatch();
            
             
         </div>
-        </div>
+        </form>  
     )
 }
 

@@ -4,7 +4,7 @@ import {useDispatch} from 'react-redux'
 import { Input, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../../utils/customForms'
 import styles from './Profile.module.css';
-import commonStyles from '../CommonStyles.module.css';
+import commonStyles from './CommonStyles.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import {updateUserSec, signOut} from '../../services/actions/securityThunk'
@@ -39,8 +39,12 @@ function Profile() {
 
       const handleLogout = (e) =>{
           e.preventDefault();
-        dispatch(signOut(()=>history.replace({pathname:'/login', state:{from:currentPath}})))
+        dispatch(signOut(()=>history.replace({pathname:'/login', state:{from:location}})))
 
+      }
+      const handleHistory =(e)=>{
+        e.preventDefault();
+        history.replace({pathname:'/profile/orders', state:{from:location}})
       }
 
     return (
@@ -48,13 +52,15 @@ function Profile() {
             <div className = {styles.actions}>
                 <div className={commonStyles.commonUpperPadding}></div>
                 <p className={`text text_type_main-medium mt-8 ${!(currentPath==='/profile')? 'text_color_inactive': ''}`}>Профиль</p>
-                <p className="text text_type_main-medium mt-8 text_color_inactive">История Заказов</p>
+                <p className={`text text_type_main-medium mt-8 ${!(currentPath==='/profile/orders')? 'text_color_inactive': ''}`} onClick={handleHistory}>История Заказов</p>
                 <p className="text text_type_main-medium mt-8 text_color_inactive" onClick={handleLogout}>Выход</p>
                 <p className="text text_type_main-small mt-20">В этом разделе вы можете изменить свои персональные данные</p>
 
             </div>
-            <div className = {styles.form}>
+            <form className = {styles.form} onSubmit={handleSubmit}>
+           
             <div className={commonStyles.commonUpperPadding}></div>
+           
             <div className="mt-8">
                 <Input
                     type={'text'}
@@ -94,12 +100,13 @@ function Profile() {
                 />
                 </div>
                 <div className="mt-8">
-                    <Button type="primary" size="small" onClick={handleSubmit} >
+                    <Button htmlType="submit" type="primary" size="small"  >
                         Сохранить
                     </Button>
-                </div>    
+                </div> 
+                </form> 
             </div>
-        </div>
+           
     )
 }
 

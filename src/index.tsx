@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import store from './services/store'
 
 
-// window.localStorage.clear();
+
 
 ReactDOM.render(
   <React.StrictMode>

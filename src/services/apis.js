@@ -1,9 +1,9 @@
-
+const URL = 'https://norma.nomoreparties.space/api';
 
 
 
 export const resetPassword = async (form) =>{
-  return await fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
+  return await fetch(URL+'/password-reset/reset', {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
@@ -19,7 +19,7 @@ export const resetPassword = async (form) =>{
 
 
 export const forgotPassword = async (form) =>{
-  return await fetch('https://norma.nomoreparties.space/api/password-reset', {
+  return await fetch(URL+'/password-reset', {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
@@ -35,7 +35,7 @@ export const forgotPassword = async (form) =>{
 
 
 export const registerUser = async (form)=>{
-  return await fetch('https://norma.nomoreparties.space/api/auth/register', {
+  return await fetch(URL+'/auth/register', {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
@@ -50,7 +50,7 @@ export const registerUser = async (form)=>{
 }
 
 export const logOut = async () =>{
-  await fetch('https://norma.nomoreparties.space/api/auth/logout', {
+  await fetch(URL+'/auth/logout', {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
@@ -65,7 +65,7 @@ export const logOut = async () =>{
   });
 }
 export const updateUser = async (form)=>{
-  return await fetch('https://norma.nomoreparties.space/api/auth/user', {
+  return await fetch(URL+'/auth/user', {
     method: 'PATCH',
     mode: 'cors',
     cache: 'no-cache',
@@ -82,7 +82,7 @@ export const updateUser = async (form)=>{
 
 
 export const refreshToken = async ()=>{
-  return await fetch('https://norma.nomoreparties.space/api/auth/token', {
+  return await fetch(URL+'/auth/token', {
     method: 'POST ',
     mode: 'cors',
     cache: 'no-cache',
@@ -98,7 +98,7 @@ export const refreshToken = async ()=>{
 }
 
 export const getUserRequest = async () =>
-  await fetch('https://norma.nomoreparties.space/api/auth/user', {
+  await fetch(URL+'/auth/user', {
     method: 'GET',
     mode: 'cors',
     cache: 'no-cache',
@@ -112,7 +112,7 @@ export const getUserRequest = async () =>
   });
 
 export const loginRequest = async form => {
-  return await fetch('https://norma.nomoreparties.space/api/auth/login', {
+  return await fetch(URL+'/auth/login', {
     method: 'POST',
     mode: 'cors',
     cache: 'no-cache',
