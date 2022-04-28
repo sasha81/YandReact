@@ -15,7 +15,8 @@ import {
   RESET_INGREDIENT,
   RESET_MAP,
   ERROR_MAKE_ORDER,
-  ERROR_SET_INGREDIENTS
+  ERROR_SET_INGREDIENTS,
+  NETWORK_CONNECTION
 } from './constructor';
 import { IBareBurgerIngredient,IOrder } from '../../components/Interfaces';
 import { burgerUrl } from '../../configs/urls';
@@ -100,7 +101,8 @@ export const sendOrderDetails = (cost: number, setFetchError,allIngredients: IBa
       .catch(error => {
         dispatch(informOfError(ERROR_MAKE_ORDER));
         if (!(error.message ==="server error")) {
-          setFetchError(true);
+          dispatch(actUponWithPayload(NETWORK_CONNECTION,true))
+         // setFetchError(true);
         }
        
       })

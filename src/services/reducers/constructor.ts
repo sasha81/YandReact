@@ -17,7 +17,8 @@ import {
     ERROR_MAKE_ORDER,
     UPDATE_USER,
     UPDATE_VISIT,
-    RESET_VISITS
+    RESET_VISITS,
+    NETWORK_CONNECTION
 
 } from '../actions/constructor';
 import { IBareBurgerIngredient, IReduxState,IOrder, IUser } from '../../components/Interfaces';
@@ -37,7 +38,21 @@ const initialAllIngredients: IBareBurgerIngredient[] | string =[];
 const initalIngredientDetails:  IBareBurgerIngredient | null = null;
 const initalOrderDetails:  IOrder | null = null;
 const initialUser: IUser | null = null;
-const initialVisited : Object = {}; 
+const initialVisited : Object = {};
+const initialNetworkError : boolean=false; 
+
+
+export const noConnectionReducer = (state = initialNetworkError, action:{type:string, payload: boolean })=>{
+    switch(action.type){
+        case NETWORK_CONNECTION:{
+            if(action.payload) return true;
+            else return false;
+        }
+        default: 
+        return state;
+    }
+}
+
 
 export const visitsReducer = (state = initialVisited, action:{type:string, payload: string })=>{
     switch(action.type){

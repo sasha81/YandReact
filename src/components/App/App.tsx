@@ -12,7 +12,9 @@ import { BurgerConstructor} from '../BurgerConstructor/BurgerConstructor'
 import {BurgerIngredients} from '../BurgerIngredients/BurgerIngredients'
 
 import { IBareBurgerIngredient} from '../Interfaces';
-
+import {useLocation,
+  
+} from "react-router-dom";
 import {burgerUrl} from '../../configs/urls';
 import {RootState} from '../../services/store';
 import {loadData} from '../../services/actions/constructorThunks'
@@ -25,11 +27,23 @@ import Register from '../Register/Register';
 
 import {ProtectedRoute} from '../../components/ProtectedRoute/ProtectedRoute'
 import {AuthorizedBlockedRoute} from '../../components/ProtectedRoute/AuthorizedBlockedRoute'
+import OrderDetailWrapper from '../OrderDetails/OrderDetailWrapper';
 
 interface IAppDataAndStatus{
   error: boolean,
   loading: boolean
 }
+
+const parseToNearestObject =(key:string, object: Object, depth: number, arr:boolean[]=[])=>{
+    if(!(typeof object === 'object')) return undefined;
+    arr.push(true);
+    if(arr.length>depth) return undefined;
+    if(object.hasOwnProperty(key)) return object[key];
+   // if(object.hasOwnProperty('from') && !object['from'].hasOwnProperty('state')) return undefined;//object['from'];
+    const result = parseToNearestObject(key,object['from']['state'], depth,arr);
+    return result;
+}
+
 
 
 const URL = burgerUrl+'/ingredients';
@@ -39,7 +53,10 @@ const App=(): JSX.Element=> {
 const [order] = useState(false);
 const [, setStatus] = useState<IAppDataAndStatus>({ error: false, loading: false})
 const data = useSelector((state: RootState)=>state.allIngredients)
+const orderDetails = useSelector((state: RootState)=>state.orderDetails)
 const dispatch = useDispatch();
+
+let location = useLocation();
 
 useEffect(()=>{
   
@@ -55,13 +72,24 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
   );
 }
 
+// let backgrnd;
+// if(location.state){
+//   backgrnd = parseToNearestObject('background',location.state, 1000)
+// }
+
+
+// let background = location.state && backgrnd
+
+
+
   return (
    
-    <Router>
+    // <Router>
          <div className={styles.App}>
       <AppHeader  />
      
-         <Switch>
+         {/* <Switch location={background || location}> */}
+         <Switch >
            <Route path="/" exact={true}>
               <DndProvider backend={HTML5Backend}> 
                   <div className={styles.contentWrapper}>               
@@ -92,12 +120,14 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
             <Route path="/register" exact={true}>
               <Register />
             </Route>
-
+            <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />
 
               </Switch>
+
+              {/* {background && <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />} */}
              
               </div>
-              </Router>
+              // </Router>
        
   );
 }

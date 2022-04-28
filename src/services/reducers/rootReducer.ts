@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer,visitsReducer,securityUserReducer} from './constructor';
+import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer,visitsReducer,securityUserReducer,noConnectionReducer} from './constructor';
 
 
 const rootReducer = combineReducers({
@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
     'ingredientMap': mapReducer,
     'ingredients':ingredientReducer,
     'user':securityUserReducer,
-    'visited':visitsReducer
+    'visited':visitsReducer,
+    'noConnection':noConnectionReducer
   })
 export default rootReducer;  

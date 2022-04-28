@@ -57,8 +57,9 @@ export const BurgerConstructor = (): JSX.Element => {
     if(storeBun===null) return;
 
     const allIngredients = storeIngredients.concat(storeBun);
-    if(user) dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
-    else history.replace({pathname:'/login', state:{from:currentPath, returnHere:true}})
+    // if(user) dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
+    // else history.replace({pathname:`/orderDetails/${JSON.stringify(allIngredients)}/${cost}`, state:{from:currentPath, background:location, ingredients:allIngredients}})
+    history.replace({pathname:`/orderDetails`, state:{from:currentPath, background:location, ingredients:allIngredients, cost:cost}})
   }
 
 
