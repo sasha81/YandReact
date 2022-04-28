@@ -28,6 +28,7 @@ import Register from '../Register/Register';
 import {ProtectedRoute} from '../../components/ProtectedRoute/ProtectedRoute'
 import {AuthorizedBlockedRoute} from '../../components/ProtectedRoute/AuthorizedBlockedRoute'
 import OrderDetailWrapper from '../OrderDetails/OrderDetailWrapper';
+import {loginUserFromToken} from '../../services/actions/securityThunk';
 
 interface IAppDataAndStatus{
   error: boolean,
@@ -39,7 +40,7 @@ const parseToNearestObject =(key:string, object: Object, depth: number, arr:bool
     arr.push(true);
     if(arr.length>depth) return undefined;
     if(object.hasOwnProperty(key)) return object[key];
-   // if(object.hasOwnProperty('from') && !object['from'].hasOwnProperty('state')) return undefined;//object['from'];
+
     const result = parseToNearestObject(key,object['from']['state'], depth,arr);
     return result;
 }
@@ -53,7 +54,7 @@ const App=(): JSX.Element=> {
 const [order] = useState(false);
 const [, setStatus] = useState<IAppDataAndStatus>({ error: false, loading: false})
 const data = useSelector((state: RootState)=>state.allIngredients)
-const orderDetails = useSelector((state: RootState)=>state.orderDetails)
+
 const dispatch = useDispatch();
 
 let location = useLocation();
@@ -61,7 +62,10 @@ let location = useLocation();
 useEffect(()=>{
   
   dispatch(loadData(URL,setStatus));
+  dispatch(loginUserFromToken(window.localStorage.getItem('accessToken')))
 },[dispatch])
+
+
 
 const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
   if(data==null) return (<h1>Loading...</h1>);
@@ -72,13 +76,10 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
   );
 }
 
-// let backgrnd;
-// if(location.state){
-//   backgrnd = parseToNearestObject('background',location.state, 1000)
-// }
 
 
-// let background = location.state && backgrnd
+
+ let background = location.state && location.state.background;
 
 
 
@@ -88,8 +89,8 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
          <div className={styles.App}>
       <AppHeader  />
      
-         {/* <Switch location={background || location}> */}
-         <Switch >
+         <Switch location={background || location}>
+       
            <Route path="/" exact={true}>
               <DndProvider backend={HTML5Backend}> 
                   <div className={styles.contentWrapper}>               
@@ -124,10 +125,10 @@ const getIngredients=(data:IBareBurgerIngredient[] | null | string)=>{
 
               </Switch>
 
-              {/* {background && <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />} */}
+              {background && <Route path="/ingredients/:id" children={<IngredientDetails />} />}
              
               </div>
-              // </Router>
+            
        
   );
 }

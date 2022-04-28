@@ -16,13 +16,16 @@ const IngredientDetails = ()=>{
     const ingredient = (allIngredients as IBareBurgerIngredient[]).find(ingredient=>{return ingredient._id===id}) as IBareBurgerIngredient;
 
     const modalClose =()=>{
-        history.replace({pathname: location.state.prevPath,
-            state: {...location.state, showModalIngredientDetails:false}
-        
-    })
+        if(location?.state?.from?.pathname){
+                return history.replace({pathname: location.state.from.pathname, state: {from:location} })   
+            
+        }
+        else{
+            return history.replace({pathname: '/', state: {from:location} })   
+        }
     }
 
-    if(location.state && location.state.showModalIngredientDetails){
+    if(location.state && location.state.background){
         return (
             <Modal onClose={modalClose}>
                 <BareIngredientDetails {...ingredient} />

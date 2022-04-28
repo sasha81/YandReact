@@ -1,13 +1,12 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState } from "react";
+
 import {useSelector, useDispatch} from 'react-redux';
 import { useDrop } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient,IBurgerIngredientDrop } from '../Interfaces';
-import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails';
 
-import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sendOrderDetails} from '../../services/actions/constructorThunks' 
+
+import {pickIngredient, switchIngredients,deleteIngredient} from '../../services/actions/constructorThunks' 
 
 import { WithDrop,WithDrag} from '../../utils/dndHOCs';
 import {RootState} from '../../services/store'
@@ -22,11 +21,11 @@ export const BurgerConstructor = (): JSX.Element => {
   const location = useLocation();
   const currentPath = location.pathname.slice();
   
-  const [fetchError, setFetchError] = useState(false);
+  
 
   const dispatch = useDispatch();
 
-      const {storeIngredients, storeBun,storeOrderDetails, user} = useSelector((store:RootState)=>({
+      const {storeIngredients, storeBun} = useSelector((store:RootState)=>({
         storeIngredients:store.ingredients,
         storeBun:store.bun,
         storeOrderDetails:store.orderDetails,
@@ -44,11 +43,6 @@ export const BurgerConstructor = (): JSX.Element => {
 
 
 
-  const modalClose = () => {
-    dispatch(resetOrderDetails())
-    
-  }
-
 
 
   const cost = getCost(storeIngredients, storeBun);
@@ -57,9 +51,8 @@ export const BurgerConstructor = (): JSX.Element => {
     if(storeBun===null) return;
 
     const allIngredients = storeIngredients.concat(storeBun);
-    // if(user) dispatch(sendOrderDetails(cost,setFetchError,allIngredients))
-    // else history.replace({pathname:`/orderDetails/${JSON.stringify(allIngredients)}/${cost}`, state:{from:currentPath, background:location, ingredients:allIngredients}})
-    history.replace({pathname:`/orderDetails`, state:{from:currentPath, background:location, ingredients:allIngredients, cost:cost}})
+   
+    history.replace({pathname:`/orderDetails`, state:{from:currentPath, ingredients:allIngredients, cost:cost}})
   }
 
 
@@ -75,14 +68,14 @@ export const BurgerConstructor = (): JSX.Element => {
   return (
     <>
 
-      {storeOrderDetails && (<Modal onClose={modalClose} >
+      {/* {storeOrderDetails && (<Modal onClose={modalClose} >
         <OrderDetails total={storeOrderDetails['cost']} 
                         orderNumber={storeOrderDetails['orderId']}
                         orderStatus={storeOrderDetails['success']}
                         networkError={fetchError} /> 
       </Modal>)
 
-      }
+      } */}
 
 
       <div className={styles.topPadding} />
@@ -152,7 +145,7 @@ export const BurgerConstructor = (): JSX.Element => {
         <div className="p-2"><CurrencyIcon type="primary" /></div>
 
         <div className={`p-8 ${storeBun ? styles.buttonDivActive : styles.buttonDivBlocked}`} >
-         {/* <p className={`text text_type_main-medium ${styles.submitTooltip}`}>Выбирите булку</p> */}
+       
           <Button type="primary" size="medium" disabled={!storeBun} onClick={clickButton(cost, storeBun)}>
             Оформить Заказ
           </Button>

@@ -67,6 +67,15 @@ import {
    
   };
 
+  export const loginUserFromToken = (accessToken :string | null)=>dispatch=>{
+    if(accessToken==null) return;  
+    const isExpired = isTokenExpired(accessToken);
+      const data =parseJwt(accessToken);
+      if(!isExpired && data) {
+        dispatch(actUponWithPayload(UPDATE_USER,data));
+      }
+  }
+
   export const setVisited = (field:string)=>dispatch=>{
       dispatch(actUponWithPayload(UPDATE_VISIT,field))
   
@@ -98,3 +107,30 @@ import {
   
     return {type:actionType}  
   }
+
+  function isTokenExpired(token) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+  
+    const { exp } = JSON.parse(jsonPayload);
+    const expired = Date.now() >= exp * 1000
+    return expired
+  }
+
+  function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+};

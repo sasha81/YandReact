@@ -4,16 +4,13 @@ import OrderDetails from './OrderDetails';
 import {useSelector, useDispatch} from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import {RootState} from '../../services/store';
-import {useParams} from 'react-router-dom'
-import {pickIngredient, switchIngredients,deleteIngredient,resetOrderDetails,sendOrderDetails} from '../../services/actions/constructorThunks' 
-import { IBareBurgerIngredient,IBurgerIngredientDrop } from '../Interfaces';
 
-const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredient | null): number => {
-  if (ingredients.length === 0 && bun == null) return 0;
-  return ingredients.reduce((accum, curr) => { return accum + curr.price }, 0) + (bun ? bun.price : 0);
-}
+import {resetOrderDetails,sendOrderDetails} from '../../services/actions/constructorThunks' 
 
 
+
+
+//Parses the location L(i):{pathname:'p(i),state:{from:L(i-1),key:{obj}}'} linked list to get the obj
 const parseToNearestObject =(key:string, object: Object, depth: number, arr:boolean[]=[])=>{
   if(!(typeof object === 'object')) return undefined;
   arr.push(true);

@@ -83,7 +83,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
         //dispatch(setInfo(ingredient)) 
         history.replace({
             pathname:`/ingredients/${ingredient._id}`,
-            state:{...location.state,showModalIngredientDetails:true, prevPath : location.pathname}
+            state:{background:location, from:location}
         })      
     }
 
@@ -175,9 +175,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
                     )
                 })}
             </div>
-            {/* {ingredientDetails && <Modal onClose={modalClose}>
-                <IngredientDetails {...ingredientDetails} />
-            </Modal>} */}
+         
         </section>
     )
 }
