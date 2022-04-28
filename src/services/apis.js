@@ -1,4 +1,5 @@
-const URL = 'https://norma.nomoreparties.space/api';
+import {burgerUrl as URL} from '../configs/urls';
+
 
 
 
