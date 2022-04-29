@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { useState } from "react";
-import useFormField from '../../hooks/customForms';
+import useFormField from '../hooks/customForms';
 import { Input, Logo, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './CommonStyles.module.css';
-import { resetPassword } from '../../services/apis';
-import { checkResponse } from '../../services/actions/constructorThunks';
-import { register } from '../../services/actions/securityThunk';
+import { resetPassword } from '../services/apis';
+import { checkResponse } from '../services/actions/constructorThunks';
+import { register } from '../services/actions/securityThunk';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../services/store';
+import { RootState } from '../services/store';
 import { useHistory, useLocation } from 'react-router-dom';
 
 function ResetPassword() {

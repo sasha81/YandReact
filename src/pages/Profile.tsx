@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import useFormField from '../../hooks/customForms'
+import useFormField from '../hooks/customForms'
 import styles from './Profile.module.css';
 import commonStyles from './CommonStyles.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { updateUserSec, signOut } from '../../services/actions/securityThunk'
+import { updateUserSec, signOut } from '../services/actions/securityThunk'
 function Profile() {
     const email = useFormField();
     const login = useFormField();

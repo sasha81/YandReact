@@ -17,7 +17,7 @@ const OrderDetails = ({ total, orderNumber, orderStatus, networkError }: { total
 
     return (
         <div className={styles.flexContainerColumnCenter} >
-            <div className="mb-6 mt-10"><p className="text text_type_digits-large">{total}</p></div>
+            <div className="mb-6 mt-10"><p className="text text_type_digits-large">Цена: {total}</p></div>
 
             <div className="mb-6"><p className="text text_type_main-medium">{getOrderNumber(orderNumber, orderStatus, networkError)}</p></div>
             <div className="mt-10 mb-10"><CheckMarkIcon type="primary" /></div>

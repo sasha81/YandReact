@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { useHistory, useLocation } from 'react-router-dom';
 import styles from './CommonStyles.module.css';
 import { Input, Logo, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import useFormField from '../../hooks/customForms'
+import useFormField from '../hooks/customForms'
 
-import { signIn } from '../../services/actions/securityThunk';
+import { signIn } from '../services/actions/securityThunk';
 import { useDispatch } from 'react-redux';
 
 
