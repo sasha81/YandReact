@@ -6,20 +6,20 @@ import { useHistory, useLocation } from 'react-router-dom';
 import {RootState} from '../../services/store';
 
 import {resetOrderDetails,sendOrderDetails} from '../../services/actions/constructorThunks' 
-
+import {parseToNearestObject} from '../../utils/parsingFunctions'
 
 
 
 //Parses the location L(i):{pathname:'p(i),state:{from:L(i-1),key:{obj}}'} linked list to get the obj
-const parseToNearestObject =(key:string, object: Object, depth: number, arr:boolean[]=[])=>{
-  if(!(typeof object === 'object')) return undefined;
-  arr.push(true);
-  if(arr.length>depth) return undefined;
-  if(object.hasOwnProperty(key)) return object[key];
- // if(object.hasOwnProperty('from') && !object['from'].hasOwnProperty('state')) return undefined;//object['from'];
-  const result = parseToNearestObject(key,object['from']['state'], depth,arr);
-  return result;
-}
+// const parseToNearestObject =(key:string, object: Object, depth: number, arr:boolean[]=[])=>{
+//   if(!(typeof object === 'object')) return undefined;
+//   arr.push(true);
+//   if(arr.length>depth) return undefined;
+//   if(object.hasOwnProperty(key)) return object[key];
+//  // if(object.hasOwnProperty('from') && !object['from'].hasOwnProperty('state')) return undefined;//object['from'];
+//   const result = parseToNearestObject(key,object['from']['state'], depth,arr);
+//   return result;
+// }
 
 function OrderDetailWrapper() {
 

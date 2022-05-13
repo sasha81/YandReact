@@ -7,7 +7,7 @@ import {
   import { loginRequest, registerUser, logOut, updateUser } from '../apis';
 
 
-  export const signIn = (form, cb) =>  (dispatch)=> {
+  export const signIn = (form, cb,errCb=(e)=>{}) =>  (dispatch)=> {
     loginRequest(form)
       .then(checkResponse)
       .then(data =>{
@@ -21,11 +21,15 @@ import {
           dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
           cb()
         }
-      } );
+      } )
+      .catch(e=>{
+        errCb(e)
+        //TODO: handle error
+      });
       
   };
 
-  export const register =  (form,cb )=>dispatch=>{
+  export const register =  (form,cb,errCb=(e)=>{} )=>dispatch=>{
     registerUser(form)
       .then(checkResponse)
       .then(data =>{ if(data.accessToken){
@@ -37,11 +41,15 @@ import {
     if (data.success) {
         dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
         cb()
-    }} );
+    }} )
+    .catch(e=>{
+      //TODO handle error
+      errCb(e)
+    });
      
   }
 
-  export const updateUserSec =  (form)=>dispatch=>{
+  export const updateUserSec =  (form,errCb=(e)=>{})=>dispatch=>{
     updateUser(form)
     .then(checkResponse)
     .then(data => {if (data.success) {
@@ -49,13 +57,14 @@ import {
       }})
     .catch(e=>{
       //TODO: handle error
+      errCb(e)
     });
  
 
   
   }
 
-  export const signOut = cb =>dispatch=> {
+  export const signOut = (cb,errCb=(e)=>{} )=>dispatch=> {
     logOut()
     .then(res=>{
       window.localStorage.removeItem('accessToken');
@@ -63,7 +72,9 @@ import {
     dispatch(actUponWithNull(UPDATE_USER));
     dispatch(actUpon(RESET_VISITS))
       cb()})
-    
+    .catch(e=>{
+      errCb(e)
+    })
    
   };
 

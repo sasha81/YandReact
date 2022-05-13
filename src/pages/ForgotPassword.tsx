@@ -2,12 +2,12 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { useEffect } from "react";
-import useFormField from '../../hooks/customForms';
+import useFormField from '../hooks/customForms';
 import { Input, Logo, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './CommonStyles.module.css';
-import { forgotPassword } from '../../services/apis';
-import { checkResponse } from '../../services/actions/constructorThunks';
-import { setVisited } from '../../services/actions/securityThunk'
+import { forgotPassword } from '../services/apis';
+import { checkResponse } from '../services/actions/constructorThunks';
+import { setVisited } from '../services/actions/securityThunk'
 
 
 function ForgotPassword() {
@@ -26,7 +26,7 @@ function ForgotPassword() {
         forgotPassword({ email: email.value })
             .then(checkResponse)
             .then(data => {
-                if (data.success) history.replace({ pathname: '/reset-password', state: { from: currentPath } })
+                if (data.success) history.replace({ pathname: '/reset-password', state: { from: location , forgotPassword:true} })
                 else {
                     //TODO: handle error
                 }
