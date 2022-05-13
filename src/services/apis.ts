@@ -3,6 +3,7 @@ import {burgerUrl as URL} from '../configs/urls';
 
 
 
+
 export const resetPassword = async (form) =>{
   return await fetch(URL+'/password-reset/reset', {
     method: 'POST',
@@ -126,18 +127,18 @@ export const loginRequest = async form => {
     body: JSON.stringify(form)
   });
 };
-export const deserializeQuery = (query, noQuestionMark = false) => {
-    const pairs = (noQuestionMark ? query : query.substring(1)).split('&');
-    const array = pairs.map(elem => elem.split('='));
-    return Object.fromEntries(array);
-  };
+// export const deserializeQuery = (query, noQuestionMark = false) => {
+//     const pairs = (noQuestionMark ? query : query.substring(1)).split('&');
+//     const array = pairs.map(elem => elem.split('='));
+//     return Object.fromEntries(array);
+//   };
   
-  export const serializeQuery = queryParams =>
-    Object.entries(queryParams).reduce((acc, [key, value], index, array) => {
-      if (typeof value === 'undefined') {
-        return acc;
-      }
-      const postfix = index === array.length - 1 ? '' : '&';
-      return `${acc}${encodeURIComponent(key)}=${encodeURIComponent(value)}${postfix}`;
-    }, '?');
+//   export const serializeQuery = queryParams =>
+//     Object.entries(queryParams).reduce((acc, [key, value], index, array) => {
+//       if (typeof value === 'undefined') {
+//         return acc;
+//       }
+//       const postfix = index === array.length - 1 ? '' : '&';
+//       return `${acc}${encodeURIComponent(key)}=${encodeURIComponent(value)}${postfix}`;
+//     }, '?');
   

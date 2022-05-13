@@ -37,12 +37,12 @@ function Profile() {
         else return pwd;
     }
 
-    const handleLogout = (e) => {
+    const handleLogout = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(signOut(() => history.replace({ pathname: '/login', state: { from: location } })))
 
     }
-    const handleHistory = (e) => {
+    const handleHistory = (e: React.FormEvent) => {
         e.preventDefault();
         history.replace({ pathname: '/profile/orders', state: { from: location } })
     }

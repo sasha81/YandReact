@@ -1,7 +1,7 @@
 import React from 'react';
 
 const useFormField = (initialValue: string = "") => {
-    const [value, setValue] = React.useState(initialValue);
+    const [value, setValue] = React.useState<string>(initialValue);
     const onChange = React.useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value),
       []

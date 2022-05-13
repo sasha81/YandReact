@@ -1,8 +1,11 @@
 import styles from './OrderDetails.module.css'
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
+interface IOrderDetails {
+    total: number, orderNumber: number | null, orderStatus: boolean, networkError: boolean
+}
 
-const OrderDetails = ({ total, orderNumber, orderStatus, networkError }: { total: number, orderNumber: number | null, orderStatus: boolean, networkError: boolean }) => {
+const OrderDetails = ({ total, orderNumber, orderStatus, networkError }: IOrderDetails) => {
     const getOrderNumber = (orderNumber: number | null, orderStatus: boolean, networkError: boolean) => {
         if (networkError) {
             return 'Нет соединения с сетью!';

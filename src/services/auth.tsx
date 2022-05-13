@@ -1,8 +1,12 @@
 import { useContext, useState, createContext ,useMemo} from 'react';
-import { loginRequest, getUserRequest,registerUser, logOut, updateUser } from './apis';
-import { setCookie } from './cookies';
-import {checkResponse} from '../services/actions/constructorThunks'
+import { loginRequest, getUserRequest,registerUser, logOut, updateUser as updateUser1 } from './apis';
 
+import {checkResponse} from '../services/actions/constructorThunks';
+import {getData} from 'utils/fetch';
+
+import {burgerUrl as URL} from 'configs/urls';
+import {bareConfig} from 'utils/fetch';
+import {IUserResponseBody, IForm, IUser} from 'components/Interfaces'
 // const mySingleton =(function(){
 //   const instance=null;
 
@@ -27,7 +31,7 @@ export function ProvideAuth({ children }) {
 } 
 
 export function useProvideAuth() {
-    const [user, setUser] = useState<Object | null>(null);
+    const [user, setUser] = useState<IUser | null>(null);
     const [visited, setVisitedObject] = useState<Object>({});
   
     const getUser = async () => {
@@ -41,9 +45,23 @@ export function useProvideAuth() {
         });
     };
   
-    const signIn = async (form, cb) => {
-      const data = await loginRequest(form)
-        .then(checkResponse)
+    // const signIn = async (form:IForm, cb:()=>void) => {
+    //   const data = await getPostData(Url+'/auth/login',form,)
+    //     .then(data => data);
+    //     if(data.accessToken){
+    //       window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
+    //       window.localStorage.setItem('refreshToken',data.refreshToken);
+
+    //     }
+
+    //   if (data.success) {
+    //     setUser({ ...data.user});
+    //     cb()
+    //   }
+    // };
+
+    const signIn = async (form: IForm, cb:()=>void): Promise<void> => {
+      const data = await getData<IUserResponseBody>('POST',URL+'/auth/login',form,bareConfig)
         .then(data => data);
         if(data.accessToken){
           window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
@@ -57,9 +75,8 @@ export function useProvideAuth() {
       }
     };
   
-    const register = async form=>{
-      const data = await registerUser(form)
-        .then(checkResponse)
+    const register = async (form: IForm)=>{
+      const data = await getData<IUserResponseBody>('POST',URL+'/auth/register',form,bareConfig)       
         .then(data => data);
         if(data.accessToken){
           window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
@@ -72,8 +89,8 @@ export function useProvideAuth() {
       }
     }
 
-    const updateUser = async (form)=>{
-      const data = await updateUser(form)
+    const updateUser = async (form: IForm)=>{
+      const data = await  getData<IUserResponseBody>('PATCH',URL+'/auth/user',form,bareConfig, window.localStorage.getItem('accessToken'))
       .then(checkResponse)
       .then(data => data)
       .catch(e=>{
