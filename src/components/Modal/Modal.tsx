@@ -1,4 +1,4 @@
-import React, { useEffect, ReactChild, useCallback } from 'react';
+import React, { useEffect, ReactChild, useCallback, ReactElement } from 'react';
 import ReactDOM from 'react-dom'
 import styles from './Modal.module.css';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
@@ -9,7 +9,7 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 const modalRoot = document.getElementById("portal") as HTMLElement;
 interface IModalProps {
   onClose: () => void,
-  children: ReactChild[] | ReactChild
+  children: ReactChild[] | ReactChild | null
 }
 
 const Modal = ({ onClose, children }: IModalProps): React.ReactElement => {

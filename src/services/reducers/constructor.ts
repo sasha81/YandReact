@@ -21,10 +21,24 @@ import {
     NETWORK_CONNECTION
 
 } from '../actions/constructor';
+import {Reducer} from 'redux'
 import { IBareBurgerIngredient, IReduxState,IOrder, IUser } from '../../components/Interfaces';
+import {IAction, IBareAction} from 'services/actions/Interfaces'
 
-export const initialState: IReduxState= {
-    bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
+// export const initialState: IReduxState= {
+//     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
+// }
+
+export interface IState{
+    ingredients: IBareBurgerIngredient[];
+    bun: IBareBurgerIngredient | null ;
+    ingredientMap: Object;
+    allIngredients: IBareBurgerIngredient[] | string;
+    ingredientDetails:  IBareBurgerIngredient | null ;
+    orderDetails:  IOrder | null ;
+    user: IUser | null;
+    visited : Object;
+    noConnection : boolean;
 }
 
 
@@ -42,7 +56,7 @@ const initialVisited : Object = {};
 const initialNetworkError : boolean=false; 
 
 
-export const noConnectionReducer = (state = initialNetworkError, action:{type:string, payload: boolean })=>{
+export const noConnectionReducer:Reducer< boolean,IAction<boolean>> = (state:boolean = initialNetworkError, action:IAction<boolean>)=>{
     switch(action.type){
         case NETWORK_CONNECTION:{
             if(action.payload) return true;
@@ -54,7 +68,7 @@ export const noConnectionReducer = (state = initialNetworkError, action:{type:st
 }
 
 
-export const visitsReducer = (state = initialVisited, action:{type:string, payload: string })=>{
+export const visitsReducer = (state : Object= initialVisited, action:IAction<string>)=>{
     switch(action.type){
         case UPDATE_VISIT:{
             return {...state, [action.payload]:true}
@@ -68,7 +82,7 @@ export const visitsReducer = (state = initialVisited, action:{type:string, paylo
     }
 }
 
-export const securityUserReducer = (state = initalOrderDetails, action:{type:string, payload: IUser | null })=>{
+export const securityUserReducer:Reducer< IUser | null,IAction<IUser | null>> = (state: IUser | null= initalOrderDetails, action:IAction<IUser | null>)=>{
     switch(action.type){
         case UPDATE_USER:
             return action.payload ? {...action.payload}: initialUser;
@@ -77,7 +91,7 @@ export const securityUserReducer = (state = initalOrderDetails, action:{type:str
     }
 }
 
-export const orderDetailsReducer = (state = initalOrderDetails, action:{type:string, payload: IOrder | null })=>{
+export const orderDetailsReducer:Reducer< IOrder | null,IAction<IOrder | null>> = (state: IOrder | null = initalOrderDetails, action:IAction<IOrder | null>)=>{
     switch(action.type){
         case MAKE_ORDER:
             return action.payload ? {...action.payload}: null;
@@ -90,7 +104,7 @@ export const orderDetailsReducer = (state = initalOrderDetails, action:{type:str
 }
 
 
-export const ingredientDetailsReducer = (state = initalIngredientDetails, action:{type:string, payload:IBareBurgerIngredient | null })=>{
+export const ingredientDetailsReducer = (state:  IBareBurgerIngredient | null = initalIngredientDetails, action:IAction<IBareBurgerIngredient | null>)=>{
     switch(action.type){
         case SET_INFO_INGREDIENT:{
          if(action.payload) return {...action.payload};
@@ -101,7 +115,7 @@ export const ingredientDetailsReducer = (state = initalIngredientDetails, action
     }
 }
 
-export const allIngredientsReducer =  (state=initialAllIngredients, action:{type:string, payload:IBareBurgerIngredient[]| string })=>{
+export const allIngredientsReducer =  (state: IBareBurgerIngredient[] | string=initialAllIngredients, action:IAction<IBareBurgerIngredient[] | string>)=>{
     switch(action.type){
         case SET_INGREDIENTS:
             return  Array.isArray(action.payload)? [...action.payload]:action.payload;
@@ -113,7 +127,7 @@ export const allIngredientsReducer =  (state=initialAllIngredients, action:{type
     }
 }
 
-export const bunReducer = (state=initialBun, action:{type:string, payload:IBareBurgerIngredient })=>{
+export const bunReducer = (state:IBareBurgerIngredient | null =initialBun, action:IAction<IBareBurgerIngredient | null>)=>{
     switch(action.type){       
 
         case SET_BUN :{
@@ -125,7 +139,7 @@ export const bunReducer = (state=initialBun, action:{type:string, payload:IBareB
     }
 }
 
-export const mapReducer =  (state=initialIngredientMap, action:{type:string, payload:IBareBurgerIngredient  })=>{
+export const mapReducer =  (state: Object=initialIngredientMap, action:IAction<IBareBurgerIngredient>)=>{
     switch(action.type){
        case RESET_MAP :
            return initialIngredientMap
@@ -191,7 +205,7 @@ export const mapReducer =  (state=initialIngredientMap, action:{type:string, pay
 }
 
 
-export const ingredientReducer = (state=initialIngredients, action:any)=>{
+export const ingredientReducer = (state: IBareBurgerIngredient[]=initialIngredients, action:any)=>{
     switch(action.type){
         case PICK_INGREDIENT :
             return [...state.concat(action.payload)]
@@ -224,23 +238,23 @@ export const ingredientReducer = (state=initialIngredients, action:any)=>{
 }
 
 
-export const updateIngredientReducer = (state=initialState, action:{type:string,to:number, from:number})=>{
-    switch(action.type){
-        case SWITCH_INGREDIENT:{
-            const tempContext = JSON.parse(JSON.stringify(state));
+// export const updateIngredientReducer = (state: IReduxState=initialState, action:{type:string,to:number, from:number})=>{
+//     switch(action.type){
+//         case SWITCH_INGREDIENT:{
+//             const tempContext = JSON.parse(JSON.stringify(state));
       
-      tempContext.ingredients[action.to] = state.ingredients[action.from];
-      tempContext.ingredients[action.from] = state.ingredients[action.to];
-      return tempContext;
-        }
-    }
-}
+//       tempContext.ingredients[action.to] = state.ingredients[action.from];
+//       tempContext.ingredients[action.from] = state.ingredients[action.to];
+//       return tempContext;
+//         }
+//     }
+// }
 
-export const constructorIngredientArrayReducer = (state=initialState, action :{type:string, payload: IBareBurgerIngredient[] | string})=>{
-    switch(action.type){
-        case SET_INGREDIENTS:
-            return {...state, allIngredients: Array.isArray(action.payload)? [...action.payload]:action.payload};
-        default:
-            return state;
-    }
-}
+// export const constructorIngredientArrayReducer = (state: IReduxState=initialState, action :IAction<IBareBurgerIngredient[] | string>)=>{
+//     switch(action.type){
+//         case SET_INGREDIENTS:
+//             return {...state, allIngredients: Array.isArray(action.payload)? [...action.payload]:action.payload};
+//         default:
+//             return state;
+//     }
+// }

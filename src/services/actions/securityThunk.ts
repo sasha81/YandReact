@@ -4,35 +4,40 @@ import {
     UPDATE_VISIT,
     RESET_VISITS
   } from './constructor';
+  import {ThunkAction} from 'redux-thunk'
   import { logOut } from '../apis';
   import {getData,bareConfig} from 'utils/fetch';
   import {burgerUrl as URL} from 'configs/urls';
-  import {IUserResponseBody, IForm} from 'components/Interfaces'
-
-  export const signIn = (form:IForm, cb:()=>void,errCb=(e)=>{}) =>  (dispatch)=> {
-    // loginRequest(form)
-    //   .then(checkResponse)
-    getData<IUserResponseBody>('POST',URL+'/auth/login',form,bareConfig)
-      .then(data =>{
-        if(data.accessToken){
-            window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
-            window.localStorage.setItem('refreshToken',data.refreshToken);
+  import {IUserResponseBody, IForm,IUser} from 'components/Interfaces';
+  import {IAction} from './Interfaces';
+  import { Action, AnyAction, Middleware } from 'redux';
+import { Dispatch } from 'redux';
+import {IState} from 'services/reducers/constructor'
+//:Dispatch<IAction<IUser>>
+  export const signIn = (form:IForm, cb:()=>void,errCb=(e)=>{}):ThunkAction<Promise<void>,IState,null,IAction<IUser>> =>  async (dispatch)=> {
+    try{  
+   const data = await getData<IUserResponseBody>('POST',URL+'/auth/login',form,bareConfig);
     
+          if(data.accessToken){
+              window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
+              window.localStorage.setItem('refreshToken',data.refreshToken);
+      
+            }
+      
+          if (data.success) {
+            dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
+            cb()
           }
-    
-        if (data.success) {
-          dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
-          cb()
-        }
-      } )
-      .catch(e=>{
+  
+      }
+      catch(e){
         errCb(e)
         //TODO: handle error
-      });
+      };
       
   };
 
-  export const register =  (form:IForm,cb:()=>void,errCb=(e)=>{} )=>dispatch=>{
+  export const register =  (form:IForm,cb:()=>void,errCb=(e)=>{} )=>(dispatch:Dispatch<IAction<IUser>>)=>{
     getData<IUserResponseBody>('POST',URL+'/auth/register',form,bareConfig)
       .then(data =>{ if(data.accessToken){
         window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
@@ -41,7 +46,7 @@ import {
       }
 
     if (data.success) {
-        dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
+        dispatch(actUponWithPayload<IUser>(UPDATE_USER,{ ...data.user}));
         cb()
     }} )
     .catch(e=>{
@@ -51,10 +56,10 @@ import {
      
   }
 
-  export const updateUserSec =  (form:IForm,errCb=(e)=>{})=>dispatch=>{
+  export const updateUserSec =  (form:IForm,errCb=(e)=>{})=>(dispatch:Dispatch<IAction<IUser>>)=>{
     getData<IUserResponseBody>('PATCH',URL+'/auth/user',form,bareConfig, window.localStorage.getItem('accessToken'))
     .then(data => {if (data.success) {
-        dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
+        dispatch(actUponWithPayload<IUser>(UPDATE_USER,{ ...data.user}));
       }})
     .catch(e=>{
       //TODO: handle error
@@ -65,7 +70,7 @@ import {
   
   }
 
-  export const signOut = (cb:()=>void,errCb=(e)=>{} )=>dispatch=> {
+  export const signOut = (cb:()=>void,errCb=(e)=>{} )=>(dispatch:Dispatch<IAction<null> | Action>)=> {
     logOut()
     .then(res=>{
       window.localStorage.removeItem('accessToken');
@@ -79,12 +84,12 @@ import {
    
   };
 
-  export const loginUserFromToken = (accessToken :string | null)=>dispatch=>{
+  export const loginUserFromToken = (accessToken :string | null)=>(dispatch:Dispatch<IAction<IUser>>)=>{
     if(accessToken==null) return;  
     const isExpired = isTokenExpired(accessToken);
       const data =parseJwt(accessToken);
       if(!isExpired && data) {
-        dispatch(actUponWithPayload(UPDATE_USER,data));
+        dispatch(actUponWithPayload<IUser>(UPDATE_USER,data));
       }
   }
 
@@ -94,28 +99,28 @@ import {
   }
 
 
-  export const checkResponse=(response )=>{
+  export const checkResponse=(response: Response ):Promise<any>=>{
     if (response.ok) {
       return response.json();
     }
       return Promise.reject(`Ошибка ${response.status}`);
   }
 
-  export const actUponWithNull =(actionType:string)=>{
+  export const actUponWithNull =(actionType:string):IAction<null>=>{
     return {
       type:actionType,
       payload: null
     }
   } 
   
-  export const actUponWithPayload = (actionType:string,actPayload:any)=>{
+  export const actUponWithPayload = <T>(actionType:string,actPayload:T):IAction<T>=>{
     return {
       type:actionType,
       payload:actPayload
     }
   }
   
-  export const actUpon=(actionType:string)=>{
+  export const actUpon=(actionType:string):Action=>{
   
     return {type:actionType}  
   }

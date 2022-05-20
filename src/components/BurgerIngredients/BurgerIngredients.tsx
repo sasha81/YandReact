@@ -25,8 +25,8 @@ interface IResult {
 
 
 
-export const getSortedData = (rawData: IBareBurgerIngredient[]): [IResult[],Map<string,IBareBurgerIngredient[]>] => {
-
+export const getSortedData = (rawData: IBareBurgerIngredient[] | string): [IResult[],Map<string,IBareBurgerIngredient[]>] => {
+    if (typeof rawData === 'string' || rawData instanceof String) return [[],new Map<string,any>()];
     const data = rawData;
 
     const sortedData = data;

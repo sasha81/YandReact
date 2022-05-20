@@ -8,6 +8,10 @@ import useFormField from '../hooks/customForms'
 
 import { signIn } from '../services/actions/securityThunk';
 import { useDispatch } from 'react-redux';
+import {IUser} from 'components/Interfaces';
+import {IAction,  IBareAction} from 'services/actions/Interfaces'
+import { Dispatch } from 'redux';
+import {AppDispatch} from 'services/store'
 
 
 function Login() {
@@ -15,7 +19,7 @@ function Login() {
     const history = useHistory();
     const location = useLocation();
     const currentPath = location.pathname.slice();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const name = useFormField();
     const password = useFormField();
 
