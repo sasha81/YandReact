@@ -94,3 +94,15 @@ export interface IUserNoToken extends ISuccess{
     user:IUser;
 }
 
+export interface IState{
+    ingredients: IBareBurgerIngredient[];
+    bun: IBareBurgerIngredient | null ;
+    ingredientMap: Object;
+    allIngredients: IBareBurgerIngredient[] | string;
+    ingredientDetails:  IBareBurgerIngredient | null ;
+    orderDetails:  IOrder | null ;
+    user: IUser | null;
+    visited : Object;
+    noConnection : boolean;
+}
+

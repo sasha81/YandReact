@@ -2,7 +2,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { useHistory, useLocation, useParams } from 'react-router-dom'; 
 import {useSelector, useDispatch} from 'react-redux';
 import styles from './IngredientDetails.module.css'
-import {IBareBurgerIngredient} from '../Interfaces';
+import {IBareBurgerIngredient, IState} from '../Interfaces';
 import {RootState} from '../../services/store';
 import Modal from '../Modal/Modal';
 import modalStyles from '../Modal/Modal.module.css'
@@ -12,7 +12,7 @@ const IngredientDetails = ()=>{
     const location = useLocation();
     const history = useHistory();
     
-    const allIngredients = useSelector((state: RootState)=>state.allIngredients);
+    const allIngredients= useSelector<IState, IBareBurgerIngredient[] | string>((state)=>state.allIngredients);
     const ingredient = (allIngredients as IBareBurgerIngredient[]).find(ingredient=>{return ingredient._id===id}) as IBareBurgerIngredient;
 
     const modalClose =()=>{

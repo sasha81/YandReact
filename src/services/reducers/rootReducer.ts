@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer,visitsReducer,securityUserReducer,noConnectionReducer} from './constructor';
-import {IState} from 'services/reducers/constructor'
+import {IState} from 'components/Interfaces'
 
 const rootReducer = combineReducers<IState>({
     'orderDetails':orderDetailsReducer,

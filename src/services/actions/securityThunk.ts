@@ -12,7 +12,7 @@ import {
   import {IAction} from './Interfaces';
   import { Action, AnyAction, Middleware } from 'redux';
 import { Dispatch } from 'redux';
-import {IState} from 'services/reducers/constructor'
+import {IState} from 'components/Interfaces'
 //:Dispatch<IAction<IUser>>
   export const signIn = (form:IForm, cb:()=>void,errCb=(e)=>{}):ThunkAction<Promise<void>,IState,null,IAction<IUser>> =>  async (dispatch)=> {
     try{  

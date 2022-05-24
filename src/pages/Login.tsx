@@ -8,18 +8,21 @@ import useFormField from '../hooks/customForms'
 
 import { signIn } from '../services/actions/securityThunk';
 import { useDispatch } from 'react-redux';
-import {IUser} from 'components/Interfaces';
+import {IUser,IState} from 'components/Interfaces';
 import {IAction,  IBareAction} from 'services/actions/Interfaces'
 import { Dispatch } from 'redux';
-import {AppDispatch} from 'services/store'
+//import {AppDispatch} from 'services/store'
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
+type AppDispatch = ThunkDispatch<IState, null,IAction<IUser>>; 
 
 function Login() {
 
     const history = useHistory();
     const location = useLocation();
     const currentPath = location.pathname.slice();
-    const dispatch = useDispatch<AppDispatch>();
+   // const dispatch = useDispatch<AppDispatch>();
+    const dispatch:AppDispatch = useDispatch();
     const name = useFormField();
     const password = useFormField();
 

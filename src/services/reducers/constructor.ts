@@ -22,24 +22,24 @@ import {
 
 } from '../actions/constructor';
 import {Reducer} from 'redux'
-import { IBareBurgerIngredient, IReduxState,IOrder, IUser } from '../../components/Interfaces';
+import { IBareBurgerIngredient, IReduxState,IOrder, IUser, IState } from '../../components/Interfaces';
 import {IAction, IBareAction} from 'services/actions/Interfaces'
 
 // export const initialState: IReduxState= {
 //     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
 // }
 
-export interface IState{
-    ingredients: IBareBurgerIngredient[];
-    bun: IBareBurgerIngredient | null ;
-    ingredientMap: Object;
-    allIngredients: IBareBurgerIngredient[] | string;
-    ingredientDetails:  IBareBurgerIngredient | null ;
-    orderDetails:  IOrder | null ;
-    user: IUser | null;
-    visited : Object;
-    noConnection : boolean;
-}
+// export interface IState{
+//     ingredients: IBareBurgerIngredient[];
+//     bun: IBareBurgerIngredient | null ;
+//     ingredientMap: Object;
+//     allIngredients: IBareBurgerIngredient[] | string;
+//     ingredientDetails:  IBareBurgerIngredient | null ;
+//     orderDetails:  IOrder | null ;
+//     user: IUser | null;
+//     visited : Object;
+//     noConnection : boolean;
+// }
 
 
 
