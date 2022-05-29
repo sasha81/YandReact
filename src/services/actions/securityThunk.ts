@@ -12,9 +12,10 @@ import {
   import {IAction} from './Interfaces';
   import { Action, AnyAction, Middleware } from 'redux';
 import { Dispatch } from 'redux';
-import {IState} from 'components/Interfaces'
+import {IState} from 'components/Interfaces';
+import {RootState,AppThunk,AppDispatch} from 'services/store'
 //:Dispatch<IAction<IUser>>
-  export const signIn = (form:IForm, cb:()=>void,errCb=(e)=>{}):ThunkAction<Promise<void>,IState,null,IAction<IUser>> =>  async (dispatch)=> {
+  export const signIn:AppThunk = (form:IForm, cb:()=>void,errCb=(e)=>{}) =>  async (dispatch:AppDispatch)=> {
     try{  
    const data = await getData<IUserResponseBody>('POST',URL+'/auth/login',form,bareConfig);
     
@@ -36,8 +37,30 @@ import {IState} from 'components/Interfaces'
       };
       
   };
+  // export const signIn = (form:IForm, cb:()=>void,errCb=(e)=>{}):ThunkAction<Promise<void>,IState,null,IAction<IUser>> =>  async (dispatch)=> {
+  //   try{  
+  //  const data = await getData<IUserResponseBody>('POST',URL+'/auth/login',form,bareConfig);
+    
+  //         if(data.accessToken){
+  //             window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
+  //             window.localStorage.setItem('refreshToken',data.refreshToken);
+      
+  //           }
+      
+  //         if (data.success) {
+  //           dispatch(actUponWithPayload(UPDATE_USER,{ ...data.user}));
+  //           cb()
+  //         }
+  
+  //     }
+  //     catch(e){
+  //       errCb(e)
+  //       //TODO: handle error
+  //     };
+      
+  // };
 
-  export const register =  (form:IForm,cb:()=>void,errCb=(e)=>{} )=>(dispatch:Dispatch<IAction<IUser>>)=>{
+  export const register:AppThunk =  (form:IForm,cb:()=>void,errCb=(e)=>{} )=>(dispatch:AppDispatch)=>{
     getData<IUserResponseBody>('POST',URL+'/auth/register',form,bareConfig)
       .then(data =>{ if(data.accessToken){
         window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);

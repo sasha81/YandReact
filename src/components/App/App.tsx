@@ -1,7 +1,8 @@
 import  { useState, useEffect } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'services/store';
+//import { useSelector, useDispatch } from 'react-redux';
 import {  Switch, Route } from 'react-router-dom';
 
 import styles from './App.module.css';

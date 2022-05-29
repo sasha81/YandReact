@@ -7,14 +7,16 @@ import { Input, Logo, Button } from '@ya.praktikum/react-developer-burger-ui-com
 import useFormField from '../hooks/customForms'
 
 import { signIn } from '../services/actions/securityThunk';
-import { useDispatch } from 'react-redux';
+//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'services/store';
 import {IUser,IState} from 'components/Interfaces';
 import {IAction,  IBareAction} from 'services/actions/Interfaces'
 import { Dispatch } from 'redux';
 //import {AppDispatch} from 'services/store'
 import {ThunkAction, ThunkDispatch} from 'redux-thunk';
 
-type AppDispatch = ThunkDispatch<IState, null,IAction<IUser>>; 
+
+//type AppDispatch = ThunkDispatch<IState, null,IAction<IUser>>; 
 
 function Login() {
 
@@ -22,7 +24,7 @@ function Login() {
     const location = useLocation();
     const currentPath = location.pathname.slice();
    // const dispatch = useDispatch<AppDispatch>();
-    const dispatch:AppDispatch = useDispatch();
+    const dispatch = useDispatch();
     const name = useFormField();
     const password = useFormField();
 

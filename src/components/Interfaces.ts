@@ -106,3 +106,5 @@ export interface IState{
     noConnection : boolean;
 }
 
+export type IMessage = Object;
+

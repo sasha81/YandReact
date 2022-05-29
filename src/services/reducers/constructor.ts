@@ -8,22 +8,36 @@ import {
     DECREMENT_MAP,
     INCREMENT_MAP,
     SET_BUN,
-    INCREASE_BUN_MAP,
-    DECREASE_BUN_MAP,
+   
    
     SWITCH_INGREDIENT,
     RESET_MAP,
     ERROR_SET_INGREDIENTS,
     ERROR_MAKE_ORDER,
     UPDATE_USER,
-    UPDATE_VISIT,
-    RESET_VISITS,
+ 
     NETWORK_CONNECTION
 
 } from '../actions/constructor';
 import {Reducer} from 'redux'
 import { IBareBurgerIngredient, IReduxState,IOrder, IUser, IState } from '../../components/Interfaces';
-import {IAction, IBareAction} from 'services/actions/Interfaces'
+import {IAction, IBareAction} from 'services/actions/Interfaces';
+import {RootState} from 'services/store'
+import {Actions,INetworkConnection ,
+    IPickIngredient,
+    IDeleteIngredient,
+    IErrorSetIngredients,
+    ISwitchIngredient,
+    IResetIngredients,
+    IErrorMakeOrder,
+    IMakeOrder,
+    IUpdateUser,
+    ISetInfoIngredient,
+    ISetBun,
+    ISetIngredients,
+    IIncrementMap,
+    IDecrementMap,
+    IResetMap} from 'services/actions/Interfaces'
 
 // export const initialState: IReduxState= {
 //     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
@@ -55,8 +69,8 @@ const initialUser: IUser | null = null;
 const initialVisited : Object = {};
 const initialNetworkError : boolean=false; 
 
-
-export const noConnectionReducer:Reducer< boolean,IAction<boolean>> = (state:boolean = initialNetworkError, action:IAction<boolean>)=>{
+//:Reducer< boolean,IAction<boolean>>
+export const noConnectionReducer = (state:boolean = initialNetworkError, action:INetworkConnection):boolean=>{
     switch(action.type){
         case NETWORK_CONNECTION:{
             if(action.payload) return true;
@@ -68,21 +82,21 @@ export const noConnectionReducer:Reducer< boolean,IAction<boolean>> = (state:boo
 }
 
 
-export const visitsReducer = (state : Object= initialVisited, action:IAction<string>)=>{
-    switch(action.type){
-        case UPDATE_VISIT:{
-            return {...state, [action.payload]:true}
-        }
+// export const visitsReducer = (state : Object= initialVisited, action:IAction<boolean>)=>{
+//     switch(action.type){
+//         case UPDATE_VISIT:{
+//             return {...state, [action.payload]:true}
+//         }
 
 
-        case RESET_VISITS:
-            return initialVisited;
-        default: 
-          return state;
-    }
-}
+//         case RESET_VISITS:
+//             return initialVisited;
+//         default: 
+//           return state;
+//     }
+// }
 
-export const securityUserReducer:Reducer< IUser | null,IAction<IUser | null>> = (state: IUser | null= initalOrderDetails, action:IAction<IUser | null>)=>{
+export const securityUserReducer = (state: IUser | null= initalOrderDetails, action:IUpdateUser): IUser | null=>{
     switch(action.type){
         case UPDATE_USER:
             return action.payload ? {...action.payload}: initialUser;
@@ -91,7 +105,7 @@ export const securityUserReducer:Reducer< IUser | null,IAction<IUser | null>> = 
     }
 }
 
-export const orderDetailsReducer:Reducer< IOrder | null,IAction<IOrder | null>> = (state: IOrder | null = initalOrderDetails, action:IAction<IOrder | null>)=>{
+export const orderDetailsReducer= (state: IOrder | null = initalOrderDetails, action:IErrorMakeOrder| IMakeOrder):IOrder | null=>{
     switch(action.type){
         case MAKE_ORDER:
             return action.payload ? {...action.payload}: null;
@@ -104,7 +118,7 @@ export const orderDetailsReducer:Reducer< IOrder | null,IAction<IOrder | null>> 
 }
 
 
-export const ingredientDetailsReducer = (state:  IBareBurgerIngredient | null = initalIngredientDetails, action:IAction<IBareBurgerIngredient | null>)=>{
+export const ingredientDetailsReducer = (state:  IBareBurgerIngredient | null = initalIngredientDetails, action:ISetInfoIngredient):  IBareBurgerIngredient | null=>{
     switch(action.type){
         case SET_INFO_INGREDIENT:{
          if(action.payload) return {...action.payload};
@@ -115,7 +129,7 @@ export const ingredientDetailsReducer = (state:  IBareBurgerIngredient | null = 
     }
 }
 
-export const allIngredientsReducer =  (state: IBareBurgerIngredient[] | string=initialAllIngredients, action:IAction<IBareBurgerIngredient[] | string>)=>{
+export const allIngredientsReducer =  (state=initialAllIngredients, action:IErrorSetIngredients |ISetIngredients): IBareBurgerIngredient[] | string=>{
     switch(action.type){
         case SET_INGREDIENTS:
             return  Array.isArray(action.payload)? [...action.payload]:action.payload;
@@ -127,7 +141,7 @@ export const allIngredientsReducer =  (state: IBareBurgerIngredient[] | string=i
     }
 }
 
-export const bunReducer = (state:IBareBurgerIngredient | null =initialBun, action:IAction<IBareBurgerIngredient | null>)=>{
+export const bunReducer = (state:IBareBurgerIngredient | null =initialBun, action:ISetBun):IBareBurgerIngredient | null=>{
     switch(action.type){       
 
         case SET_BUN :{
@@ -139,7 +153,7 @@ export const bunReducer = (state:IBareBurgerIngredient | null =initialBun, actio
     }
 }
 
-export const mapReducer =  (state: Object=initialIngredientMap, action:IAction<IBareBurgerIngredient>)=>{
+export const mapReducer =  (state: Object=initialIngredientMap, action:IIncrementMap|IDecrementMap| IResetMap): Object=>{
     switch(action.type){
        case RESET_MAP :
            return initialIngredientMap
@@ -177,25 +191,25 @@ export const mapReducer =  (state: Object=initialIngredientMap, action:IAction<I
             return tempContext
         }
         
-        case DECREASE_BUN_MAP:{
-            const tempContext = {...state};
-            const _id = action.payload._id
-            if(state.hasOwnProperty(_id)) {
+        // case DECREASE_BUN_MAP:{
+        //     const tempContext = {...state};
+        //     const _id = action.payload._id
+        //     if(state.hasOwnProperty(_id)) {
                 
-                tempContext[_id]=0;
-              }
+        //         tempContext[_id]=0;
+        //       }
     
               
-              return tempContext;
-        }
-        case INCREASE_BUN_MAP:{
-            const tempContext = {...state};
-            const _id = action.payload._id;      
+        //       return tempContext;
+        // }
+        // case INCREASE_BUN_MAP:{
+        //     const tempContext = {...state};
+        //     const _id = action.payload._id;      
                 
-                tempContext[_id]=1;     
+        //         tempContext[_id]=1;     
               
-              return tempContext;
-        }        
+        //       return tempContext;
+        // }        
         default:
             return state;
 
@@ -205,7 +219,7 @@ export const mapReducer =  (state: Object=initialIngredientMap, action:IAction<I
 }
 
 
-export const ingredientReducer = (state: IBareBurgerIngredient[]=initialIngredients, action:any)=>{
+export const ingredientReducer = (state: IBareBurgerIngredient[]=initialIngredients, action:IPickIngredient| IDeleteIngredient| ISwitchIngredient| IResetIngredients)=>{
     switch(action.type){
         case PICK_INGREDIENT :
             return [...state.concat(action.payload)]

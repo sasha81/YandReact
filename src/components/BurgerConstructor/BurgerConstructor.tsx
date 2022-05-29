@@ -1,6 +1,7 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { useSelector, useDispatch } from 'react-redux';
+//import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'services/store';
 import { useDrop } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient, IBurgerIngredientDrop } from '../Interfaces';
