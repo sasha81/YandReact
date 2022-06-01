@@ -1,4 +1,4 @@
-import {IMessage,IWSResponse} from 'components/Interfaces'
+import {IWSResponse} from 'components/Interfaces'
 
 
 
@@ -54,12 +54,12 @@ export interface IConnectionClosed {
 
   export interface IAllConnectionStart {
     readonly type: typeof WS_ALL_CONNECTION_START ;
-    readonly payload?: Event;
+    readonly payload?: string;
     
   
   }
   export interface IOrderConnectionStart {
     readonly type:  typeof WS_ORDER_CONNECTION_START;
-    readonly payload: IWSResponse;
+    readonly payload: string;
   
   }

@@ -11,14 +11,14 @@ function OrderHistory() {
     const location = useLocation();
     const history = useHistory();
 
-const orderArr = useSelector((store)=>store.wsConnection['messagesAll'] as IWSResponse)   
+const orderArr = useSelector((store)=>store.wsConnection['messagesOrder'] as IWSResponse)   
   
-//     useEffect(() => {
+    useEffect(() => {
   
   
-//   //   dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')})
-//      dispatch({type:WS_ALL_CONNECTION_START})
-//     }, [dispatch])
+  //   dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')})
+     dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')})
+    }, [dispatch])
 
 
 
@@ -27,7 +27,7 @@ const orderArr = useSelector((store)=>store.wsConnection['messagesAll'] as IWSRe
         <div>
             <h1>Order History goes here</h1>
             <ul>
-            {orderArr && orderArr.orders.map(order=>{
+            {orderArr?.orders && orderArr.orders.map(order=>{
                 return (<li key={order._id} onClick={()=>{
                     history.replace({
                         pathname:`/profile/orders/${order._id}`,

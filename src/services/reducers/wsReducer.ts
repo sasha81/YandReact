@@ -1,4 +1,4 @@
-import {IMessage,IWSResponse} from 'components/Interfaces';
+import {IWSResponse} from 'components/Interfaces';
 import {WS_ALL_SEND_MESSAGE,
     WS_ALL_GET_MESSAGE,
     WS_ALL_CONNECTION_CLOSED,

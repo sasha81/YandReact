@@ -35,6 +35,7 @@ import { loginUserFromToken } from 'services/actions/securityThunk';
 import OrderHistory from 'pages/OrderHistory';
 import FullOrderDetails from 'components/OrderDetails/FullOrderDetails';
 import { WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
+import PersonalOrderDetails from 'components/OrderDetails/PersonalOrderDetails';
 
 interface IAppDataAndStatus {
   error: boolean,
@@ -136,7 +137,7 @@ const App = (): JSX.Element => {
 
       </Switch>
       {background && <Route path="/feed/:id"   children={<FullOrderDetails  />}/>}
-      {background && <ProtectedRoute path="/profile/orders/:id"   children={<FullOrderDetails  />}/>}
+      {background && <ProtectedRoute path="/profile/orders/:id"   children={<PersonalOrderDetails  />}/>}
       {background && <Route path="/ingredients/:id"   children={<IngredientDetails />} />}
      
 
