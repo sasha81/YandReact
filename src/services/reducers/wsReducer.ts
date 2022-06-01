@@ -1,4 +1,4 @@
-import {IMessage} from 'components/Interfaces';
+import {IMessage,IWSResponse} from 'components/Interfaces';
 import {WS_ALL_SEND_MESSAGE,
     WS_ALL_GET_MESSAGE,
     WS_ALL_CONNECTION_CLOSED,
@@ -18,8 +18,8 @@ import {WS_ALL_SEND_MESSAGE,
 type TWSState = {
     wsAllConnected: boolean;
     wsOrderConnected: boolean;
-    messagesAll: IMessage[];
-    messagesOrder: IMessage[];
+    messagesAll: IWSResponse | null;
+    messagesOrder: IWSResponse | null ;
   
     errorAll?: Event;
     errorOrder?: Event;
@@ -28,8 +28,8 @@ type TWSState = {
   const initialState: TWSState = {
       wsAllConnected: false,
       wsOrderConnected: false,
-      messagesAll: [],
-      messagesOrder:[]
+      messagesAll: null,
+      messagesOrder: null
   }; 
 
   export const wsReducer = (state = initialState, action: TWSActions) => {
@@ -68,7 +68,7 @@ type TWSState = {
         return {
           ...state,
                   errorAll: undefined,
-          messagesAll: [...state.messagesAll, action.payload]
+          messagesAll: action.payload
         };
         case WS_ORDER_CONNECTION_SUCCESS:
             return {
@@ -102,7 +102,7 @@ type TWSState = {
             return {
               ...state,
                       errorOrder: undefined,
-              messagesOrder: [...state.messagesOrder, action.payload]
+              messagesOrder: action.payload
             };
       default:
         return state;

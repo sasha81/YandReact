@@ -28,7 +28,7 @@ const AppHeader = () => {
                     </div>
                 </div>
 
-                <div className={styles.smallFlexContainer}>
+                <div className={styles.smallFlexContainer} onClick={() => go('/feed', currentPath)}>
                     <ListIcon type="primary" />
 
                     <div className="p-2">

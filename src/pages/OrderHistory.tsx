@@ -1,11 +1,14 @@
 import React,{useEffect} from 'react';
-import {useDispatch} from'services/store';
+import {useDispatch, useSelector} from'services/store';
+//import {useDispatch, useSelector} from'react-redux';
 import {WS_ORDER_CONNECTION_START} from 'services/actions/wsActions'
+import {RootState} from 'services/store'
+import { IWSResponse } from 'components/Interfaces';
 
 function OrderHistory() {
     const dispatch = useDispatch();
 
-   
+const orderArr = useSelector((store)=>store.wsConnection['messagesOrder'] as IWSResponse)   
   
     useEffect(() => {
   
@@ -19,6 +22,7 @@ function OrderHistory() {
     return (
         <div>
             <h1>Order History goes here</h1>
+    {orderArr&& <p>{orderArr}</p>}
         </div>
     )
 }

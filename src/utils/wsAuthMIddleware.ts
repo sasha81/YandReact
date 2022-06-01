@@ -31,7 +31,7 @@ export const socketAuthMiddleware = (wsUrl: string ): Middleware => {
                 // функция, которая вызывается при получения события от сервера
         socket.onmessage = event => {
           const { data } = event;
-          dispatch({ type: 'WS_ORDER_GET_MESSAGE', payload: data });
+          dispatch({ type: 'WS_ORDER_GET_MESSAGE', payload: JSON.parse(data) });
         };
                 // функция, которая вызывается при закрытии соединения
         socket.onclose = event => {

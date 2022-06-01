@@ -108,3 +108,20 @@ export interface IState{
 
 export type IMessage = Object;
 
+export interface IWSOrder {
+    ingredients: string[];
+    _id: string;
+    status:string;
+    number:number;
+    createdAt:string;
+    updatedAt:string;
+}
+
+export interface IWSResponse{
+    success:boolean;
+    orders:IWSOrder[];
+    total:number;
+    totalToday:number;
+
+}
+
