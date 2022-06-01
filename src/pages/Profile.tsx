@@ -5,10 +5,14 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import useFormField from '../hooks/customForms'
 import styles from './Profile.module.css';
 import commonStyles from './CommonStyles.module.css';
-import { useHistory, useLocation } from 'react-router-dom';
+import {Route,Switch, useHistory, useLocation,useRouteMatch } from 'react-router-dom';
 
 import { updateUserSec, signOut } from '../services/actions/securityThunk'
+import { ProtectedRoute } from 'components/ProtectedRoute/ProtectedRoute';
+import OrderHistory from './OrderHistory';
+import FullOrderDetails from 'components/OrderDetails/FullOrderDetails';
 function Profile() {
+    const {path,url} = useRouteMatch()
     const email = useFormField();
     const login = useFormField();
     const password = useFormField();
@@ -44,19 +48,26 @@ function Profile() {
     }
     const handleHistory = (e: React.FormEvent) => {
         e.preventDefault();
-        history.replace({ pathname: '/profile/orders', state: { from: location } })
+        history.replace({ pathname: `${url}/orders`, state: { from: location } })
+    }
+
+    const handleProfile = (e: React.FormEvent) => {
+        e.preventDefault();
+        history.replace({ pathname: `${url}`, state: { from: location } })
     }
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.actions}>
                 <div className={commonStyles.commonUpperPadding}></div>
-                <p className={`text text_type_main-medium mt-8 ${!(currentPath === '/profile') ? 'text_color_inactive' : ''}`}>Профиль</p>
+                <p className={`text text_type_main-medium mt-8 ${!(currentPath === '/profile') ? 'text_color_inactive' : ''}`}  onClick={handleProfile}>Профиль</p>
                 <p className={`text text_type_main-medium mt-8 ${!(currentPath === '/profile/orders') ? 'text_color_inactive' : ''}`} onClick={handleHistory}>История Заказов</p>
                 <p className="text text_type_main-medium mt-8 text_color_inactive" onClick={handleLogout}>Выход</p>
                 <p className="text text_type_main-small mt-20">В этом разделе вы можете изменить свои персональные данные</p>
 
             </div>
+            <Switch>
+            <ProtectedRoute exact={true} path={`${path}`}>
             <form className={styles.form} onSubmit={handleSubmit}>
 
                 <div className={commonStyles.commonUpperPadding}></div>
@@ -105,6 +116,16 @@ function Profile() {
                     </Button>
                 </div>
             </form>
+            </ProtectedRoute>
+            <ProtectedRoute path={`${path}/orders`} exact={true}>
+                     <OrderHistory />
+            </ProtectedRoute>
+
+            </Switch>
+            {/* <ProtectedRoute path={`${path}/orders/:id`} exact={true}>
+                      <FullOrderDetails  />
+           </ProtectedRoute> */}
+
         </div>
 
     )

@@ -106,12 +106,15 @@ const App = (): JSX.Element => {
         <Route path="/ingredients/:id" exact={true}>
           <IngredientDetails />
         </Route>
-        <ProtectedRoute path="/profile" exact={true}>
+        <ProtectedRoute path="/profile" >
           <Profile />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile/orders" exact={true}>
-          <OrderHistory />
+        {/* <ProtectedRoute path="/profile/orders" exact={true}>
+           <OrderHistory />
         </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders/:id" exact={true}>
+           <FullOrderDetails  />
+        </ProtectedRoute> */}
         <AuthorizedBlockedRoute path="/reset-password" exact={true}>
           <ResetPassword />
         </AuthorizedBlockedRoute>
@@ -133,6 +136,7 @@ const App = (): JSX.Element => {
 
       </Switch>
       {background && <Route path="/feed/:id"   children={<FullOrderDetails  />}/>}
+      {background && <ProtectedRoute path="/profile/orders/:id"   children={<FullOrderDetails  />}/>}
       {background && <Route path="/ingredients/:id"   children={<IngredientDetails />} />}
      
 
