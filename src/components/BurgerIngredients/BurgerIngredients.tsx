@@ -1,22 +1,20 @@
 import { useState, useRef, createRef} from "react";
 import {useSelector, useDispatch} from 'react-redux';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
     Tab
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { InView } from 'react-intersection-observer';
-import { getNames } from '../../utils/data';
+import { getNames } from 'utils/data';
 import { BurgerIngredient } from './BurgerIngredient';
-import {WithDrag} from '../../utils/dndHOCs';
+import {WithDrag} from 'utils/dndHOCs';
 import styles from './BurgerIngredients.module.css';
 
-import { IBareBurgerIngredient } from '../Interfaces';
+import { IBareBurgerIngredient } from 'components/Interfaces';
 
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import Modal from '../Modal/Modal';
 
-import {pickIngredient,setInfo} from '../../services/actions/constructorThunks';
-import {RootState} from '../../services/store';
+import {pickIngredient} from 'services/actions/constructorThunks';
+import {RootState} from 'services/store';
 
 
 
@@ -27,19 +25,24 @@ interface IResult {
 
 
 
-export const getSortedData = (rawData: IBareBurgerIngredient[]): any => {
+export const getSortedData = (rawData: IBareBurgerIngredient[]): [IResult[],Map<string,IBareBurgerIngredient[]>] => {
 
     const data = rawData;
 
     const sortedData = data;
 
-    const types = new Set(); const ingredientMap = new Map(); const resultArr: IResult[] = [];
+    const types = new Set<string>(); const ingredientMap = new Map<string,IBareBurgerIngredient[]>(); const resultArr: IResult[] = [];
 
     sortedData.forEach((el: IBareBurgerIngredient) => { types.add(el.type) })
 
     types.forEach(t => { ingredientMap.set(t, []) })
 
-    sortedData.forEach((el: IBareBurgerIngredient) => { ingredientMap.get(el.type).push(el); })
+    sortedData.forEach((el: IBareBurgerIngredient) => {
+            if(ingredientMap.has(el.type)) {
+                ingredientMap.get(el.type)!.push(el); 
+            }    
+        
+        })
     ingredientMap.forEach((val, key) => val.sort((a, b) => { return a.price - b.price }))
 
     ingredientMap.forEach((val, key) => { resultArr.push({ type: key, value: val }) })
@@ -68,7 +71,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
     
   
     const storeIngredientMap = useSelector((state:RootState)=>state.ingredientMap);
-    const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
+   // const ingredientDetails = useSelector((state:RootState)=>state.ingredientDetails);
     const bun = useSelector((state:RootState)=>state.bun)
     const dispatch = useDispatch();    
     
@@ -77,10 +80,9 @@ export const BurgerIngredients = ( ): JSX.Element => {
 
     const myRefs = useRef([]);   
 
-    myRefs.current = ingredients.map((element: IBareBurgerIngredient, index: number) => myRefs.current[index] ?? createRef());
+    myRefs.current = ingredients.map((element: IResult, index: number) => myRefs.current[index] ?? createRef());
 
-    const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{
-        //dispatch(setInfo(ingredient)) 
+    const infoClicked = (ingredient: IBareBurgerIngredient)=>(): void=>{       
         history.replace({
             pathname:`/ingredients/${ingredient._id}`,
             state:{background:location, from:location}
@@ -91,9 +93,9 @@ export const BurgerIngredients = ( ): JSX.Element => {
         dispatch(pickIngredient(ingredient,bun))     
     }
 
-    const modalClose = (): void => {
-        dispatch(setInfo(null))       
-    }
+    // const modalClose = (): void => {
+    //     dispatch(setInfo(null))       
+    // }
 
     const getTab = (name: number, ref: any, setState: (arg: any) => void) => {
         return (e) => {
@@ -141,7 +143,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
                 })}
             </div>
             <div className={styles.mainTabContainer} >
-                {ingredients.map((ingredientOuter: IBareBurgerIngredient, index: number) => {
+                {ingredients.map((ingredientOuter: IResult, index: number) => {
                     return (
                      <InView 
                         key={index}
@@ -151,7 +153,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
                         <div  id={`${ingredientOuter.type}Type`} ref={myRefs.current[index]} >
                             <p className={`text text_type_main-medium ${styles.header}`}>{getNames(ingredientOuter.type)}</p>
                             <div className={styles.innerIngredientContainer} >
-                                {ingredientMap.get(ingredientOuter.type).map((ingredient: IBareBurgerIngredient) => {
+                                {ingredientMap.has(ingredientOuter.type) && ingredientMap.get(ingredientOuter.type)!.map((ingredient: IBareBurgerIngredient) => {
                                     const inputProps = {
                                         ...ingredient,
                                         relativeWidth: styles.ingredientWidth,

@@ -16,21 +16,21 @@ import {
   useLocation,
 
 } from "react-router-dom";
-import { burgerUrl } from '../../configs/urls';
-import { RootState } from '../../services/store';
-import { loadData } from '../../services/actions/constructorThunks'
-import IngredientDetails from '../../components/IngredientDetails/IngredientDetails';
-import Login from '../../pages/Login';
-import Profile from '../../pages/Profile';
-import ResetPassword from '../../pages/ResetPassword';
-import ForgotPassword from '../../pages/ForgotPassword';
-import Register from '../../pages/Register';
+import { burgerUrl } from 'configs/urls';
+import { RootState } from 'services/store';
+import { loadData } from 'services/actions/constructorThunks'
+import IngredientDetails from 'components/IngredientDetails/IngredientDetails';
+import Login from 'pages/Login';
+import Profile from 'pages/Profile';
+import ResetPassword from 'pages/ResetPassword';
+import ForgotPassword from 'pages/ForgotPassword';
+import Register from 'pages/Register';
 
-import { ProtectedRoute } from '../../components/ProtectedRoute/ProtectedRoute'
-import { AuthorizedBlockedRoute } from '../../components/ProtectedRoute/AuthorizedBlockedRoute'
-import OrderDetailWrapper from '../OrderDetails/OrderDetailWrapper';
-import { loginUserFromToken } from '../../services/actions/securityThunk';
-import OrderHistory from '../../pages/OrderHistory';
+import { ProtectedRoute } from 'components/ProtectedRoute/ProtectedRoute'
+import { AuthorizedBlockedRoute } from 'components/ProtectedRoute/AuthorizedBlockedRoute'
+import OrderDetailWrapper from 'components/OrderDetails/OrderDetailWrapper';
+import { loginUserFromToken } from 'services/actions/securityThunk';
+import OrderHistory from 'pages/OrderHistory';
 
 interface IAppDataAndStatus {
   error: boolean,

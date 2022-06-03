@@ -114,7 +114,7 @@ export const informOfError = (errorType:string)=>{
   }
 }
 
-export const checkResponse=(response )=>{
+export const checkResponse=(response)=>{
   if (response.ok) {
     return response.json();
   }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../services/store';
+import { RootState } from 'services/store';
 import { Route, Redirect } from 'react-router-dom';
 
 export function ProtectedRoute({ children, ...rest }) {

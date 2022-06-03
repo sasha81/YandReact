@@ -68,16 +68,7 @@ export const BurgerConstructor = (): JSX.Element => {
   return (
     <>
 
-      {/* {storeOrderDetails && (<Modal onClose={modalClose} >
-        <OrderDetails total={storeOrderDetails['cost']} 
-                        orderNumber={storeOrderDetails['orderId']}
-                        orderStatus={storeOrderDetails['success']}
-                        networkError={fetchError} /> 
-      </Modal>)
-
-      } */}
-
-
+    
       <div className={styles.topPadding} />
       <div className={styles.ingredientContainer} ref={drop}>
         {storeBun &&

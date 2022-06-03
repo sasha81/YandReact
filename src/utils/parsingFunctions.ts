@@ -9,7 +9,7 @@ export const parseToNearestObject =(key:string, object: Object, depth: number, a
     return result;
   }
 
-  export const doesContainFieldAndValue =(key:string, value:string,object: any, depth: number, arr:boolean[]=[])=>{
+  export const doesContainFieldAndValue =(key:string, value:string,object: any, depth: number, arr:boolean[]=[]):boolean=>{
     if(object) return false;
     if(!(typeof object === 'object')) return false;
     
