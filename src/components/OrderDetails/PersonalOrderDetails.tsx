@@ -1,78 +1,78 @@
-import { IBareBurgerIngredient, IWSResponse } from 'components/Interfaces';
+import { IBareBurgerIngredient, IWSResponse, TIngredientData } from 'components/Interfaces';
 import Modal from 'components/Modal/Modal';
 import modalStyles from 'components/Modal/Modal.module.css'
-import React,{useEffect} from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom'; 
+import React, { useEffect } from 'react';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { WS_ORDER_CONNECTION_START } from 'services/actions/wsActions';
-import {useSelector, useDispatch} from 'services/store';
+import { useSelector, useDispatch } from 'services/store';
 import { GetDetails } from './FullOrderDetails';
 
 function PersonalOrderDetails() {
     const location = useLocation();
     const history = useHistory();
 
-    const {id} = useParams();
+    const { id } = useParams();
     const dispatch = useDispatch();
-    const orderArr = useSelector((store)=>store.wsConnection['messagesOrder'] as IWSResponse);
-    const isSuccess = useSelector((store)=>store.wsConnection['wsOrderConnected'] as boolean);
-    const allIngredients = useSelector((store)=>store.allIngredients as IBareBurgerIngredient[]);
-    const order = orderArr?.orders.find(order=>order._id===id) ;
-const ingredients = order?.ingredients;
-const ingredientPictures = allIngredients.reduce((accumArr,ingredient)=>{
-    if(ingredients?.includes(ingredient._id)){ accumArr=accumArr.concat(ingredient.image);}
-    return accumArr;
-},[] as string[]);
+    const orderArr = useSelector((store) => store.wsConnection['messagesOrder'] as IWSResponse);
+    const isSuccess = useSelector((store) => store.wsConnection['wsOrderConnected'] as boolean);
+    const allIngredients = useSelector((store) => store.allIngredients as IBareBurgerIngredient[]);
+    const order = orderArr?.orders.find(order => order._id === id);
+    const ingredients = order?.ingredients;
+    const ingredientPictures = allIngredients.reduce((accumArr, ingredient) => {
+        if (ingredients?.includes(ingredient._id)) { accumArr = accumArr.concat({ pictureSrc: ingredient.image, pictureName: ingredient.name, price: ingredient.price }); }
+        return accumArr;
+    }, [] as TIngredientData[]);
 
-const price = ingredients?.map(ingredient=>{return allIngredients.find(i=>i._id===ingredient)?.price}).reduce<number>((acc,price)=>{
-  if(price) acc= acc+price;
-  return acc;
-},0)
+    const price = ingredients?.map(ingredient => { return allIngredients.find(i => i._id === ingredient)?.price }).reduce<number>((acc, price) => {
+        if (price) acc = acc + price;
+        return acc;
+    }, 0)
 
-    useEffect(()=>{
-     
-       if(!isSuccess) dispatch({type:WS_ORDER_CONNECTION_START });
+    useEffect(() => {
 
-    },[isSuccess]);
+        if (!isSuccess) dispatch({ type: WS_ORDER_CONNECTION_START });
 
-    const modalClose =()=>{
-        if(location?.state?.from?.pathname){
-                return history.replace({pathname: location.state.from.pathname, state: {from:location} })   
-            
+    }, [isSuccess, dispatch]);
+
+    const modalClose = () => {
+        if (location?.state?.from?.pathname) {
+            return history.replace({ pathname: location.state.from.pathname, state: { from: location } })
+
         }
-        else{
-            return history.replace({pathname: '/', state: {from:location} })   
+        else {
+            return history.replace({ pathname: '/', state: { from: location } })
         }
     }
-    if(location.state && location.state.background){
+    if (location.state && location.state.background) {
         return (
             <Modal onClose={modalClose}>
-              <GetDetails
-             ingredientPictures={ingredientPictures}
-             price={price}
-             date={order?.createdAt}
-             id={order?._id}
-             status={order?.status}
-             name={'Abcde'}
-            
-             />
-        </Modal>
+                <GetDetails
+                    ingredientPictures={ingredientPictures}
+                    price={price}
+                    date={order?.createdAt}
+                    id={order?._id}
+                    status={order?.status}
+                    name={'Abcde'}
+
+                />
+            </Modal>
         )
     }
-    else{
+    else {
         return (
-            
-             <div className={modalStyles.modal} >
-             <GetDetails
-             ingredientPictures={ingredientPictures}
-             price={price}
-             date={order?.createdAt}
-             id={order?._id}
-             status={order?.status}
-             name={'Abcde'}
-            
-             />
+
+            <div className={modalStyles.modal} >
+                <GetDetails
+                    ingredientPictures={ingredientPictures}
+                    price={price}
+                    date={order?.createdAt}
+                    id={order?._id}
+                    status={order?.status}
+                    name={'Abcde'}
+
+                />
             </div>
-           
+
         )
     }
 }

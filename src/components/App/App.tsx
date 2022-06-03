@@ -1,9 +1,9 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import { useSelector, useDispatch } from 'services/store';
-//import { useSelector, useDispatch } from 'react-redux';
-import {  Switch, Route } from 'react-router-dom';
+
+import { Switch, Route } from 'react-router-dom';
 
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
@@ -18,7 +18,7 @@ import {
 
 } from "react-router-dom";
 import { burgerUrl } from 'configs/urls';
-import { RootState } from 'services/store';
+
 import { loadData } from 'services/actions/constructorThunks'
 import IngredientDetails from 'components/IngredientDetails/IngredientDetails';
 import Feed from 'components/Feed/Feed'
@@ -32,9 +32,9 @@ import { ProtectedRoute } from 'components/ProtectedRoute/ProtectedRoute'
 import { AuthorizedBlockedRoute } from 'components/ProtectedRoute/AuthorizedBlockedRoute'
 import OrderDetailWrapper from 'components/OrderDetails/OrderDetailWrapper';
 import { loginUserFromToken } from 'services/actions/securityThunk';
-import OrderHistory from 'pages/OrderHistory';
+
 import FullOrderDetails from 'components/OrderDetails/FullOrderDetails';
-import { WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
+
 import PersonalOrderDetails from 'components/OrderDetails/PersonalOrderDetails';
 
 interface IAppDataAndStatus {
@@ -50,7 +50,7 @@ const App = (): JSX.Element => {
   const [order] = useState(false);
   const [, setStatus] = useState<IAppDataAndStatus>({ error: false, loading: false })
   const data = useSelector((state) => state.allIngredients);
-  const isWSConnected = useSelector(state=>state.wsConnection.wsAllConnected)
+  const isWSConnected = useSelector(state => state.wsConnection.wsAllConnected)
 
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const App = (): JSX.Element => {
   useEffect(() => {
 
     dispatch(loadData(URL, setStatus));
-   dispatch(loginUserFromToken(window.localStorage.getItem('accessToken')))
+    dispatch(loginUserFromToken(window.localStorage.getItem('accessToken')))
   }, [dispatch])
 
 
@@ -74,12 +74,7 @@ const App = (): JSX.Element => {
   }
 
 
-
-
   let background = location.state && location.state.background;
-  //let backgroundFeed = location.state && location.state.backgroundFeed;
-
-
 
   return (
 
@@ -87,7 +82,7 @@ const App = (): JSX.Element => {
     <div className={styles.App}>
       <AppHeader />
 
-      <Switch location={background|| location}>
+      <Switch location={background || location}>
 
         <Route path="/" exact={true}>
           <DndProvider backend={HTML5Backend}>
@@ -110,12 +105,7 @@ const App = (): JSX.Element => {
         <ProtectedRoute path="/profile" >
           <Profile />
         </ProtectedRoute>
-        {/* <ProtectedRoute path="/profile/orders" exact={true}>
-           <OrderHistory />
-        </ProtectedRoute>
-        <ProtectedRoute path="/profile/orders/:id" exact={true}>
-           <FullOrderDetails  />
-        </ProtectedRoute> */}
+
         <AuthorizedBlockedRoute path="/reset-password" exact={true}>
           <ResetPassword />
         </AuthorizedBlockedRoute>
@@ -130,21 +120,21 @@ const App = (): JSX.Element => {
           <Feed />
         </Route>
         <Route path="/feed/:id" exact={true}>
-             <FullOrderDetails  />
+          <FullOrderDetails />
         </Route>
-       
+
         <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />
 
       </Switch>
-      {background && <Route path="/feed/:id"   children={<FullOrderDetails  />}/>}
-      {background && <ProtectedRoute path="/profile/orders/:id"   children={<PersonalOrderDetails  />}/>}
-      {background && <Route path="/ingredients/:id"   children={<IngredientDetails />} />}
-     
+      {background && <Route path="/feed/:id" children={<FullOrderDetails />} />}
+      {background && <ProtectedRoute path="/profile/orders/:id" children={<PersonalOrderDetails />} />}
+      {background && <Route path="/ingredients/:id" children={<IngredientDetails />} />}
+
 
     </div>
 
 
   );
 }
-//criteria={!isWSConnected} initCallback={()=>dispatch({type:WS_ALL_CONNECTION_START})}
+
 export default App;

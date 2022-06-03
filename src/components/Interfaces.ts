@@ -32,7 +32,7 @@ export interface IReduxState {
 
 export type IOrderTab={
     ingredients:string[];
-    name:string;
+    name:string|undefined;
     price:number|undefined;
     date:string|undefined;
     id:string|undefined;
@@ -133,5 +133,10 @@ export interface IWSResponse{
     total:number;
     totalToday:number;
 
+}
+export type TIngredientData={
+    pictureName: string;
+    pictureSrc: string;
+    price: number;
 }
 

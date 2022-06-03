@@ -1,0 +1,46 @@
+@value panelHeight: 40vh;
+
+.flexHorizontal{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    /* height: panelHeight; */
+    list-style-type: none;
+    height: panelHeight;
+    margin-top:30px;
+    margin-bottom: 30px;
+
+}
+
+.containerOuter{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:  'completed pending'
+                          'total total'
+                          'today today';
+
+    padding-left: 50px;
+
+}
+
+.completed{
+    grid-area: completed;
+   
+    /* composes: flexHorizontal; */
+}
+
+.pending{
+    grid-area: pending;
+  
+    /* composes: flexHorizontal; */
+}
+
+.total{
+    grid-area:total;
+}
+
+.today{
+    grid-area:today;
+}
+

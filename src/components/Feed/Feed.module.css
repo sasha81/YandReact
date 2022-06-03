@@ -6,7 +6,8 @@
     display: grid;
     grid-template-columns: 50% 50%;
     /*grid-template-rows: auto; */
-    grid-template-areas:  'orders data'
+    grid-template-areas:'header header'      
+                        'orders data';
 }
 
 .orders{
@@ -18,4 +19,10 @@
 
 .data {
     grid-area: data;
+}
+
+.header{
+    grid-area: header;
+    margin-top:30px;
+    margin-bottom: 30px;
 }

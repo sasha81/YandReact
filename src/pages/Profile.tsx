@@ -5,12 +5,12 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import useFormField from '../hooks/customForms'
 import styles from './Profile.module.css';
 import commonStyles from './CommonStyles.module.css';
-import {Route,Switch, useHistory, useLocation,useRouteMatch } from 'react-router-dom';
+import {Switch, useHistory, useLocation,useRouteMatch } from 'react-router-dom';
 
 import { updateUserSec, signOut } from '../services/actions/securityThunk'
 import { ProtectedRoute } from 'components/ProtectedRoute/ProtectedRoute';
 import OrderHistory from './OrderHistory';
-import FullOrderDetails from 'components/OrderDetails/FullOrderDetails';
+
 function Profile() {
     const {path,url} = useRouteMatch()
     const email = useFormField();
@@ -69,7 +69,7 @@ function Profile() {
             <div className={styles.formContainer}>
             <Switch>
             <ProtectedRoute exact={true} path={`${path}`}>
-            <form  onSubmit={handleSubmit}>
+            <form className={styles.formContainer}  onSubmit={handleSubmit}>
 
                 <div className={commonStyles.commonUpperPadding}></div>
 
