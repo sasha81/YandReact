@@ -86,7 +86,7 @@ function FullOrderDetails() {
 export const GetDetails = ({ ingredientPictures, name, price, date, id, status }: Omit<IOrderTab, 'ingredients'> & { status: string | undefined } & { ingredientPictures: TIngredientData[] }) => {
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className={styles.flexColumnAlign} >
             <p className="text text_type_digits-default">#{id}</p>
             <p className="text text_type_main-medium mt-3">{name}</p>
             <p className={`text text_type_main-medium mt-3 mb-3 ${status && colorMap.has(status) ? styles[colorMap.get(status)!] : ''}`}>{status && statusMap.get(status)}</p>
@@ -95,12 +95,12 @@ export const GetDetails = ({ ingredientPictures, name, price, date, id, status }
                 {ingredientPictures.map((picture, index) => {
                     return (
                         <div key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <div className={styles.flexRowAlign}>
                                 <img className={styles.image} src={picture.pictureSrc} />
                                 <p className="text text_type_main-default">{picture.pictureName}</p>
                             </div>
 
-                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                            <div className={styles.flexRowAlign}>
                                 <p className="text text_type_digits-medium mr-3">{picture.price}</p>
                                 <CurrencyIcon type={'primary'} />
                             </div>

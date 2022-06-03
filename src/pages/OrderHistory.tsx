@@ -1,10 +1,10 @@
-import React,{useEffect} from 'react';
+import {useEffect} from 'react';
 import {useDispatch, useSelector} from'services/store';
-//import {useDispatch, useSelector} from'react-redux';
-import {WS_ALL_CONNECTION_START, WS_ORDER_CONNECTION_START} from 'services/actions/wsActions'
-import {RootState} from 'services/store'
+
+import { WS_ORDER_CONNECTION_START} from 'services/actions/wsActions'
+
 import { IBareBurgerIngredient, IWSResponse } from 'components/Interfaces';
-import { useHistory, useLocation, useParams } from 'react-router-dom'; 
+import { useHistory, useLocation } from 'react-router-dom'; 
 import OrderTab from 'components/OrderTab/OrderTab';
 import styles from './OrderHistory.module.css'
 import { getOrderCost } from 'utils/costFunctions';
@@ -22,8 +22,6 @@ const allIngredients =  useSelector((store)=>store.allIngredients as IBareBurger
     }, [dispatch])
 
 
-
-
     return (
         <div>
            
@@ -37,7 +35,7 @@ const allIngredients =  useSelector((store)=>store.allIngredients as IBareBurger
                 }}> <OrderTab ingredients={order.ingredients}
                 price={getOrderCost(allIngredients,order.ingredients)}
                 date={order.createdAt}
-                id={order._id}
+                id={order.number.toString()}
                 name={order.name}
                 status={order.status}
 

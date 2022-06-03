@@ -26,3 +26,22 @@
     margin-left: marginLeft;
     margin-top:marginTop;
 }
+
+.flexColumnAlign{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+}
+
+.flexRowAlign{
+    display: flex;
+    flex-direction: row;
+    align-items: center;   
+}
+
+.flexColumnJustifyWidth{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}

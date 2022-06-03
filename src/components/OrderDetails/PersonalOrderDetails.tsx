@@ -50,9 +50,9 @@ function PersonalOrderDetails() {
                     ingredientPictures={ingredientPictures}
                     price={price}
                     date={order?.createdAt}
-                    id={order?._id}
+                    id={order?.number.toString()}
                     status={order?.status}
-                    name={'Abcde'}
+                    name={order?.name}
 
                 />
             </Modal>
