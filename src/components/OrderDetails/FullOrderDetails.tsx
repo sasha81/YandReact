@@ -94,7 +94,7 @@ export const GetDetails = ({ ingredientPictures, name, price, date, id, status }
             <div className={styles.pictureContainer}>
                 {ingredientPictures.map((picture, index) => {
                     return (
-                        <div key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <div key={index} className={styles.flexColumnJustify} >
                             <div className={styles.flexRowAlign}>
                                 <img className={styles.image} src={picture.pictureSrc} />
                                 <p className="text text_type_main-default">{picture.pictureName}</p>
@@ -108,9 +108,9 @@ export const GetDetails = ({ ingredientPictures, name, price, date, id, status }
                     )
                 })}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+            <div className={styles.flexColumnJustifyWidth} >
                 <p className="text text_type_main-small text_color_inactive">{prittifyDate(date!)}</p>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <div className={styles.flexRowAlign}>
                     <p className="text text_type_digits-medium mr-3">{price}</p>
                     <CurrencyIcon type={'primary'} />
                 </div>
