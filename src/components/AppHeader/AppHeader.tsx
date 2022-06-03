@@ -32,7 +32,7 @@ const AppHeader = () => {
                     <ListIcon type="primary" />
 
                     <div className="p-2">
-                        <p className="text text_type_main-default text_color_inactive"> Лента заказов</p>
+                        <p className={`text text_type_main-default ${!(currentPath === '/feed') ? 'text_color_inactive' : '' }`}> Лента заказов</p>
                     </div>
                 </div>
 

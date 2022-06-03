@@ -66,9 +66,10 @@ function Profile() {
                 <p className="text text_type_main-small mt-20">В этом разделе вы можете изменить свои персональные данные</p>
 
             </div>
+            <div className={styles.formContainer}>
             <Switch>
             <ProtectedRoute exact={true} path={`${path}`}>
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form  onSubmit={handleSubmit}>
 
                 <div className={commonStyles.commonUpperPadding}></div>
 
@@ -125,7 +126,7 @@ function Profile() {
             {/* <ProtectedRoute path={`${path}/orders/:id`} exact={true}>
                       <FullOrderDetails  />
            </ProtectedRoute> */}
-
+</div>
         </div>
 
     )

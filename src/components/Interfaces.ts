@@ -29,6 +29,15 @@ export interface IReduxState {
 }
 
 
+
+export type IOrderTab={
+    ingredients:string[];
+    name:string;
+    price:number|undefined;
+    date:string|undefined;
+    id:string|undefined;
+}
+
 export interface IBareBurgerIngredient{
     _id: string,
     uuid?: string,
@@ -115,6 +124,7 @@ export interface IWSOrder {
     number:number;
     createdAt:string;
     updatedAt:string;
+    name:string;
 }
 
 export interface IWSResponse{
