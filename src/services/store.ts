@@ -1,10 +1,10 @@
 import { compose, createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducers/rootReducer'
-import thunk,{ThunkDispatch, ThunkAction} from 'redux-thunk';
-import {IAction,Actions} from 'services/actions/Interfaces';
+import thunk,{ ThunkAction} from 'redux-thunk';
+import {Actions} from 'services/actions/Interfaces';
 import {WSActions} from 'services/actions/wsActions'
-import { Action, AnyAction, Middleware,ActionCreator } from 'redux';
-import {IUserResponseBody, IForm,IUser} from 'components/Interfaces';
+import { Action, ActionCreator } from 'redux';
+
 import {
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
@@ -28,11 +28,9 @@ declare global {
     applyMiddleware(...middleware),
     // other store enhancers if any
     ));
-   // export type RootState = ReturnType<typeof rootReducer>;
+  
     export type RootState = ReturnType<typeof store.getState>;
-  //  type AppAction = ReturnType<typeof store.dispatch>;
-
-
+ 
     export type AppThunk<TReturn = void> = ActionCreator<
   ThunkAction<TReturn, Action, RootState, Actions | WSActions>
 >

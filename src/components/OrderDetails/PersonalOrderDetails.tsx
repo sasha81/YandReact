@@ -16,21 +16,21 @@ function PersonalOrderDetails() {
     const orderArr = useSelector((store) => store.wsConnection['messagesOrder'] as IWSResponse);
     const isSuccess = useSelector((store) => store.wsConnection['wsOrderConnected'] as boolean);
     const allIngredients = useSelector((store) => store.allIngredients as IBareBurgerIngredient[]);
-    const order = orderArr?.orders.find(order => order._id === id);
-    const ingredients = order?.ingredients;
-    const ingredientPictures = allIngredients.reduce((accumArr, ingredient) => {
+    const order =orderArr&&  orderArr.orders.find(order => order._id === id);
+    const ingredients =orderArr&& order?.ingredients;
+    const ingredientPictures =orderArr&& allIngredients.reduce((accumArr, ingredient) => {
         if (ingredients?.includes(ingredient._id)) { accumArr = accumArr.concat({ pictureSrc: ingredient.image, pictureName: ingredient.name, price: ingredient.price }); }
         return accumArr;
     }, [] as TIngredientData[]);
 
-    const price = ingredients?.map(ingredient => { return allIngredients.find(i => i._id === ingredient)?.price }).reduce<number>((acc, price) => {
+    const price =orderArr&& ingredients?.map(ingredient => { return allIngredients.find(i => i._id === ingredient)?.price }).reduce<number>((acc, price) => {
         if (price) acc = acc + price;
         return acc;
     }, 0)
 
     useEffect(() => {
 
-        if (!isSuccess) dispatch({ type: WS_ORDER_CONNECTION_START });
+        if (!isSuccess) dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')});
 
     }, [isSuccess, dispatch]);
 

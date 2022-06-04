@@ -1,15 +1,15 @@
 
 
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'services/store';
+import { useSelector } from 'services/store';
+
 import { Route, Redirect } from 'react-router-dom';
 
 export function ProtectedRoute({ children, ...rest }) {
 
   const [isUserLoaded, setUserLoaded] = useState(false);
 
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state) => state.user);
 
 
 

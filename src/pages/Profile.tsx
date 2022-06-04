@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'services/store'
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useFormField from '../hooks/customForms'

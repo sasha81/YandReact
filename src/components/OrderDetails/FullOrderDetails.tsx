@@ -20,7 +20,7 @@ function FullOrderDetails() {
     const orderArr = useSelector((store) => store.wsConnection['messagesAll'] as IWSResponse);
     const isSuccess = useSelector((store) => store.wsConnection['wsAllConnected'] as boolean);
     const allIngredients = useSelector((store) => store.allIngredients as IBareBurgerIngredient[]);
-    const order = orderArr?.orders.find(order => order._id === id);
+    const order = orderArr?.orders.find(order => order._id === id) 
     const ingredients = order?.ingredients;
     const ingredientPictures = allIngredients.reduce((accumArr, ingredient) => {
         if (ingredients?.includes(ingredient._id)) { accumArr = accumArr.concat({ pictureSrc: ingredient.image, pictureName: ingredient.name, price: ingredient.price }); }
@@ -85,7 +85,7 @@ function FullOrderDetails() {
 
 export const GetDetails = ({ ingredientPictures, name, price, date, id, status }: Omit<IOrderTab, 'ingredients'> & { status: string | undefined } & { ingredientPictures: TIngredientData[] }) => {
 
-    return (
+    return ingredientPictures && date && status ?(
         <div className={styles.flexColumnAlign} >
             <p className="text text_type_digits-default">#{id}</p>
             <p className="text text_type_main-medium mt-3">{name}</p>
@@ -117,7 +117,7 @@ export const GetDetails = ({ ingredientPictures, name, price, date, id, status }
             </div>
 
         </div>
-    )
+    ):(<p className="text text_type_main-medium">Please wait...</p>)
 }
 
 export default FullOrderDetails
