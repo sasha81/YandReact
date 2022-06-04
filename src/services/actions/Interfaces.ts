@@ -23,6 +23,27 @@ import {
     NETWORK_CONNECTION
   } from './constructor';
 
+export type TActionStrings=typeof PICK_INGREDIENT |
+                            typeof RESET_INGREDIENT |
+                            typeof SET_INGREDIENTS|
+                            typeof DELETE_INGREDIENT|
+                            typeof SET_INFO_INGREDIENT|
+                            typeof MAKE_ORDER|
+                            typeof DECREMENT_MAP|
+                            typeof INCREMENT_MAP|
+                            typeof SET_BUN|
+                            typeof SWITCH_INGREDIENT|
+                            typeof SWITCH_INGREDIENT|                            
+                            typeof RESET_MAP|
+                            typeof ERROR_SET_INGREDIENTS|
+                            typeof ERROR_MAKE_ORDER|
+                            typeof UPDATE_USER|  typeof RESET_MAP|
+                            typeof ERROR_SET_INGREDIENTS|
+                            typeof ERROR_MAKE_ORDER|
+                            typeof UPDATE_USER|
+                            typeof NETWORK_CONNECTION |typeof INCREASE_BUN_MAP|
+                            typeof DECREASE_BUN_MAP
+
 export interface IAction<T> extends Action{
       payload: T;
 }
@@ -45,7 +66,9 @@ ISetBun|
 ISetIngredients|
 IIncrementMap|
 IDecrementMap|
-IResetMap
+IResetMap|
+IIncreaseBunMap|
+IDecreaseBntMap
 ;
 
 
@@ -65,7 +88,7 @@ export interface IDeleteIngredient {
 
   export interface IErrorSetIngredients {
     readonly type: typeof ERROR_SET_INGREDIENTS;
-    readonly payload: string;
+    readonly payload?: string;
   }
 
   export interface ISwitchIngredient {
@@ -85,7 +108,7 @@ export interface IDeleteIngredient {
   
   export interface IMakeOrder {
     readonly type: typeof MAKE_ORDER;
-    readonly payload: IOrder;
+    readonly payload: IOrder|null;
   }
 
   export interface IUpdateUser {
@@ -95,7 +118,7 @@ export interface IDeleteIngredient {
 
   export interface ISetInfoIngredient {
     readonly type: typeof SET_INFO_INGREDIENT;
-    readonly payload: IBareBurgerIngredient;
+    readonly payload: IBareBurgerIngredient|null;
   }
 
   export interface ISetIngredients {
@@ -104,7 +127,7 @@ export interface IDeleteIngredient {
   }
   export interface ISetBun {
     readonly type: typeof SET_BUN;
-    readonly payload: IBareBurgerIngredient;
+    readonly payload: IBareBurgerIngredient|null;
   }
   export interface IIncrementMap {
     readonly type: typeof INCREMENT_MAP;
@@ -112,6 +135,14 @@ export interface IDeleteIngredient {
   }
   export interface IDecrementMap {
     readonly type: typeof DECREMENT_MAP;
+    readonly payload: IBareBurgerIngredient;
+  }
+  export interface IIncreaseBunMap {
+    readonly type: typeof INCREASE_BUN_MAP;
+    readonly payload: IBareBurgerIngredient;
+  }
+  export interface IDecreaseBntMap {
+    readonly type: typeof DECREASE_BUN_MAP;
     readonly payload: IBareBurgerIngredient;
   }
   export interface IResetMap {

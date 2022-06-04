@@ -39,21 +39,7 @@ import {Actions,INetworkConnection ,
     IDecrementMap,
     IResetMap} from 'services/actions/Interfaces'
 
-// export const initialState: IReduxState= {
-//     bun:null, ingredients:[], ingredientMap:{}, allIngredients:[], ingredientDetails:null,orderDetails:null
-// }
 
-// export interface IState{
-//     ingredients: IBareBurgerIngredient[];
-//     bun: IBareBurgerIngredient | null ;
-//     ingredientMap: Object;
-//     allIngredients: IBareBurgerIngredient[] | string;
-//     ingredientDetails:  IBareBurgerIngredient | null ;
-//     orderDetails:  IOrder | null ;
-//     user: IUser | null;
-//     visited : Object;
-//     noConnection : boolean;
-// }
 
 
 
@@ -82,19 +68,7 @@ export const noConnectionReducer = (state:boolean = initialNetworkError, action:
 }
 
 
-// export const visitsReducer = (state : Object= initialVisited, action:IAction<boolean>)=>{
-//     switch(action.type){
-//         case UPDATE_VISIT:{
-//             return {...state, [action.payload]:true}
-//         }
 
-
-//         case RESET_VISITS:
-//             return initialVisited;
-//         default: 
-//           return state;
-//     }
-// }
 
 export const securityUserReducer = (state: IUser | null= initalOrderDetails, action:IUpdateUser): IUser | null=>{
     switch(action.type){
