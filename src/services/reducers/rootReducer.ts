@@ -1,6 +1,13 @@
 import { combineReducers } from 'redux';
-import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer,securityUserReducer,noConnectionReducer} from './constructor';
-import {IState} from 'components/Interfaces'
+import {orderDetailsReducer,
+  ingredientDetailsReducer,
+  allIngredientsReducer,
+  bunReducer,
+  mapReducer,
+  ingredientReducer,
+  securityUserReducer,
+  noConnectionReducer} from './constructor';
+
 import {wsReducer} from 'services/reducers/wsReducer'
 
 

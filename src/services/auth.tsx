@@ -45,21 +45,7 @@ export function useProvideAuth() {
         });
     };
   
-    // const signIn = async (form:IForm, cb:()=>void) => {
-    //   const data = await getPostData(Url+'/auth/login',form,)
-    //     .then(data => data);
-    //     if(data.accessToken){
-    //       window.localStorage.setItem('accessToken',data.accessToken.split('Bearer ')[1]);
-    //       window.localStorage.setItem('refreshToken',data.refreshToken);
-
-    //     }
-
-    //   if (data.success) {
-    //     setUser({ ...data.user});
-    //     cb()
-    //   }
-    // };
-
+  
     const signIn = async (form: IForm, cb:()=>void): Promise<void> => {
       const data = await getData<IUserResponseBody>('POST',URL+'/auth/login',form,bareConfig)
         .then(data => data);

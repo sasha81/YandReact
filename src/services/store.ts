@@ -11,10 +11,11 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 import {socketMiddleware} from 'utils/wsMiddleware';
-import {socketAuthMiddleware} from 'utils/wsAuthMIddleware';
 
 
-const middleware = [thunk,socketMiddleware('wss://norma.nomoreparties.space/orders/all'),socketAuthMiddleware('wss://norma.nomoreparties.space/orders')];
+
+//const middleware = [thunk,socketMiddleware('wss://norma.nomoreparties.space/orders/all'),socketAuthMiddleware('wss://norma.nomoreparties.space/orders')];
+const middleware = [thunk,socketMiddleware()];
 
 declare global {
     interface Window {
