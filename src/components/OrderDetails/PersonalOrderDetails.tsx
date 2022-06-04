@@ -3,7 +3,7 @@ import Modal from 'components/Modal/Modal';
 import modalStyles from 'components/Modal/Modal.module.css'
 import React, { useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { WS_ORDER_CONNECTION_START } from 'services/actions/wsActions';
+import { WS_ORDER_CONNECTION_CLOSED, WS_ORDER_CONNECTION_START } from 'services/actions/wsActions';
 import { useSelector, useDispatch } from 'services/store';
 import { GetDetails } from './FullOrderDetails';
 
@@ -31,6 +31,10 @@ function PersonalOrderDetails() {
     useEffect(() => {
 
         if (!isSuccess) dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')});
+
+        return ()=>{
+            if (isSuccess)  dispatch({type:WS_ORDER_CONNECTION_CLOSED});
+         }
 
     }, [isSuccess, dispatch]);
 

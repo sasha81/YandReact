@@ -52,6 +52,9 @@ export const socketAuthMiddleware = (wsUrl: string ): Middleware => {
                     // функция для отправки сообщения на сервер
           socket.send(JSON.stringify(message));
         }
+        if(type === WS_ORDER_CONNECTION_CLOSED){
+          socket.close();         
+        }
       }
 
       next(action);

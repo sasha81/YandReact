@@ -3,7 +3,7 @@ import Modal from 'components/Modal/Modal';
 import modalStyles from 'components/Modal/Modal.module.css'
 import { useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
+import { WS_ALL_CONNECTION_CLOSED, WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
 import { useSelector, useDispatch } from 'services/store';
 import { IOrderTab } from 'components/Interfaces';
 import styles from './FullOrderDetails.module.css';
@@ -35,6 +35,9 @@ function FullOrderDetails() {
     useEffect(() => {
 
         if (!isSuccess) dispatch({ type: WS_ALL_CONNECTION_START });
+        return ()=>{
+            if (isSuccess) dispatch({type:WS_ALL_CONNECTION_CLOSED});
+         }
 
     }, [isSuccess, dispatch]);
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'services/store';
 
-import { WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
+import { WS_ALL_CONNECTION_CLOSED, WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
 import { IBareBurgerIngredient, IWSResponse } from 'components/Interfaces';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -20,7 +20,10 @@ export default function Feed() {
 
     useEffect(() => {
 
-        dispatch({ type: WS_ALL_CONNECTION_START })
+        dispatch({ type: WS_ALL_CONNECTION_START });
+        return ()=>{
+            dispatch({type:WS_ALL_CONNECTION_CLOSED});
+         }
     }, [dispatch])
 
 

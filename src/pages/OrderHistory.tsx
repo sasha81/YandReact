@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from'services/store';
 
-import { WS_ORDER_CONNECTION_START} from 'services/actions/wsActions'
+import { WS_ORDER_CONNECTION_START,WS_ORDER_CONNECTION_CLOSED} from 'services/actions/wsActions'
 
 import { IBareBurgerIngredient, IWSResponse } from 'components/Interfaces';
 import { useHistory, useLocation } from 'react-router-dom'; 
@@ -18,7 +18,11 @@ const orderArr = useSelector((store)=>store.wsConnection['messagesOrder'] as IWS
 const allIngredients =  useSelector((store)=>store.allIngredients as IBareBurgerIngredient[])  
   
     useEffect(() => {  
-     dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')})
+     dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')});
+
+     return ()=>{
+        dispatch({type:WS_ORDER_CONNECTION_CLOSED});
+     }
     }, [dispatch])
 
 

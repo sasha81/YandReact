@@ -36,7 +36,7 @@ export interface ISendMessage {
   }
 export interface IConnectionClosed {
     readonly type: typeof WS_ALL_CONNECTION_CLOSED |typeof WS_ORDER_CONNECTION_CLOSED  ;
-    readonly payload: Event;
+    readonly payload?: Event;
    
   }
 
