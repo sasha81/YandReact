@@ -102,9 +102,12 @@ const App = (): JSX.Element => {
         <Route path="/ingredients/:id" exact={true}>
           <IngredientDetails />
         </Route>
+        <ProtectedRoute path="/profile/orders/:id" exact={true} children={<PersonalOrderDetails />} />
         <ProtectedRoute path="/profile" >
           <Profile />
         </ProtectedRoute>
+
+        
 
         <AuthorizedBlockedRoute path="/reset-password" exact={true}>
           <ResetPassword />
@@ -122,6 +125,7 @@ const App = (): JSX.Element => {
         <Route path="/feed/:id" exact={true}>
           <FullOrderDetails />
         </Route>
+       
 
         <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />
 

@@ -16,12 +16,14 @@ import {
     ERROR_MAKE_ORDER,
     UPDATE_USER,
  
-    NETWORK_CONNECTION
+    NETWORK_CONNECTION,
+    DECREASE_BUN_MAP,
+    INCREASE_BUN_MAP
 
 } from '../actions/constructor';
 import {Reducer} from 'redux'
 import { IBareBurgerIngredient, IReduxState,IOrder, IUser, IState } from '../../components/Interfaces';
-import {IAction, IBareAction} from 'services/actions/Interfaces';
+import {IAction, IBareAction, IDecreaseBntMap, IIncreaseBunMap} from 'services/actions/Interfaces';
 import {RootState} from 'services/store'
 import {Actions,INetworkConnection ,
     IPickIngredient,
@@ -127,7 +129,8 @@ export const bunReducer = (state:IBareBurgerIngredient | null =initialBun, actio
     }
 }
 
-export const mapReducer =  (state: Object=initialIngredientMap, action:IIncrementMap|IDecrementMap| IResetMap): Object=>{
+export const mapReducer =  (state: Object=initialIngredientMap, action:IIncrementMap|IDecrementMap| IResetMap|IIncreaseBunMap|
+    IDecreaseBntMap): Object=>{
     switch(action.type){
        case RESET_MAP :
            return initialIngredientMap
@@ -165,25 +168,25 @@ export const mapReducer =  (state: Object=initialIngredientMap, action:IIncremen
             return tempContext
         }
         
-        // case DECREASE_BUN_MAP:{
-        //     const tempContext = {...state};
-        //     const _id = action.payload._id
-        //     if(state.hasOwnProperty(_id)) {
+        case DECREASE_BUN_MAP:{
+            const tempContext = {...state};
+            const _id = action.payload._id
+            if(state.hasOwnProperty(_id)) {
                 
-        //         tempContext[_id]=0;
-        //       }
+                tempContext[_id]=0;
+              }
     
               
-        //       return tempContext;
-        // }
-        // case INCREASE_BUN_MAP:{
-        //     const tempContext = {...state};
-        //     const _id = action.payload._id;      
+              return tempContext;
+        }
+        case INCREASE_BUN_MAP:{
+            const tempContext = {...state};
+            const _id = action.payload._id;      
                 
-        //         tempContext[_id]=1;     
+                tempContext[_id]=1;     
               
-        //       return tempContext;
-        // }        
+              return tempContext;
+        }        
         default:
             return state;
 
