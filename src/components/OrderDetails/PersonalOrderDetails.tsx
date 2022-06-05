@@ -3,7 +3,7 @@ import Modal from 'components/Modal/Modal';
 import modalStyles from 'components/Modal/Modal.module.css'
 import React, { useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { WS_ORDER_CONNECTION_CLOSED, WS_ORDER_CONNECTION_START } from 'services/actions/wsActions';
+import { WS_CONNECTION_START, WS_ORDER_CONNECTION_CLOSED, WS_ORDER_CONNECTION_ERROR, WS_ORDER_CONNECTION_START, WS_ORDER_CONNECTION_SUCCESS, WS_ORDER_GET_MESSAGE, WS_ORDER_SEND_MESSAGE } from 'services/actions/wsActions';
 import { useSelector, useDispatch } from 'services/store';
 import { GetDetails } from './FullOrderDetails';
 
@@ -30,7 +30,18 @@ function PersonalOrderDetails() {
 
     useEffect(() => {
 
-        if (!isSuccess) dispatch({type:WS_ORDER_CONNECTION_START,payload: window.localStorage.getItem('accessToken')});
+        if (!isSuccess)   dispatch({ type: WS_CONNECTION_START,payload:{
+            url:`wss://norma.nomoreparties.space/orders?token=${window.localStorage.getItem('accessToken')}`,
+            actionNames:{
+                wsStart:  WS_ORDER_CONNECTION_START,
+                onOpen: WS_ORDER_CONNECTION_SUCCESS,
+                onError:  WS_ORDER_CONNECTION_ERROR,
+                onMessage:  WS_ORDER_GET_MESSAGE,
+                wsClose: WS_ORDER_CONNECTION_CLOSED,
+                send: WS_ORDER_SEND_MESSAGE,
+                close: WS_ORDER_CONNECTION_CLOSED
+            }
+        } });
 
         return ()=>{
             if (isSuccess)  dispatch({type:WS_ORDER_CONNECTION_CLOSED});

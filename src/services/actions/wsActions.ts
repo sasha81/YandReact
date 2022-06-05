@@ -1,4 +1,5 @@
 import {IWSResponse} from 'components/Interfaces'
+import { TSocketActionPayload } from './Interfaces';
 
 
 
@@ -23,7 +24,7 @@ export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
 export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS'; 
 export const WS_CONNECTION_START: 'WS_CONNECTION_START' = 'WS_CONNECTION_START';
 
-export type WSActions = IGetMessage | ISendMessage|IConnectionClosed|IConnectionSucceed| IAllConnectionStart|IOrderConnectionStart|IConnectionError;
+export type WSActions = IConnectSocket |IGetMessage | ISendMessage|IConnectionClosed|IConnectionSucceed| IAllConnectionStart|IOrderConnectionStart|IConnectionError;
 
 export interface IGetMessage {
     readonly type: typeof WS_ALL_GET_MESSAGE | typeof WS_ORDER_GET_MESSAGE;
@@ -62,4 +63,9 @@ export interface IConnectionClosed {
     readonly type:  typeof WS_ORDER_CONNECTION_START;
     readonly payload: string;
   
+  }
+
+  export interface IConnectSocket {
+    readonly type: typeof WS_CONNECTION_START ;
+    readonly payload: TSocketActionPayload;
   }

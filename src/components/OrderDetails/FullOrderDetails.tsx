@@ -3,7 +3,7 @@ import Modal from 'components/Modal/Modal';
 import modalStyles from 'components/Modal/Modal.module.css'
 import { useEffect } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { WS_ALL_CONNECTION_CLOSED, WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
+import { WS_ALL_CONNECTION_CLOSED, WS_ALL_CONNECTION_ERROR, WS_ALL_CONNECTION_START, WS_ALL_CONNECTION_SUCCESS, WS_ALL_GET_MESSAGE, WS_ALL_SEND_MESSAGE, WS_CONNECTION_START } from 'services/actions/wsActions';
 import { useSelector, useDispatch } from 'services/store';
 import { IOrderTab } from 'components/Interfaces';
 import styles from './FullOrderDetails.module.css';
@@ -34,7 +34,18 @@ function FullOrderDetails() {
 
     useEffect(() => {
 
-        if (!isSuccess) dispatch({ type: WS_ALL_CONNECTION_START });
+        if (!isSuccess)  dispatch({ type: WS_CONNECTION_START,payload:{
+            url:'wss://norma.nomoreparties.space/orders/all',
+            actionNames:{
+                wsStart:  WS_ALL_CONNECTION_START,
+                onOpen: WS_ALL_CONNECTION_SUCCESS,
+                onError:  WS_ALL_CONNECTION_ERROR,
+                onMessage:  WS_ALL_GET_MESSAGE,
+                wsClose: WS_ALL_CONNECTION_CLOSED,
+                send: WS_ALL_SEND_MESSAGE,
+                close: WS_ALL_CONNECTION_CLOSED
+            }
+        } });;
         return ()=>{
             if (isSuccess) dispatch({type:WS_ALL_CONNECTION_CLOSED});
          }

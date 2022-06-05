@@ -22,6 +22,7 @@ import {
     RESET_VISITS,
     NETWORK_CONNECTION
   } from './constructor';
+import { WsActionStrings } from 'utils/wsMiddleware';
 
 export type TActionStrings=typeof PICK_INGREDIENT |
                             typeof RESET_INGREDIENT |
@@ -71,6 +72,11 @@ IIncreaseBunMap|
 IDecreaseBntMap
 ;
 
+export type TSocketActionPayload={
+  url:string;
+  actionNames:WsActionStrings;
+  
+}
 
 export interface INetworkConnection {
     readonly type: typeof NETWORK_CONNECTION;

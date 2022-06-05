@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'services/store';
 
-import { WS_ALL_CONNECTION_CLOSED, WS_ALL_CONNECTION_START } from 'services/actions/wsActions';
+import { WS_ALL_CONNECTION_CLOSED, WS_ALL_CONNECTION_ERROR, WS_ALL_CONNECTION_START, WS_ALL_CONNECTION_SUCCESS, WS_ALL_GET_MESSAGE, WS_ALL_SEND_MESSAGE, WS_CONNECTION_START } from 'services/actions/wsActions';
 import { IBareBurgerIngredient, IWSResponse } from 'components/Interfaces';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -20,7 +20,18 @@ export default function Feed() {
 
     useEffect(() => {
 
-        dispatch({ type: WS_ALL_CONNECTION_START });
+        dispatch({ type: WS_CONNECTION_START,payload:{
+            url:'wss://norma.nomoreparties.space/orders/all',
+            actionNames:{
+                wsStart:  WS_ALL_CONNECTION_START,
+                onOpen: WS_ALL_CONNECTION_SUCCESS,
+                onError:  WS_ALL_CONNECTION_ERROR,
+                onMessage:  WS_ALL_GET_MESSAGE,
+                wsClose: WS_ALL_CONNECTION_CLOSED,
+                send: WS_ALL_SEND_MESSAGE,
+                close: WS_ALL_CONNECTION_CLOSED
+            }
+        } });
         return ()=>{
             dispatch({type:WS_ALL_CONNECTION_CLOSED});
          }
