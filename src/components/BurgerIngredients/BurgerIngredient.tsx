@@ -3,7 +3,7 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import styles from './BurgerIngredient.module.css';
 import { IBurgerIngredient } from '../Interfaces';
 
-
+//data-cy="ingredientName"
 export const BurgerIngredient= (props: IBurgerIngredient) =>{
     return (
       
@@ -13,7 +13,7 @@ export const BurgerIngredient= (props: IBurgerIngredient) =>{
             <img className={styles.image} src={props.image} />
             <div className={styles.smallContainer}>
 
-                <p className="text text_type_digits-default">{props.price}</p>
+                <p className="text text_type_digits-default" data-cy="ingredientPrice">{props.price}</p>
                 <div className="p-4">
                     <CurrencyIcon type="primary" />
                 </div>

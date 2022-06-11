@@ -34,7 +34,7 @@ const Modal = ({ onClose, children }: IModalProps): React.ReactElement => {
       <ModalOverlay onClose={onClose} />
 
       <div className={styles.modal} onKeyPress={escKeyPress}>
-        <div className={styles.closeIconWrapper} ><CloseIcon type="primary" onClick={onClose} /></div>
+        <div className={styles.closeIconWrapper} data-cy="modalCloseButton" ><CloseIcon type="primary" onClick={onClose} /></div>
 
         {children}
       </div>
