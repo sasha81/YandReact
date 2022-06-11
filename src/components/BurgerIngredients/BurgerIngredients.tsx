@@ -168,7 +168,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
                                        item={{...ingredient}}
                                        onDragStyle={{width:'48%', border:'2px solid green'}}
                                        iddleStyle={{width:'48%'}}> 
-                                        <BurgerIngredient  {...inputProps} />
+                                        <BurgerIngredient data-cy="ingredient"  {...inputProps} />
                                     </WithDrag> 
                                     )
                                 })}

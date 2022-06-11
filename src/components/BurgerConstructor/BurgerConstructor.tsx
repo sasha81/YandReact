@@ -62,8 +62,8 @@ export const BurgerConstructor = (): JSX.Element => {
     <>
 
     
-      <div className={styles.topPadding} />
-      <div className={styles.ingredientContainer} ref={drop}>
+      <div className={styles.topPadding}  />
+      <div className={styles.ingredientContainer} ref={drop} data-cy="bunContainer">
         {storeBun &&
           (<div className={styles.elementHeight} >
             <ConstructorElement
@@ -77,7 +77,7 @@ export const BurgerConstructor = (): JSX.Element => {
             />
           </div>)
         }
-        <div className={styles.ingredientInnerContainer}>
+        <div className={styles.ingredientInnerContainer} data-cy="ingredientContainer">
           {storeIngredients.map((ingredient, index) => {
 
             return (
