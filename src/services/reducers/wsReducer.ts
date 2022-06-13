@@ -15,7 +15,7 @@ import {WS_ALL_SEND_MESSAGE,
     ,WSActions as TWSActions} from 'services/actions/wsActions';
 
 
-type TWSState = {
+export type TWSState = {
     wsAllConnected: boolean;
     wsOrderConnected: boolean;
     messagesAll: IWSResponse | null;
@@ -25,7 +25,7 @@ type TWSState = {
     errorOrder?: Event;
   }
   
-  const initialState: TWSState = {
+  export const initialState: TWSState = {
       wsAllConnected: false,
       wsOrderConnected: false,
       messagesAll: null,

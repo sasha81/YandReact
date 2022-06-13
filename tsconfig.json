@@ -25,5 +25,5 @@
   },
   "include": [
     "src"
-  ]
+, "cypress/jest.config.ts"  ]
 }

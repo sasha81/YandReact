@@ -125,7 +125,7 @@ export const BurgerConstructor = (): JSX.Element => {
 
       </div>
       <div className={styles.submitElement} >
-        <p className="text text_type_digits-medium">{cost}</p>
+        <p className="text text_type_digits-medium" data-cy="constructorTotalCost">{cost}</p>
         <div className="p-2"><CurrencyIcon type="primary" /></div>
 
         <div className={`p-8 ${storeBun ? styles.buttonDivActive : styles.buttonDivBlocked}`} data-cy="createOrderButton">

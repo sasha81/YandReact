@@ -74,13 +74,20 @@ describe('service is available', function() {
 
 
           cy.get('[data-cy="orderDetailsContainer"]').contains("Цена").then((el)=>{
-            cy.get('[data-cy="orderDetailsContainer"]', { timeout: 10000 }).contains("Ваш # заказа");
+            cy.wait(10000);
+            cy.get('[data-cy="orderDetailsContainer"]').contains("Ваш # заказа");
             cy.get('[data-cy="modalCloseButton"]').click();
           });
          
+          cy.wait(5000);
           
-          
-          cy.contains('[data-cy="orderDetailsContainer"]').should('not.exist');
+          cy.contains('[data-cy="orderDetailsContainer"]').should('not.exist').then(()=>{
+            cy.get('[data-cy="constructorTotalCost"]').then($val=>{
+              assert($val.text(),String(0));
+            })
+            cy.get('[data-cy="bunContainer"]').should('not.contain',$name.text());
+          });
+        
 
       })
       

@@ -46,10 +46,10 @@ import {Actions,INetworkConnection ,
 
 
 //Here I treat a bun ingredient separately.
-const initialIngredients: IBareBurgerIngredient[] =[];
-const initialBun: IBareBurgerIngredient | null = null;
+export const initialIngredients: IBareBurgerIngredient[] =[];
+export const initialBun: IBareBurgerIngredient | null = null;
 //this is an aux object to make it easier to account for the number of ingredients of the same _id.
-const initialIngredientMap: Object={};
+export const initialIngredientMap: Object={};
 const initialAllIngredients: IBareBurgerIngredient[] | string =[];
 const initalIngredientDetails:  IBareBurgerIngredient | null = null;
 const initalOrderDetails:  IOrder | null = null;

@@ -1,0 +1,192 @@
+import {
+    orderDetailsReducer,
+    ingredientDetailsReducer,
+    securityUserReducer,
+    allIngredientsReducer,
+    bunReducer,
+    mapReducer,
+    ingredientReducer,
+    initialIngredients,
+    initialIngredientMap,
+    initialBun,
+
+  } from './constructor';
+
+  import {
+    PICK_INGREDIENT,
+    RESET_INGREDIENT,
+    SET_INGREDIENTS,
+    DELETE_INGREDIENT,
+    SET_INFO_INGREDIENT,
+    MAKE_ORDER,
+    DECREMENT_MAP,
+    INCREMENT_MAP,
+    SET_BUN,
+   
+   
+    SWITCH_INGREDIENT,
+    RESET_MAP,
+    ERROR_SET_INGREDIENTS,
+    ERROR_MAKE_ORDER,
+    UPDATE_USER,
+ 
+    NETWORK_CONNECTION,
+    DECREASE_BUN_MAP,
+    INCREASE_BUN_MAP
+
+} from '../actions/constructor';
+import { IBareBurgerIngredient } from 'components/Interfaces';
+
+
+  describe("burger constructor ingredientReducers",()=>{
+    test("ingredient reducer picks the first ingredint",()=>{
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const state= initialIngredients;
+        const result = ingredientReducer(state, {type:PICK_INGREDIENT,payload:ingredient})
+        expect([ingredient]).toEqual(result);
+    })
+
+    test("ingredient reducer picks another ingredint",()=>{
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const state= [ingredient];
+       
+        const result = ingredientReducer(state, {type:PICK_INGREDIENT,payload:ingredient})
+        expect([ingredient,ingredient]).toEqual(result);
+    })
+
+
+    test("ingredient reducer removes a single ingredint",()=>{
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const state= [ingredient];
+       
+        const result = ingredientReducer(state, {type: DELETE_INGREDIENT,payload:ingredient})
+        expect([]).toEqual(result);
+    })
+    test("ingredient reducer removes one ingredint from a list",()=>{
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const state= [ingredient,ingredient];
+       
+        const result = ingredientReducer(state, {type: DELETE_INGREDIENT,payload:ingredient})
+        expect([ingredient]).toEqual(result);
+    })
+
+    test("ingredients are switched",()=>{
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const ingredient1: IBareBurgerIngredient ={
+            _id:"def",
+            image:"bc",
+            price: 100,
+            name: "Arr!!",
+            type:"2"
+        }
+        const state= [ingredient,ingredient1];
+       
+        const result = ingredientReducer(state, {type: SWITCH_INGREDIENT,to:1 ,from:0})
+        expect([ingredient1,ingredient]).toEqual(result);
+    })
+  })
+
+
+  describe('burger constructor mapReducer',()=>{
+
+    test('bun map is 1 if there were no bun',()=>{
+        const state = initialIngredientMap;
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const result = mapReducer(state,{type:INCREASE_BUN_MAP, payload: ingredient});
+        expect(result[ingredient._id]).toEqual(1);
+    })
+    test('bun map is still 1 if there was a bun',()=>{
+        const state = {"abc":1};
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const result = mapReducer(state,{type:INCREASE_BUN_MAP, payload: ingredient});
+        expect(result[ingredient._id]).toEqual(1);
+    })
+
+
+    test('map value is incremented if there was an element with this _id',()=>{
+        const state = {"abc":1};
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const result = mapReducer(state,{type:INCREMENT_MAP, payload: ingredient});
+        expect(result[ingredient._id]).toEqual(2);
+    })
+
+
+    test('map value is decremented if there was an element with this _id',()=>{
+        const state = {"abc":1};
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const result = mapReducer(state,{type:DECREMENT_MAP, payload: ingredient});
+        expect(result.hasOwnProperty(ingredient._id)).toBeFalsy();
+    })
+  })
+
+
+  describe("bunReducer ",()=>{
+      test("bun is correctly set",()=>{
+        const ingredient: IBareBurgerIngredient ={
+            _id:"abc",
+            image:"bc",
+            price: 100,
+            name: "Arr",
+            type:"1"
+        }
+        const state= initialBun;
+        const result = bunReducer(state,{type:SET_BUN, payload: ingredient});
+        expect(result).toEqual(ingredient);
+      })
+  })
+
+
