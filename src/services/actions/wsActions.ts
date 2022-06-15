@@ -43,7 +43,7 @@ export interface IConnectionClosed {
 
   export interface IConnectionError {
     readonly type: typeof WS_ALL_CONNECTION_ERROR | typeof WS_ORDER_CONNECTION_ERROR;
-    readonly payload: Event;
+    readonly payload: Event | Error;
    
   }
 

@@ -1,9 +1,5 @@
-// import * as storeMethods from '../store';
-
-// jest.mock('../store');
-
-// //@ts-ignore
-// storeMethods.useDispatch.mockReturnValue((arg)=>{})
+import * as storeMethods from '../store';
+jest.mock('../store');
 
 import {MAKE_ORDER, SET_INGREDIENTS} from './constructor'
 import { cleanup } from '@testing-library/react';
@@ -15,14 +11,26 @@ describe("constructorThunk tests",()=>{
     beforeAll(() => jest.spyOn(window, 'fetch'))
      //@ts-ignore
     beforeEach(() => window.fetch.mockImplementation(mockFetch))
+    beforeEach(()=>{
+       
+        const mockDispatchFn = jest.fn();
+         //@ts-ignore
+        storeMethods.useDispatch.mockImplementation(()=>mockDispatchFn)
+
+        //An alternative approach without jest.mock('../store'); 
+        // const useDispatchSpy = jest.spyOn(storeMethods , 'useDispatch');
+        // const mockDispatchFn = jest.fn();
+        // useDispatchSpy.mockReturnValue(mockDispatchFn);
+    })
     afterEach(()=>cleanup())
     afterAll(()=> jest.clearAllMocks())
 
-
+   
 
 
     test("send order",async ()=>{
-        const dispatchMock = jest.fn();
+       
+        const dispatchMock = storeMethods.useDispatch();//jest.fn();
         const cost = 12345;
         const sendingOrder: IOrder = { 'cost': cost, 'orderId': "Отправляем заказ...", 'success': true};
         const data = generateOrder(orderNumber);
@@ -40,7 +48,10 @@ describe("constructorThunk tests",()=>{
     })
 
     test("load ingredients ",async ()=>{
-        const dispatchMock = jest.fn();
+        // const useDispatchSpy = jest.spyOn(storeMethods , 'useDispatch');
+        // const mockDispatchFn = jest.fn();
+        // useDispatchSpy.mockReturnValue(mockDispatchFn);
+        const dispatchMock = storeMethods.useDispatch();// jest.fn();
         const dispatchArg = {type:SET_INGREDIENTS, payload:mockIngredients}
         //@ts-ignore
        await loadData(allIngredientsURL,(x)=>{})(dispatchMock);

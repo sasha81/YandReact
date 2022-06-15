@@ -22,9 +22,6 @@ import {parseToNearestObject} from '../../utils/parsingFunctions'
 
 function OrderDetailWrapper() {
 
- // const [fetchError, setFetchError] = useState(false);
-
-
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();

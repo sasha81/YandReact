@@ -99,4 +99,21 @@ describe("wsReducers",()=>{
         const result = wsReducer(state,{type:WS_ALL_CONNECTION_SUCCESS, payload: new Event("A")});
         expect(result.wsAllConnected).toBeTruthy();
     })
+
+    test("close connection works",()=>{
+        const state:TWSState = initialState;
+        state.wsAllConnected=true
+        const result = wsReducer(state,{type:WS_ALL_CONNECTION_CLOSED, payload: new Event("A")});
+        expect(result.wsAllConnected).toBeFalsy();
+    })
+    test(" connection error works",()=>{
+        const state:TWSState = initialState;
+        state.wsAllConnected=true;
+        const error = new Error("A");
+        const result = wsReducer(state,{type:WS_ALL_CONNECTION_ERROR, payload:error });
+        expect(result.wsAllConnected).toBeFalsy();
+        expect(result.errorAll).toEqual(error);
+
+    })
+
 })

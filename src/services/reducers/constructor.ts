@@ -51,11 +51,11 @@ export const initialBun: IBareBurgerIngredient | null = null;
 //this is an aux object to make it easier to account for the number of ingredients of the same _id.
 export const initialIngredientMap: Object={};
 const initialAllIngredients: IBareBurgerIngredient[] | string =[];
-const initalIngredientDetails:  IBareBurgerIngredient | null = null;
-const initalOrderDetails:  IOrder | null = null;
-const initialUser: IUser | null = null;
+export const initalIngredientDetails:  IBareBurgerIngredient | null = null;
+export const initalOrderDetails:  IOrder | null = null;
+export const initialUser: IUser | null = null;
 const initialVisited : Object = {};
-const initialNetworkError : boolean=false; 
+export const initialNetworkError : boolean=false; 
 
 //:Reducer< boolean,IAction<boolean>>
 export const noConnectionReducer = (state:boolean = initialNetworkError, action:INetworkConnection):boolean=>{
