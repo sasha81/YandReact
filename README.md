@@ -46,3 +46,7 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## Website demonstration
+
+The site of this project is deployed at: "https://sasha81.github.io/react-burger"
+

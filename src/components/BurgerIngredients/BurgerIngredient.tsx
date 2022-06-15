@@ -8,7 +8,7 @@ export const BurgerIngredient= (props: IBurgerIngredient) =>{
     return (
       
         <div className={styles[props.relativeWidth]} data-cy="ingredient">
-            <p className={`text text_type_main-default ${styles.info}`} onClick={props.infoCallback}>Info</p>
+            <p className={`text text_type_main-default ${styles.info}`} onClick={props.infoCallback} data-cy="ingredientInfo">Info</p>
             <Counter count={props.quantity} size="default" />
             <img className={styles.image} src={props.image} />
             <div className={styles.smallContainer}>

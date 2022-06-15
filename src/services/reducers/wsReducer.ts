@@ -21,8 +21,8 @@ export type TWSState = {
     messagesAll: IWSResponse | null;
     messagesOrder: IWSResponse | null ;
   
-    errorAll?: Event;
-    errorOrder?: Event;
+    errorAll?: Event | Error;
+    errorOrder?: Event | Error;
   }
   
   export const initialState: TWSState = {
@@ -32,7 +32,7 @@ export type TWSState = {
       messagesOrder: null
   }; 
 
-  export const wsReducer = (state = initialState, action: TWSActions) => {
+  export const wsReducer = (state:TWSState = initialState, action: TWSActions): TWSState => {
     switch (action.type) {
           // Опишем обработку экшена с типом WS_CONNECTION_SUCCESS
           // Установим флаг wsConnected в состояние true
