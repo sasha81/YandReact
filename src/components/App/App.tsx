@@ -1,8 +1,9 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { useSelector, useDispatch } from 'react-redux';
-import {  Switch, Route } from 'react-router-dom';
+import { useSelector, useDispatch } from 'services/store';
+
+import { Switch, Route } from 'react-router-dom';
 
 import styles from './App.module.css';
 import AppHeader from '../AppHeader/AppHeader'
@@ -17,9 +18,10 @@ import {
 
 } from "react-router-dom";
 import { burgerUrl } from 'configs/urls';
-import { RootState } from 'services/store';
+
 import { loadData } from 'services/actions/constructorThunks'
 import IngredientDetails from 'components/IngredientDetails/IngredientDetails';
+import Feed from 'components/Feed/Feed'
 import Login from 'pages/Login';
 import Profile from 'pages/Profile';
 import ResetPassword from 'pages/ResetPassword';
@@ -30,7 +32,10 @@ import { ProtectedRoute } from 'components/ProtectedRoute/ProtectedRoute'
 import { AuthorizedBlockedRoute } from 'components/ProtectedRoute/AuthorizedBlockedRoute'
 import OrderDetailWrapper from 'components/OrderDetails/OrderDetailWrapper';
 import { loginUserFromToken } from 'services/actions/securityThunk';
-import OrderHistory from 'pages/OrderHistory';
+
+import FullOrderDetails from 'components/OrderDetails/FullOrderDetails';
+
+import PersonalOrderDetails from 'components/OrderDetails/PersonalOrderDetails';
 
 interface IAppDataAndStatus {
   error: boolean,
@@ -44,7 +49,8 @@ const App = (): JSX.Element => {
 
   const [order] = useState(false);
   const [, setStatus] = useState<IAppDataAndStatus>({ error: false, loading: false })
-  const data = useSelector((state: RootState) => state.allIngredients)
+  const data = useSelector((state) => state.allIngredients);
+  const isWSConnected = useSelector(state => state.wsConnection.wsAllConnected)
 
   const dispatch = useDispatch();
 
@@ -53,7 +59,7 @@ const App = (): JSX.Element => {
   useEffect(() => {
 
     dispatch(loadData(URL, setStatus));
-   dispatch(loginUserFromToken(window.localStorage.getItem('accessToken')))
+    dispatch(loginUserFromToken(window.localStorage.getItem('accessToken')))
   }, [dispatch])
 
 
@@ -68,11 +74,7 @@ const App = (): JSX.Element => {
   }
 
 
-
-
   let background = location.state && location.state.background;
-
-
 
   return (
 
@@ -100,12 +102,13 @@ const App = (): JSX.Element => {
         <Route path="/ingredients/:id" exact={true}>
           <IngredientDetails />
         </Route>
-        <ProtectedRoute path="/profile" exact={true}>
+        <ProtectedRoute path="/profile/orders/:id" exact={true} children={<PersonalOrderDetails />} />
+        <ProtectedRoute path="/profile" >
           <Profile />
         </ProtectedRoute>
-        <ProtectedRoute path="/profile/orders" exact={true}>
-          <OrderHistory />
-        </ProtectedRoute>
+
+        
+
         <AuthorizedBlockedRoute path="/reset-password" exact={true}>
           <ResetPassword />
         </AuthorizedBlockedRoute>
@@ -115,11 +118,22 @@ const App = (): JSX.Element => {
         <Route path="/register" exact={true}>
           <Register />
         </Route>
+
+        <Route path="/feed" exact={true}>
+          <Feed />
+        </Route>
+        <Route path="/feed/:id" exact={true}>
+          <FullOrderDetails />
+        </Route>
+       
+
         <ProtectedRoute path="/orderDetails" children={<OrderDetailWrapper />} />
 
       </Switch>
-
+      {background && <Route path="/feed/:id" children={<FullOrderDetails />} />}
+      {background && <ProtectedRoute path="/profile/orders/:id" children={<PersonalOrderDetails />} />}
       {background && <Route path="/ingredients/:id" children={<IngredientDetails />} />}
+
 
     </div>
 

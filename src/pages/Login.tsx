@@ -7,7 +7,9 @@ import { Input, Logo, Button } from '@ya.praktikum/react-developer-burger-ui-com
 import useFormField from '../hooks/customForms'
 
 import { signIn } from '../services/actions/securityThunk';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch } from 'services/store';
+
 
 
 function Login() {
@@ -15,6 +17,7 @@ function Login() {
     const history = useHistory();
     const location = useLocation();
     const currentPath = location.pathname.slice();
+   
     const dispatch = useDispatch();
     const name = useFormField();
     const password = useFormField();

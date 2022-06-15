@@ -1,0 +1,28 @@
+@value headerHeight from "../../layoutConstants.module.css";
+@value totalHeight from "../../layoutConstants.module.css";
+
+.container{
+
+    display: grid;
+    grid-template-columns: 50% 50%;
+    /*grid-template-rows: auto; */
+    grid-template-areas:'header header'      
+                        'orders data';
+}
+
+.orders{
+   grid-area: orders;
+   height: calc(totalHeight - headerHeight);
+   overflow-y: auto; 
+   list-style-type: none;
+}
+
+.data {
+    grid-area: data;
+}
+
+.header{
+    grid-area: header;
+    margin-top:30px;
+    margin-bottom: 30px;
+}

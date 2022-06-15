@@ -1,0 +1,50 @@
+.image {
+    display:block;
+   width:50px;
+   height: 50px;
+}
+
+.pictureContainer{
+    height:500px;
+    overflow: auto;
+    width:100%;
+}
+
+
+.red{
+    color:red;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}
+.white{
+    color:white;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}
+.green{
+    color:green;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}
+
+.flexColumnAlign{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+}
+
+.flexRowAlign{
+    display: flex;
+    flex-direction: row;
+    align-items: center;   
+}
+.flexColumnJustify{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flexColumnJustifyWidth{
+   composes:flexColumnJustify;
+    width: 100%;
+}

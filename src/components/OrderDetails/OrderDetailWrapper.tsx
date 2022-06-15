@@ -1,9 +1,8 @@
-import React,{useEffect} from 'react'
+import {useEffect} from 'react'
 import Modal from '../Modal/Modal';
 import OrderDetails from './OrderDetails';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'services/store';
 import { useHistory, useLocation } from 'react-router-dom';
-import {RootState} from '../../services/store';
 
 import {resetOrderDetails,sendOrderDetails} from '../../services/actions/constructorThunks' 
 import {parseToNearestObject} from '../../utils/parsingFunctions'
@@ -40,11 +39,8 @@ function OrderDetailWrapper() {
       dispatch(sendOrderDetails(cost,()=>{},ingredients))
     },[cost,ingredients])
 
-    const {storeIngredients, storeBun,storeOrderDetails,noConnection, user} = useSelector((store:RootState)=>({
-      storeIngredients:store.ingredients,
-      storeBun:store.bun,
-      storeOrderDetails:store.orderDetails,
-      user: store.user,
+    const {storeOrderDetails,noConnection} = useSelector((store)=>({     
+      storeOrderDetails:store.orderDetails,    
       noConnection: store.noConnection
     }))    
 

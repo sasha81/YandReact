@@ -1,12 +1,12 @@
 .wrapper{
     width: 100%;
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 33% 66%;
     /*grid-template-rows: auto; */
     grid-template-areas:  'actions form .'
 }
 
-.form{
+.formContainer{
     grid-area: form;
     display: flex;
     flex-direction: column;

@@ -29,6 +29,15 @@ export interface IReduxState {
 }
 
 
+
+export type IOrderTab={
+    ingredients:string[];
+    name:string|undefined;
+    price:number|undefined;
+    date:string|undefined;
+    id:string|undefined;
+}
+
 export interface IBareBurgerIngredient{
     _id: string,
     uuid?: string,
@@ -92,5 +101,42 @@ export interface IUserResponseBody extends IResponseBody{
 }
 export interface IUserNoToken extends ISuccess{
     user:IUser;
+}
+
+export interface IState{
+    ingredients: IBareBurgerIngredient[];
+    bun: IBareBurgerIngredient | null ;
+    ingredientMap: Object;
+    allIngredients: IBareBurgerIngredient[] | string;
+    ingredientDetails:  IBareBurgerIngredient | null ;
+    orderDetails:  IOrder | null ;
+    user: IUser | null;
+    visited : Object;
+    noConnection : boolean;
+}
+
+export type IMessage = Object;
+
+export interface IWSOrder {
+    ingredients: string[];
+    _id: string;
+    status:string;
+    number:number;
+    createdAt:string;
+    updatedAt:string;
+    name:string;
+}
+
+export interface IWSResponse{
+    success:boolean;
+    orders:IWSOrder[];
+    total:number;
+    totalToday:number;
+
+}
+export type TIngredientData={
+    pictureName: string;
+    pictureSrc: string;
+    price: number;
 }
 

@@ -1,5 +1,5 @@
 import { useState, useRef, createRef} from "react";
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'services/store';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
     Tab
@@ -25,8 +25,8 @@ interface IResult {
 
 
 
-export const getSortedData = (rawData: IBareBurgerIngredient[]): [IResult[],Map<string,IBareBurgerIngredient[]>] => {
-
+export const getSortedData = (rawData: IBareBurgerIngredient[] | string): [IResult[],Map<string,IBareBurgerIngredient[]>] => {
+    if (typeof rawData === 'string' || rawData instanceof String) return [[],new Map<string,any>()];
     const data = rawData;
 
     const sortedData = data;
@@ -59,7 +59,8 @@ interface IScroll{
 }
 
 export const BurgerIngredients = ( ): JSX.Element => {
-    const data = useSelector((state: RootState)=>state.allIngredients)
+  //  const data = useSelector((state: RootState)=>state.allIngredients)
+    const data = useSelector((state)=>state.allIngredients)
     const [ingredients, ingredientMap] = getSortedData(data);
 //this involved tab state is needed to make it scroll-to-tab and tab-to-scroll without us to use window.onScrollListener/boundingRectagle/scrollY anywhere.
 //Notice that this approach allows us to add other ingredient typs with minimal effort. 

@@ -1,5 +1,14 @@
 import { combineReducers } from 'redux';
-import {orderDetailsReducer,ingredientDetailsReducer,allIngredientsReducer,bunReducer,mapReducer,ingredientReducer,visitsReducer,securityUserReducer,noConnectionReducer} from './constructor';
+import {orderDetailsReducer,
+  ingredientDetailsReducer,
+  allIngredientsReducer,
+  bunReducer,
+  mapReducer,
+  ingredientReducer,
+  securityUserReducer,
+  noConnectionReducer} from './constructor';
+
+import {wsReducer} from 'services/reducers/wsReducer'
 
 
 const rootReducer = combineReducers({
@@ -10,7 +19,8 @@ const rootReducer = combineReducers({
     'ingredientMap': mapReducer,
     'ingredients':ingredientReducer,
     'user':securityUserReducer,
-    'visited':visitsReducer,
-    'noConnection':noConnectionReducer
+  
+    'noConnection':noConnectionReducer,
+    'wsConnection':wsReducer
   })
 export default rootReducer;  

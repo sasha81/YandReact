@@ -1,16 +1,13 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'services/store';
 import { useDrop } from 'react-dnd';
 import styles from './BurgerConstructor.module.css';
 import { IBareBurgerIngredient, IBurgerIngredientDrop } from '../Interfaces';
-
-
 import { pickIngredient, switchIngredients, deleteIngredient } from '../../services/actions/constructorThunks'
-
 import { WithDrop, WithDrag } from '../../utils/dndHOCs';
-import { RootState } from '../../services/store'
 import { useHistory, useLocation } from 'react-router-dom';
+
+
 const getCost = (ingredients: IBareBurgerIngredient[], bun: IBareBurgerIngredient | null): number => {
   if (ingredients.length === 0 && bun == null) return 0;
   return ingredients.reduce((accum, curr) => { return accum + curr.price }, 0) + (bun ? bun.price : 0);
@@ -25,7 +22,7 @@ export const BurgerConstructor = (): JSX.Element => {
 
   const dispatch = useDispatch();
 
-  const { storeIngredients, storeBun } = useSelector((store: RootState) => ({
+  const { storeIngredients, storeBun } = useSelector((store) => ({
     storeIngredients: store.ingredients,
     storeBun: store.bun,
     storeOrderDetails: store.orderDetails,
@@ -40,10 +37,6 @@ export const BurgerConstructor = (): JSX.Element => {
       dispatch(pickIngredient(ingredient, storeBun))
     }
   })
-
-
-
-
 
   const cost = getCost(storeIngredients, storeBun);
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'services/store';
 import { Link, useHistory, useLocation } from 'react-router-dom'
-import { useEffect } from "react";
+
 import useFormField from '../hooks/customForms';
 import { Input, Logo, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './CommonStyles.module.css';
@@ -37,9 +37,7 @@ function ForgotPassword() {
 
 
     };
-    useEffect(() => {
-        // dispatch(setVisited('forgot_password'))
-    }, [])
+  
 
 
     return (

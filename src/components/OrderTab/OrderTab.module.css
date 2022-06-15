@@ -1,0 +1,87 @@
+@value marginLeft: 20px;
+@value marginRight: 20px;
+@value marginTop: 30px;
+@value marginBottom: 30px;
+
+.image {
+    display:inline-block;
+   width:80px;
+   height: 80px;
+  
+}
+
+.imageContainer{
+    float:left;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    width:75%;
+    margin-top:15px;
+}
+
+.imageWrapper{
+    display:inline-block;
+    width:25px;
+
+}
+
+.price{
+    float:right;
+    width:25%;
+    margin-top: marginTop;
+    display:flex;
+    flex-direction: row;
+}
+.price p{
+    
+   margin-right:10px;
+}
+
+.background{
+    background-color: #1C1C21;
+    margin-top: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+    width:100%;
+    border-radius: 5px;
+}
+.clear{
+    clear:right;
+    clear:left;
+}
+
+.floatLeft{
+    float:left;
+    margin-top:marginTop;
+    margin-bottom:marginBottom;
+    margin-left: marginLeft;
+}
+.floatRight{
+    float:right;
+    margin-top:marginTop;
+    margin-bottom:marginBottom;
+    margin-right: marginRight;
+}
+
+.name{
+    composes: clear;
+    display: block;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}
+
+.red{
+    color:red;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}
+.white{
+    color:white;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}
+.green{
+    color:green;
+    margin-left: marginLeft;
+    margin-top:marginTop;
+}

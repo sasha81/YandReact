@@ -7,8 +7,7 @@ import styles from './CommonStyles.module.css';
 import { resetPassword } from '../services/apis';
 import { checkResponse } from '../services/actions/constructorThunks';
 import { register } from '../services/actions/securityThunk';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../services/store';
+import { useDispatch, useSelector } from 'services/store';
 import { useHistory, useLocation } from 'react-router-dom';
 
 function ResetPassword() {
@@ -22,7 +21,7 @@ function ResetPassword() {
 
 
     const [isPwdHidden, hidePwd] = useState<boolean>(false);
-    const user = useSelector((state: RootState) => state.user) as any;
+    const user = useSelector((state) => state.user) as any;
     const dispatch = useDispatch()
     const onIconClick = () => {
         hidePwd(prev => !prev)
