@@ -45,7 +45,7 @@ const IngredientDetails = ()=>{
 
 const BareIngredientDetails = (props:IBareBurgerIngredient)=>{
     return (
-        <>
+        <div data-cy="ingredientDetailsContainer">
         <p className="text text_type_main-medium">Детали ингридиента</p>
         <img className={styles.image}  src={props.image} />
   <div className = {styles.smallContainer}>
@@ -76,7 +76,7 @@ const BareIngredientDetails = (props:IBareBurgerIngredient)=>{
           <p className="text text_type_main-small text_color_inactive">{props.carbohydrates}</p>
       </div> 
   </div>
-  </>
+  </div>
     );
 }
 

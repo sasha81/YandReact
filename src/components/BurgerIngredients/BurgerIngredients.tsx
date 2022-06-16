@@ -151,7 +151,7 @@ export const BurgerIngredients = ( ): JSX.Element => {
                         onChange={visibilityCallback(index,setCurrentTab, Array.isArray(ingredients) ? ingredients.length: 0)}                                   
                         >
                        
-                        <div  id={`${ingredientOuter.type}Type`} ref={myRefs.current[index]} >
+                        <div  id={`${ingredientOuter.type}Type`} ref={myRefs.current[index]} data-cy="ingredientContainer" >
                             <p className={`text text_type_main-medium ${styles.header}`}>{getNames(ingredientOuter.type)}</p>
                             <div className={styles.innerIngredientContainer} >
                                 {ingredientMap.has(ingredientOuter.type) && ingredientMap.get(ingredientOuter.type)!.map((ingredient: IBareBurgerIngredient) => {

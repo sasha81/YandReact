@@ -58,18 +58,20 @@ export const switchIngredients: AppThunk=(dragIndex:number, dropIndex:number)=>(
     dispatch({type:SWITCH_INGREDIENT, to: dropIndex, from:dragIndex});
 }
 
-export const loadData: AppThunk =  (URL:string, setStatus)=>(dispatch)=>{
-  fetch(URL)
-  .then(checkResponse)
-  .then(json=>{
+export const  loadData: AppThunk =   (URL:string, setStatus)=>async (dispatch)=>{
+  try{
+   const json = await fetch(URL)
+  .then(checkResponse);
+
       dispatch({type:SET_INGREDIENTS, payload:json.data});
       setStatus({  loading: false, error:false });
-  })
-  .catch(error=>{
+  
+  }catch(error){
       dispatch({type:ERROR_SET_INGREDIENTS});
       setStatus({  loading: false, error:true });
-  })
+  }
 }
+
 export const resetOrderDetails: AppThunk = ()=>(dispatch)=>{
   dispatch({type: MAKE_ORDER, payload:null})
 }
@@ -79,7 +81,7 @@ export const setInfo: AppThunk=(ingredient: IBareBurgerIngredient| null)=>(dispa
   dispatch({type:SET_INFO_INGREDIENT, payload:ingredient})
 }
 
-export const sendOrderDetails: AppThunk = (cost: number, setFetchError,allIngredients: IBareBurgerIngredient[]) =>(dispatch)=>{
+export const sendOrderDetails: AppThunk = (cost: number, setFetchError,allIngredients: IBareBurgerIngredient[]) =>async (dispatch)=>{
   const sendingOrder: IOrder = { 'cost': cost, 'orderId': "Отправляем заказ...", 'success': true};
   
 
@@ -89,25 +91,25 @@ export const sendOrderDetails: AppThunk = (cost: number, setFetchError,allIngred
       headers: { 'Content-Type': 'application/json','Authorization': 'Bearer ' + window.localStorage.getItem('accessToken') },
       body: JSON.stringify({ ingredients: allIngredients })
     };
-    fetch(burgerUrl + '/orders', requestOptions)
-      .then(checkResponse)
-      .then(data => {
-        const order: IOrder = { 'cost': cost, 'orderId': data.order.number, 'success': data.success};
-        dispatch({type: MAKE_ORDER, payload:order })
-        setFetchError(false);
-        dispatch({type:RESET_INGREDIENT});
-        dispatch({type:SET_BUN,payload:null});
-        dispatch({type:RESET_MAP});
+    try{
+      const data = await fetch(burgerUrl + '/orders', requestOptions)
+      .then(checkResponse);
+      const order: IOrder = { 'cost': cost, 'orderId': data.order.number, 'success': data.success};
+      dispatch({type: MAKE_ORDER, payload:order })
+      setFetchError(false);
+      dispatch({type:RESET_INGREDIENT});
+      dispatch({type:SET_BUN,payload:null});
+      dispatch({type:RESET_MAP});
+
+    }
+    catch(error:any){
+      dispatch({type:ERROR_MAKE_ORDER});
+      if (!(error.message ==="server error")) {
+        dispatch({type:NETWORK_CONNECTION, payload:true})
       
-      })
-      .catch(error => {
-        dispatch({type:ERROR_MAKE_ORDER});
-        if (!(error.message ==="server error")) {
-          dispatch({type:NETWORK_CONNECTION, payload:true})
-         // setFetchError(true);
-        }
-       
-      })
+      }
+    }
+  
 }
 
 export const informOfError = (errorType:string)=>{

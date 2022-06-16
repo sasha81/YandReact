@@ -48,14 +48,14 @@ function Login() {
     }
 
     return (
-        <form className={styles.outerWrapper} onSubmit={handleSubmit}>
+        <form className={styles.outerWrapper} onSubmit={handleSubmit} data-cy="loginForm">
 
             <div className={styles.wrapper}>
 
                 <div className="mb-6 mt-10"><Logo /></div>
                 <div className="mb-6 mt-10"><p className="text_type_main-large">Вход</p></div>
 
-                <div className="mt-8">
+                <div className="mt-8" data-cy="nameField">
                     <Input
                         type={'text'}
                         placeholder={'username'}
@@ -67,7 +67,7 @@ function Login() {
                         errorText={'Ошибка'}
                         size={'default'}
                     /></div>
-                <div className="mt-8">
+                <div className="mt-8" data-cy="passwordField">
                     <Input
                         type={'text'}
                         placeholder={'password'}
@@ -81,7 +81,7 @@ function Login() {
                         size={'default'}
                     />
                 </div>
-                <div className="mt-8">
+                <div className="mt-8" data-cy="loginButton">
                     <Button htmlType="submit" type="primary" size="small"  >
                         Войти
                     </Button>
