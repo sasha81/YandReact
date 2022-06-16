@@ -5,7 +5,7 @@ export const allIngredientsURL = URL + '/ingredients';
 export const orderURL = URL+'/orders';
 export const orderNumber = "123";
 
-const generateIngredient=(x:string ):IBareBurgerIngredient=>{
+export const generateIngredient=(x:string ):IBareBurgerIngredient=>{
     const ingredient:IBareBurgerIngredient={
         _id:"abcd"+x,
         name:x+"frg",
@@ -15,6 +15,14 @@ const generateIngredient=(x:string ):IBareBurgerIngredient=>{
 
     }
     return ingredient;
+}
+
+export const generateBareOrder = (x:string):IOrder=>{
+  return {
+      success:true,
+      orderId: "abcd"+x,
+      cost:parseFloat(x) 
+  }
 }
 
 export const generateOrder = (x:string)=>{
