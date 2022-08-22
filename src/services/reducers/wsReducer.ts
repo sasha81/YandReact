@@ -15,24 +15,24 @@ import {WS_ALL_SEND_MESSAGE,
     ,WSActions as TWSActions} from 'services/actions/wsActions';
 
 
-type TWSState = {
+export type TWSState = {
     wsAllConnected: boolean;
     wsOrderConnected: boolean;
     messagesAll: IWSResponse | null;
     messagesOrder: IWSResponse | null ;
   
-    errorAll?: Event;
-    errorOrder?: Event;
+    errorAll?: Event | Error;
+    errorOrder?: Event | Error;
   }
   
-  const initialState: TWSState = {
+  export const initialState: TWSState = {
       wsAllConnected: false,
       wsOrderConnected: false,
       messagesAll: null,
       messagesOrder: null
   }; 
 
-  export const wsReducer = (state = initialState, action: TWSActions) => {
+  export const wsReducer = (state:TWSState = initialState, action: TWSActions): TWSState => {
     switch (action.type) {
           // Опишем обработку экшена с типом WS_CONNECTION_SUCCESS
           // Установим флаг wsConnected в состояние true

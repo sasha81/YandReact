@@ -20,7 +20,7 @@ const OrderDetails = ({ total, orderNumber, orderStatus, networkError }: IOrderD
     }
 
     return (
-        <div className={styles.flexContainerColumnCenter} >
+        <div className={styles.flexContainerColumnCenter} data-cy="orderDetailsContainer">
             <div className="mb-6 mt-10"><p className="text text_type_digits-large">Цена: {total}</p></div>
 
             <div className="mb-6"><p className="text text_type_main-medium">{getOrderNumber(orderNumber, orderStatus, networkError)}</p></div>
